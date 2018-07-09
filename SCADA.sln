@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCADA", "SCADA\SCADA.csproj", "{51245E6C-4F6D-4295-9F57-801BA5B476CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternItems", "ExternItems", "{2FF1E7B0-B248-43B8-9B8E-AAA4DE69605D}"
+	ProjectSection(SolutionItems) = preProject
+		ExternItems\Dapper.dll = ExternItems\Dapper.dll
+		ExternItems\HNC.MES.BLL.dll = ExternItems\HNC.MES.BLL.dll
+		ExternItems\HNC.MES.Common.dll = ExternItems\HNC.MES.Common.dll
+		ExternItems\HNC.MES.DAL.dll = ExternItems\HNC.MES.DAL.dll
+		ExternItems\HNC.MES.Model.dll = ExternItems\HNC.MES.Model.dll
+		ExternItems\HNC_APIWrapper.dll = ExternItems\HNC_APIWrapper.dll
+		ExternItems\HNC_MacDataService.dll = ExternItems\HNC_MacDataService.dll
+		ExternItems\HNCCommonData.dll = ExternItems\HNCCommonData.dll
+		ExternItems\MySql.Data.dll = ExternItems\MySql.Data.dll
+		ExternItems\Newtonsoft.Json.dll = ExternItems\Newtonsoft.Json.dll
+		ExternItems\SQLite.Interop.dll = ExternItems\SQLite.Interop.dll
+		ExternItems\StackExchange.Redis.dll = ExternItems\StackExchange.Redis.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
