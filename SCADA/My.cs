@@ -11,8 +11,14 @@ namespace SCADA
 {
     static class My
     {
+        /// <summary>
+        /// 工厂名称
+        /// </summary>
         public const string LocationName = "石家庄职业技术学院智能工厂";
 
+        /// <summary>
+        /// 工厂ID
+        /// </summary>
         public static readonly string LocationID;
 
         /// <summary>
@@ -22,10 +28,19 @@ namespace SCADA
 
         public static readonly BLLCustom BLL;
 
+        /// <summary>
+        /// Admin用户的ID
+        /// </summary>
         public static readonly string AdminID;
 
+        /// <summary>
+        /// 数控系统服务
+        /// </summary>
         public static readonly HNC_MacDataService.MacDataService MacDataService;
 
+        /// <summary>
+        /// 核心服务
+        /// </summary>
         public static readonly CoreService CoreService;
 
         static My()

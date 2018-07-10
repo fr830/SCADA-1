@@ -45,6 +45,9 @@ namespace SCADA
             }
         }
 
+        /// <summary>
+        /// 运行Scada服务（供WMS系统调用）
+        /// </summary>
         private void RunScadaService()
         {
             IScadaService service = new ScadaService();
@@ -55,8 +58,14 @@ namespace SCADA
         private CancellationTokenSource cts;
         private Task task;
 
+        /// <summary>
+        /// 核心服务运行状态
+        /// </summary>
         public bool IsRunning { get { return task != null; } }
 
+        /// <summary>
+        /// 启动核心服务
+        /// </summary>
         public void Start()
         {
             Stop();
@@ -65,6 +74,9 @@ namespace SCADA
             task.Start();
         }
 
+        /// <summary>
+        /// 停止核心服务
+        /// </summary>
         public void Stop()
         {
             if (task == null) return;
@@ -77,6 +89,11 @@ namespace SCADA
             task = null;
         }
 
+        /// <summary>
+        /// 获取核心服务Task
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
             return new Task(() =>

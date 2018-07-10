@@ -31,6 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(_Layout));
             this.panelInfo = new System.Windows.Forms.Panel();
             this.richTextBoxInfo = new System.Windows.Forms.RichTextBox();
+            this.panelStatus = new System.Windows.Forms.Panel();
+            this.labelStatus = new System.Windows.Forms.Label();
+            this.pictureBoxStatus = new System.Windows.Forms.PictureBox();
+            this.buttonRun = new System.Windows.Forms.Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panelButton = new System.Windows.Forms.Panel();
             this.buttonService = new System.Windows.Forms.Button();
@@ -41,21 +45,17 @@
             this.toolStripStatusLabelRunningTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelC = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.panelStatus = new System.Windows.Forms.Panel();
-            this.pictureBoxStatus = new System.Windows.Forms.PictureBox();
-            this.labelStatus = new System.Windows.Forms.Label();
-            this.buttonRun = new System.Windows.Forms.Button();
             this.panelInfo.SuspendLayout();
+            this.panelStatus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.panelButton.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.panelStatus.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // panelInfo
             // 
-            this.panelInfo.BackColor = System.Drawing.SystemColors.Window;
+            this.panelInfo.BackColor = System.Drawing.Color.Transparent;
             this.panelInfo.Controls.Add(this.richTextBoxInfo);
             this.panelInfo.Controls.Add(this.panelStatus);
             this.panelInfo.Controls.Add(this.pictureBoxLogo);
@@ -69,10 +69,11 @@
             // 
             // richTextBoxInfo
             // 
-            this.richTextBoxInfo.BackColor = System.Drawing.SystemColors.Window;
+            this.richTextBoxInfo.BackColor = System.Drawing.Color.White;
             this.richTextBoxInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBoxInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxInfo.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBoxInfo.ForeColor = System.Drawing.Color.Black;
             this.richTextBoxInfo.Location = new System.Drawing.Point(0, 100);
             this.richTextBoxInfo.Name = "richTextBoxInfo";
             this.richTextBoxInfo.ReadOnly = true;
@@ -83,8 +84,54 @@
             this.richTextBoxInfo.Text = "";
             this.richTextBoxInfo.Enter += new System.EventHandler(this.richTextBoxInfo_Enter);
             // 
+            // panelStatus
+            // 
+            this.panelStatus.Controls.Add(this.labelStatus);
+            this.panelStatus.Controls.Add(this.pictureBoxStatus);
+            this.panelStatus.Controls.Add(this.buttonRun);
+            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStatus.Location = new System.Drawing.Point(0, 222);
+            this.panelStatus.Name = "panelStatus";
+            this.panelStatus.Size = new System.Drawing.Size(200, 134);
+            this.panelStatus.TabIndex = 3;
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.Font = new System.Drawing.Font("微软雅黑", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelStatus.Location = new System.Drawing.Point(60, 6);
+            this.labelStatus.Margin = new System.Windows.Forms.Padding(3);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(134, 42);
+            this.labelStatus.TabIndex = 4;
+            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBoxStatus
+            // 
+            this.pictureBoxStatus.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBoxStatus.Location = new System.Drawing.Point(0, 0);
+            this.pictureBoxStatus.Name = "pictureBoxStatus";
+            this.pictureBoxStatus.Size = new System.Drawing.Size(54, 54);
+            this.pictureBoxStatus.TabIndex = 3;
+            this.pictureBoxStatus.TabStop = false;
+            // 
+            // buttonRun
+            // 
+            this.buttonRun.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonRun.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRun.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonRun.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonRun.Location = new System.Drawing.Point(0, 54);
+            this.buttonRun.Name = "buttonRun";
+            this.buttonRun.Size = new System.Drawing.Size(200, 80);
+            this.buttonRun.TabIndex = 5;
+            this.buttonRun.Text = "启动";
+            this.buttonRun.UseVisualStyleBackColor = false;
+            this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
+            // 
             // pictureBoxLogo
             // 
+            this.pictureBoxLogo.BackColor = System.Drawing.Color.Transparent;
             this.pictureBoxLogo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLogo.Image")));
             this.pictureBoxLogo.Location = new System.Drawing.Point(0, 0);
@@ -97,6 +144,7 @@
             // panelButton
             // 
             this.panelButton.AutoSize = true;
+            this.panelButton.BackColor = System.Drawing.Color.Transparent;
             this.panelButton.Controls.Add(this.buttonService);
             this.panelButton.Controls.Add(this.buttonMES);
             this.panelButton.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -111,7 +159,7 @@
             this.buttonService.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonService.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonService.ForeColor = System.Drawing.SystemColors.Window;
+            this.buttonService.ForeColor = System.Drawing.Color.Transparent;
             this.buttonService.Location = new System.Drawing.Point(0, 0);
             this.buttonService.Name = "buttonService";
             this.buttonService.Size = new System.Drawing.Size(200, 80);
@@ -126,7 +174,7 @@
             this.buttonMES.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonMES.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonMES.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonMES.ForeColor = System.Drawing.SystemColors.Window;
+            this.buttonMES.ForeColor = System.Drawing.Color.Transparent;
             this.buttonMES.Location = new System.Drawing.Point(0, 80);
             this.buttonMES.Name = "buttonMES";
             this.buttonMES.Size = new System.Drawing.Size(200, 80);
@@ -137,7 +185,7 @@
             // 
             // menuStrip
             // 
-            this.menuStrip.BackColor = System.Drawing.SystemColors.Window;
+            this.menuStrip.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(784, 24);
@@ -146,7 +194,7 @@
             // 
             // statusStrip
             // 
-            this.statusStrip.BackColor = System.Drawing.SystemColors.Window;
+            this.statusStrip.BackColor = System.Drawing.Color.Transparent;
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelDateTime,
             this.toolStripStatusLabelRunningTime,
@@ -186,56 +234,11 @@
             this.tabControl.Size = new System.Drawing.Size(584, 516);
             this.tabControl.TabIndex = 4;
             // 
-            // panelStatus
-            // 
-            this.panelStatus.Controls.Add(this.labelStatus);
-            this.panelStatus.Controls.Add(this.pictureBoxStatus);
-            this.panelStatus.Controls.Add(this.buttonRun);
-            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelStatus.Location = new System.Drawing.Point(0, 222);
-            this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(200, 134);
-            this.panelStatus.TabIndex = 3;
-            // 
-            // pictureBoxStatus
-            // 
-            this.pictureBoxStatus.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBoxStatus.Location = new System.Drawing.Point(0, 0);
-            this.pictureBoxStatus.Name = "pictureBoxStatus";
-            this.pictureBoxStatus.Size = new System.Drawing.Size(54, 54);
-            this.pictureBoxStatus.TabIndex = 3;
-            this.pictureBoxStatus.TabStop = false;
-            // 
-            // labelStatus
-            // 
-            this.labelStatus.Font = new System.Drawing.Font("微软雅黑", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelStatus.Location = new System.Drawing.Point(60, 6);
-            this.labelStatus.Margin = new System.Windows.Forms.Padding(3);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(134, 42);
-            this.labelStatus.TabIndex = 4;
-            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // buttonRun
-            // 
-            this.buttonRun.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonRun.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.buttonRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRun.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonRun.ForeColor = System.Drawing.SystemColors.Window;
-            this.buttonRun.Location = new System.Drawing.Point(0, 54);
-            this.buttonRun.Name = "buttonRun";
-            this.buttonRun.Size = new System.Drawing.Size(200, 80);
-            this.buttonRun.TabIndex = 5;
-            this.buttonRun.Text = "启动";
-            this.buttonRun.UseVisualStyleBackColor = false;
-            this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
-            // 
             // _Layout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Window;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panelInfo);
@@ -247,14 +250,15 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this._Layout_FormClosing);
             this.Load += new System.EventHandler(this._Layout_Load);
+            this.Shown += new System.EventHandler(this._Layout_Shown);
             this.panelInfo.ResumeLayout(false);
             this.panelInfo.PerformLayout();
+            this.panelStatus.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.panelButton.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.panelStatus.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

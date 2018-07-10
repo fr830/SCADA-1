@@ -12,6 +12,10 @@ namespace SCADA
     [ServiceContract(Name = "ScadaService")]
     interface IScadaService
     {
+        /// <summary>
+        /// 测试服务状态
+        /// </summary>
+        /// <returns></returns>
         [OperationContract]
         [WebGet(UriTemplate = "/", BodyStyle = WebMessageBodyStyle.Bare)]
         string TestService();

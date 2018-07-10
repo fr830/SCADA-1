@@ -21,17 +21,25 @@ namespace SCADA
         public _Layout()
         {
             InitializeComponent();
-#if DEBUG
-            FormClosing -= _Layout_FormClosing;
-#endif
         }
 
         private void _Layout_Load(object sender, EventArgs e)
         {
+#if DEBUG
+            FormClosing -= _Layout_FormClosing;
+#endif
+            Visible = false;
+            var splash = new Splash();
+            splash.LoadingComplete += (ss, se) => { this.InvokeEx(c => c.Visible = true); };
+            splash.Show();
             menuStrip.Visible = false;//暂时不启用菜单栏
             InitStatus();
             InitInfo();
             InitTabPage();
+        }
+
+        private void _Layout_Shown(object sender, EventArgs e)
+        {
         }
 
         /// <summary>

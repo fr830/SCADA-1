@@ -14,7 +14,7 @@ namespace SCADA
     {
         public string TestService()
         {
-            return "The service is running.";
+            return "服务正在运行。";
         }
     }
 }
