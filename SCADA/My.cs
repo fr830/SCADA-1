@@ -63,6 +63,11 @@ namespace SCADA
                     string[] array = { "192.168.1.120", "192.168.1.121", "192.168.1.122", "192.168.1.123", "192.168.1.124" };
                     BLL.SettingAdd(AdminID, "MacIP", string.Join(";", array));
                 }
+                if (!BLL.SettingExist(AdminID, "RFIDIP"))
+                {
+                    string[] array = { "192.168.1.131", "192.168.1.132", "192.168.1.133", "192.168.1.134", "192.168.1.135", "192.168.1.136", "192.168.1.137", "192.168.1.138", "192.168.1.139" };
+                    BLL.SettingAdd(AdminID, "RFIDIP", string.Join(";", array));
+                }
                 var location = new TLocation
                 {
                     Name = LocationName,

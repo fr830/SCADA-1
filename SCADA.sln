@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternItems", "ExternItems"
 		ExternItems\Newtonsoft.Json.dll = ExternItems\Newtonsoft.Json.dll
 		ExternItems\SQLite.Interop.dll = ExternItems\SQLite.Interop.dll
 		ExternItems\StackExchange.Redis.dll = ExternItems\StackExchange.Redis.dll
+		ExternItems\Sygole.HFReader.dll = ExternItems\Sygole.HFReader.dll
+		ExternItems\System.Data.SQLite.dll = ExternItems\System.Data.SQLite.dll
 	EndProjectSection
 EndProject
 Global

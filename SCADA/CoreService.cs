@@ -10,6 +10,7 @@ using HNC.MES.DAL;
 using HNC.MES.BLL;
 using System.ServiceModel.Web;
 using System.Collections.Concurrent;
+using Sygole.HFReader;
 
 namespace SCADA
 {
@@ -25,23 +26,37 @@ namespace SCADA
             RunScadaService();
         }
 
-
         /// <summary>
         /// Mac（Key：IP地址，Value：dbNo）
         /// </summary>
-        public Dictionary<string, int> MacDict = new Dictionary<string, int>();
+        public ConcurrentDictionary<string, int> MacDict = new ConcurrentDictionary<string, int>();
 
         /// <summary>
-        /// 核心服务初始化，获取PLC与机床的连接
+        /// RFID（Key：IP地址，Value：RFID）
+        /// </summary>
+        public ConcurrentDictionary<string, HFReader> RFIDDict = new ConcurrentDictionary<string, HFReader>();
+
+        /// <summary>
+        /// 核心服务初始化，获取PLC、机床、RFID的连接
         /// </summary>
         private void Initialize()
         {
-            string[] ipArray = My.BLL.SettingGet(My.AdminID, "MacIP").ToString().Split(';');
-            foreach (var ip in ipArray)
+            var macIPs = My.BLL.SettingGet(My.AdminID, "MacIP").ToString().Split(';');
+            foreach (var ip in macIPs)
             {
                 int t = -1;
                 My.MacDataService.GetMachineDbNo(ip, ref t);
-                MacDict.Add(ip.Split('.').Last(), t);
+                MacDict.TryAdd(ip.Split('.').Last(), t);
+            }
+            var rfidIPs = My.BLL.SettingGet(My.AdminID, "RFIDIP").ToString().Split(';');
+            foreach (var ip in rfidIPs)
+            {
+                var hf = new HFReader();
+                Task.Run(() =>
+                {
+                    hf.Connect(ip, 3001);
+                });
+                RFIDDict.TryAdd(ip.Split('.').Last(), hf);
             }
         }
 

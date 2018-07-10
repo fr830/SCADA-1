@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternItems\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Sygole.HFReader">
+      <HintPath>..\ExternItems\Sygole.HFReader.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
@@ -69,8 +72,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common.cs" />
     <Compile Include="ControlExtensions.cs" />
     <Compile Include="CoreService.cs" />
+    <Compile Include="RFID.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RFID.Designer.cs">
+      <DependentUpon>RFID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +101,12 @@
     <Compile Include="Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl_RFID.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl_RFID.Designer.cs">
+      <DependentUpon>UserControl_RFID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Win32Api.cs" />
     <Compile Include="_Layout.cs">
       <SubType>Form</SubType>
@@ -100,6 +116,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="RFID.resx">
+      <DependentUpon>RFID.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
     </EmbeddedResource>
@@ -109,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl_RFID.resx">
+      <DependentUpon>UserControl_RFID.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="_Layout.resx">
       <DependentUpon>_Layout.cs</DependentUpon>

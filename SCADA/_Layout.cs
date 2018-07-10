@@ -16,7 +16,7 @@ namespace SCADA
 {
     public partial class _Layout : Form
     {
-        List<Type> TabPageFormTypes = new List<Type>() { typeof(Home) };
+        List<Type> TabPageFormTypes = new List<Type>() { typeof(Home), typeof(RFID) };
 
         public _Layout()
         {
@@ -72,12 +72,6 @@ namespace SCADA
             richTextBoxInfo.AppendText("名称：" + Environment.NewLine);
             richTextBoxInfo.SelectionColor = Color.Red;
             richTextBoxInfo.AppendText(My.LocationName + Environment.NewLine);
-            //richTextBoxInfo.SelectionColor = Color.Black;
-            //richTextBoxInfo.AppendText(new string('─', 14) + Environment.NewLine);
-            //richTextBoxInfo.SelectionColor = Color.Black;
-            //richTextBoxInfo.AppendText("提示：" + Environment.NewLine);
-            //richTextBoxInfo.SelectionColor = Color.Black;
-            //richTextBoxInfo.AppendText("查看产线运行状态，请单击下方按钮" + Environment.NewLine);
         }
 
         /// <summary>
