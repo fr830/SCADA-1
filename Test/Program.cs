@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SCADA;
+using RFID;
 
 namespace Test
 {
@@ -18,7 +19,7 @@ namespace Test
             {
                 var data = Enumerable.Repeat<byte>(0xFF, 32).ToArray();
                 item.Write(data);
-                Console.WriteLine(item.Read());
+                Console.WriteLine(item.Read_HexString());
             }
             Console.ReadKey(true);
         }

@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternItems", "ExternItems"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F06BA067-50F3-44D1-8EA8-67350D96A09B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFID", "RFID\RFID.csproj", "{6485F7FC-37D5-4086-965E-2DFC08F017D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNC", "HNC\HNC.csproj", "{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -34,14 +34,14 @@ namespace SCADA
         public static readonly string AdminID;
 
         /// <summary>
-        /// 数控系统服务
-        /// </summary>
-        public static readonly HNC_MacDataService.MacDataService MacDataService;
-
-        /// <summary>
         /// 核心服务
         /// </summary>
         public static readonly CoreService CoreService;
+
+        /// <summary>
+        /// 产线工作
+        /// </summary>
+        public static readonly LineWork LineWork;
 
         static My()
         {
@@ -152,8 +152,8 @@ namespace SCADA
             }
             #endregion
 
-            MacDataService = HNC_MacDataService.MacDataService.GetInstance();
             CoreService = CoreService.Instance;
+            LineWork = LineWork.Instance;
         }
 
 

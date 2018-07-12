@@ -12,6 +12,8 @@ using System.ServiceModel.Web;
 using System.Collections.Concurrent;
 using Sygole.HFReader;
 using System.Reflection;
+using RFID;
+using HNC;
 
 namespace SCADA
 {
@@ -28,31 +30,43 @@ namespace SCADA
         }
 
         /// <summary>
-        /// Mac（Key：IP地址最后一位，Value：dbNo）
+        /// Mac（Key：IP地址最后一位，Value：MachineTool）
         /// </summary>
-        public SortedDictionary<int, int> MacDict = new SortedDictionary<int, int>();
+        public SortedDictionary<int, MachineTool> MachineTools { get; private set; }
+
+        public MachineTool PLC
+        {
+            get
+            {
+                if (MachineTools != null && MachineTools.Count > 0)
+                {
+                    return MachineTools[0];
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// RFID（Key：IP地址最后一位，Value：RFID）
         /// </summary>
-        public SortedDictionary<int, RFIDItem> RFIDDict = new SortedDictionary<int, RFIDItem>();
+        public SortedDictionary<int, RFIDItem> RFIDs { get; private set; }
 
         /// <summary>
         /// 核心服务初始化，获取PLC、机床、RFID的连接
         /// </summary>
         private void Initialize()
         {
+            MachineTools = new SortedDictionary<int, MachineTool>();
             var macIPs = My.BLL.SettingGet(My.AdminID, "MacIP").ToString().Split(';');
-            foreach (var ip in macIPs)
+            for (int i = 0; i < macIPs.Length; i++)
             {
-                int t = -1;
-                My.MacDataService.GetMachineDbNo(ip, ref t);
-                MacDict.Add(int.Parse(ip.Split('.').Last()), t);
+                MachineTools.Add(i, new MachineTool(macIPs[i]));
             }
+            RFIDs = new SortedDictionary<int, RFIDItem>();
             var rfidIPs = My.BLL.SettingGet(My.AdminID, "RFIDIP").ToString().Split(';');
-            foreach (var ip in rfidIPs)
+            for (int i = 0; i < rfidIPs.Length; i++)
             {
-                RFIDDict.Add(int.Parse(ip.Split('.').Last()), new RFIDItem(ip));
+                RFIDs.Add(i + 2, new RFIDItem(rfidIPs[i]));
             }
         }
 
@@ -112,8 +126,68 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     Thread.Sleep(500);
+                    if (PLC.BitExist(0, 0))
+                    {
+                        PLC.BitClear(0, 0);
+                        OnCamera_IsRequested();
+                    }
+                    if (PLC.BitExist(0, 10))
+                    {
+                        PLC.BitClear(0, 10);
+                        OnScan_IsRequested();
+                    }
+                    for (int i = 2; i < 8; i++)
+                    {
+                        if (PLC.BitExist(i, 0))
+                        {
+                            PLC.BitClear(i, 0);
+                            RFIDs[i].OnRead_IsRequested();
+                        }
+                        if (i < 7)
+                        {
+                            if (PLC.BitExist(i, 10))
+                            {
+                                PLC.BitClear(i, 10);
+                                RFIDs[i].OnWrite_Process_Success_IsRequested();
+                            }
+                            if (PLC.BitExist(i, 11))
+                            {
+                                PLC.BitClear(i, 11);
+                                RFIDs[i].OnWrite_Process_Failure_IsRequested();
+                            }
+                        }
+                    }
+
                 }
             }, token);
         }
+
+        /// <summary>
+        /// 请求相机拍照
+        /// </summary>
+        public event EventHandler Camera_IsRequested;
+
+        private void OnCamera_IsRequested()
+        {
+            if (Camera_IsRequested != null)
+            {
+                Camera_IsRequested(this, new EventArgs());
+            }
+        }
+
+        /// <summary>
+        /// 请求扫码器扫码
+        /// </summary>
+        public event EventHandler Scan_IsRequested;
+
+        private void OnScan_IsRequested()
+        {
+            if (Scan_IsRequested != null)
+            {
+                Scan_IsRequested(this, new EventArgs());
+            }
+        }
+
+
     }
 }

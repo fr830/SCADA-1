@@ -16,7 +16,10 @@ namespace SCADA
 {
     public partial class _Layout : Form
     {
-        List<Type> TabPageFormTypes = new List<Type>() { typeof(Home), typeof(RFID) };
+        List<Type> TabPageFormTypes = new List<Type>
+        { 
+            typeof(Home), typeof(RFID), typeof(Debug) 
+        };
 
         public _Layout()
         {
