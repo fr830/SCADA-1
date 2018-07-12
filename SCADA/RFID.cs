@@ -21,10 +21,9 @@ namespace SCADA
         {
             await Task.Run(() =>
             {
-                foreach (var item in My.CoreService.RFIDDict)
+                foreach (var item in My.CoreService.RFIDDict.Values)
                 {
-                    var rfid = new UserControl_RFID(item.Key, item.Value);
-                    flowLayoutPanel.InvokeEx(c => c.Controls.Add(rfid));
+                    flowLayoutPanel.InvokeEx(c => c.Controls.Add(new UserControl_RFID(item)));
                 }
             });
         }

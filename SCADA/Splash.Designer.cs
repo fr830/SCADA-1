@@ -56,9 +56,10 @@
             // 
             // richTextBox
             // 
-            this.richTextBox.BackColor = System.Drawing.Color.White;
+            this.richTextBox.BackColor = System.Drawing.Color.Black;
             this.richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBox.Font = new System.Drawing.Font("Consolas", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox.ForeColor = System.Drawing.Color.Lime;
             this.richTextBox.Location = new System.Drawing.Point(12, 203);
             this.richTextBox.Name = "richTextBox";
             this.richTextBox.ReadOnly = true;
