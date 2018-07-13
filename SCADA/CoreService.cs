@@ -66,7 +66,7 @@ namespace SCADA
             var rfidIPs = My.BLL.SettingGet(My.AdminID, "RFIDIP").ToString().Split(';');
             for (int i = 0; i < rfidIPs.Length; i++)
             {
-                RFIDs.Add(i + 2, new RFIDItem(rfidIPs[i]));
+                RFIDs.Add(i + 2, new RFIDItem(i + 2, rfidIPs[i]));
             }
         }
 

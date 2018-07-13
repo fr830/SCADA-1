@@ -13,7 +13,7 @@ namespace RFID
     /// 1B代表工序位置[1,n]
     /// 2B代表完成结果EnumMachineResult
     /// </summary>
-    public static class RFID_Data_Define
+    public static class RFIDData
     {
         /// <summary>
         /// 数据长度32Byte
@@ -125,7 +125,7 @@ namespace RFID
         /// <summary>
         /// 当前工序加工结果
         /// </summary>
-        public enum EnumMachineResult : byte
+        public enum EnumProcessResult : byte
         {
             /// <summary>
             /// 无
@@ -154,12 +154,7 @@ namespace RFID
         /// <param name="gaugeResult">检测结果</param>
         /// <param name="sites">工序</param>
         /// <returns>RFID数据</returns>
-        public static byte[] GetDataCustom(
-            EnumWorkpiece workpiece = EnumWorkpiece.E,
-            EnumClean clean = EnumClean.Wanted,
-            EnumGauge gauge = EnumGauge.Wanted,
-            EnumGaugeResult gaugeResult = EnumGaugeResult.Waiting,
-            params byte[] sites)
+        public static byte[] GetDataCustom(EnumWorkpiece workpiece = EnumWorkpiece.E, EnumClean clean = EnumClean.Wanted, EnumGauge gauge = EnumGauge.Wanted, EnumGaugeResult gaugeResult = EnumGaugeResult.Waiting, params byte[] sites)
         {
             var data = new byte[DataLength];
             data[0] = (byte)EnumLOGO.HNC;
@@ -171,7 +166,7 @@ namespace RFID
             for (int i = 0; i < sites.Length; i++)
             {
                 data[i * 2 + 6] = sites[i];
-                data[i * 2 + 7] = (byte)EnumMachineResult.Waiting;
+                data[i * 2 + 7] = (byte)EnumProcessResult.Waiting;
             }
             return data;
         }
@@ -200,21 +195,68 @@ namespace RFID
             }
         }
 
-        public static byte GetNextProcess(byte[] data)
+        /// <summary>
+        /// 获取工件类型
+        /// </summary>
+        /// <param name="data">RFID数据</param>
+        /// <returns>工件类型</returns>
+        public static EnumWorkpiece GetWorkpiece(byte[] data)
         {
-            var d = data.Take(6).ToArray();
-            for (int i = 0; i < d.Length / 2; i++)
-            {
-                if (d[i + 1] == 0)
-                {
-                    return 0;
-                }
-                else
-                {
+            return (EnumWorkpiece)data[2];
+        }
 
+        /// <summary>
+        /// 获取工序
+        /// </summary>
+        /// <param name="data">RFID数据</param>
+        /// <returns>工序</returns>
+        public static byte GetProcess(byte[] data)
+        {
+            for (int i = 0; i < data.Length; i += 2)
+            {
+                var machineResult = (EnumProcessResult)data[i + 7];
+                switch (machineResult)
+                {
+                    case EnumProcessResult.None:
+                        return 0;
+                    case EnumProcessResult.Waiting:
+                        return data[i + 6];
+                    case EnumProcessResult.Successed:
+                        break;
+                    case EnumProcessResult.Failed:
+                        break;
+                    default:
+                        return 0;
                 }
             }
             return 0;
+        }
+
+        /// <summary>
+        /// 设置加工结果
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="result"></param>
+        public static void SetProcessResult(byte[] data, EnumProcessResult result = EnumProcessResult.Successed)
+        {
+            for (int i = 0; i < data.Length; i += 2)
+            {
+                var pr = (EnumProcessResult)data[i + 7];
+                switch (pr)
+                {
+                    case EnumProcessResult.None:
+                        return;
+                    case EnumProcessResult.Waiting:
+                        data[i + 6] = (byte)result;
+                        return;
+                    case EnumProcessResult.Successed:
+                        break;
+                    case EnumProcessResult.Failed:
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

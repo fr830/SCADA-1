@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Define.cs" />
+    <Compile Include="RFIDData.cs" />
     <Compile Include="RFIDItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

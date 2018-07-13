@@ -9,14 +9,17 @@ namespace RFID
 {
     public class RFIDItem
     {
+        public int Index { get; private set; }
+
         public HFReader HFReader { get; private set; }
 
         public string IPAddress { get; private set; }
 
         public int Port { get; private set; }
 
-        public RFIDItem(string ip, int port = 3001)
+        public RFIDItem(int index, string ip, int port = 3001)
         {
+            Index = index;
             IPAddress = ip;
             Port = port;
             HFReader = new HFReader();

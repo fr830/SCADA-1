@@ -15,58 +15,59 @@ namespace SCADA
         public static LineWork Instance { get { return lazy.Value; } }
 
         private MachineTool PLC = My.CoreService.PLC;
-        private RFIDItem RFID2 = My.CoreService.RFIDs[2];
-        private RFIDItem RFID3 = My.CoreService.RFIDs[3];
-        private RFIDItem RFID4 = My.CoreService.RFIDs[4];
-        private RFIDItem RFID5 = My.CoreService.RFIDs[5];
-        private RFIDItem RFID6 = My.CoreService.RFIDs[6];
         private RFIDItem RFID7 = My.CoreService.RFIDs[7];
 
         private LineWork()
         {
-            RFID2.Read_IsRequested += RFID2_Read_IsRequested;
-            RFID2.Write_Process_Success_IsRequested += RFID2_Write_Process_Success_IsRequested;
-            RFID2.Write_Process_Failure_IsRequested += RFID2_Write_Process_Failure_IsRequested;
-            RFID4.Read_IsRequested += RFID4_Read_IsRequested;
-            RFID4.Write_Process_Success_IsRequested += RFID4_Write_Process_Success_IsRequested;
-            RFID4.Write_Process_Failure_IsRequested += RFID4_Write_Process_Failure_IsRequested;
+            for (int i = 2; i < My.CoreService.RFIDs.Count - 1; i++)
+            {
+                My.CoreService.RFIDs[i].Read_IsRequested += LineWork_Read_IsRequested;
+                My.CoreService.RFIDs[i].Write_Process_Success_IsRequested += LineWork_Write_Process_Success_IsRequested;
+                My.CoreService.RFIDs[i].Write_Process_Failure_IsRequested += LineWork_Write_Process_Failure_IsRequested;
+            }
         }
 
-        void RFID2_Read_IsRequested(object sender, EventArgs e)
+        void LineWork_Read_IsRequested(object sender, EventArgs e)
         {
             var item = sender as RFIDItem;
+            if (item == null) return;
             var data = item.Read();
+            PLC.BitSet(item.Index, 1);
+            if (RFIDData.GetProcess(data) == item.Index - 1)
+            {
+                PLC.BitSet(item.Index, 2);
+            }
+            else
+            {
+                PLC.BitSet(item.Index, 3);
+            }
+            for (int i = 4; i < 9; i++)
+            {
+                PLC.BitClear(item.Index, i);
+            }
+            PLC.BitSet(item.Index, (int)RFIDData.GetWorkpiece(data) + 3);
         }
 
-        void RFID2_Write_Process_Success_IsRequested(object sender, EventArgs e)
+        void LineWork_Write_Process_Success_IsRequested(object sender, EventArgs e)
         {
             var item = sender as RFIDItem;
-            item.Write(Enumerable.Repeat<byte>(0x10, 32).ToArray());
-        }
-
-        void RFID2_Write_Process_Failure_IsRequested(object sender, EventArgs e)
-        {
-            var item = sender as RFIDItem;
-            item.Write(Enumerable.Repeat<byte>(0x20, 32).ToArray());
-        }
-
-        void RFID4_Read_IsRequested(object sender, EventArgs e)
-        {
-            var item = sender as RFIDItem;
+            if (item == null) return;
             var data = item.Read();
+            RFIDData.SetProcessResult(data, RFIDData.EnumProcessResult.Successed);
+            item.Write(data);
+            PLC.BitSet(item.Index, 12);
         }
 
-        void RFID4_Write_Process_Success_IsRequested(object sender, EventArgs e)
+        void LineWork_Write_Process_Failure_IsRequested(object sender, EventArgs e)
         {
             var item = sender as RFIDItem;
-            item.Write(Enumerable.Repeat<byte>(0x10, 32).ToArray());
+            if (item == null) return;
+            var data = item.Read();
+            RFIDData.SetProcessResult(data, RFIDData.EnumProcessResult.Failed);
+            item.Write(data);
+            PLC.BitSet(item.Index, 12);
         }
 
-        void RFID4_Write_Process_Failure_IsRequested(object sender, EventArgs e)
-        {
-            var item = sender as RFIDItem;
-            item.Write(Enumerable.Repeat<byte>(0x20, 32).ToArray());
-        }
 
 
     }
