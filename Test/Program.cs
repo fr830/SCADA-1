@@ -12,7 +12,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var item = new RFIDItem(4, "192.168.1.133");
+            var item = new RFIDReader(4, "192.168.1.133");
             Console.ReadKey(true);
             Console.WriteLine(item.HFReader.ConnectStatus);
             if (item.HFReader.ConnectStatus == Sygole.HFReader.ConnectStatusEnum.CONNECTED)

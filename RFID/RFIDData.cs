@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RFID
 {
+    #region Enums
     /// <summary>
     /// LOGO(1)
     /// </summary>
@@ -131,14 +132,14 @@ namespace RFID
         /// </summary>
         Failed = 8
     }
-
+    #endregion
 
     /// <summary>
     /// RFID数据格式定义
     /// 从第7个Byte开始
     /// 每2Byte代表一道工序
     /// 1B代表工序位置[1,n]
-    /// 2B代表完成结果EnumMachineResult
+    /// 2B代表完成结果EnumProcessResult
     /// </summary>
     public class RFIDData
     {
@@ -268,19 +269,6 @@ namespace RFID
         public byte[] Serialize()
         {
             return RFIDData.Serialize(this);
-            //var data = new byte[DataLength];
-            //data[0] = (byte)LOGO;
-            //data[1] = (byte)No;
-            //data[2] = (byte)Workpiece;
-            //data[3] = (byte)Clean;
-            //data[4] = (byte)Gauge;
-            //data[5] = (byte)GaugeResult;
-            //for (int i = 0; i < Processes.Count; i++)
-            //{
-            //    data[i * 2 + 6] = Processes[i].Key;
-            //    data[i * 2 + 7] = (byte)Processes[i].Value;
-            //}
-            //return data;
         }
 
         public static byte[] Serialize(RFIDData d)

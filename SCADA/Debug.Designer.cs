@@ -108,7 +108,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(74, 79);
+            this.label4.Location = new System.Drawing.Point(26, 79);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 12);
             this.label4.TabIndex = 9;
@@ -116,10 +116,10 @@
             // 
             // textBoxResult
             // 
-            this.textBoxResult.Location = new System.Drawing.Point(129, 76);
+            this.textBoxResult.Location = new System.Drawing.Point(79, 76);
             this.textBoxResult.Name = "textBoxResult";
             this.textBoxResult.ReadOnly = true;
-            this.textBoxResult.Size = new System.Drawing.Size(75, 21);
+            this.textBoxResult.Size = new System.Drawing.Size(125, 21);
             this.textBoxResult.TabIndex = 8;
             // 
             // buttonRead
@@ -154,7 +154,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 26);
+            this.label1.Location = new System.Drawing.Point(20, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 5;
@@ -335,15 +335,15 @@
             // 
             this.comboBoxRFIDs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRFIDs.FormattingEnabled = true;
-            this.comboBoxRFIDs.Location = new System.Drawing.Point(91, 23);
+            this.comboBoxRFIDs.Location = new System.Drawing.Point(106, 23);
             this.comboBoxRFIDs.Name = "comboBoxRFIDs";
-            this.comboBoxRFIDs.Size = new System.Drawing.Size(90, 20);
+            this.comboBoxRFIDs.Size = new System.Drawing.Size(75, 20);
             this.comboBoxRFIDs.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(40, 26);
+            this.label5.Location = new System.Drawing.Point(53, 26);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 12);
             this.label5.TabIndex = 0;

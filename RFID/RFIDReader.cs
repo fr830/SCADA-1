@@ -10,7 +10,7 @@ namespace RFID
     /// <summary>
     /// RFID读写器
     /// </summary>
-    public class RFIDItem
+    public class RFIDReader
     {
         public int Index { get; private set; }
 
@@ -20,7 +20,7 @@ namespace RFID
 
         public int Port { get; private set; }
 
-        public RFIDItem(int index, string ip, int port = 3001)
+        public RFIDReader(int index, string ip, int port = 3001)
         {
             Index = index;
             IPAddress = ip;
@@ -61,9 +61,9 @@ namespace RFID
         }
 
         /// <summary>
-        /// 写数据（最大32B）
+        /// 写数据（32 Byte）
         /// </summary>
-        /// <param name="data">最大32B</param>
+        /// <param name="data">32 Byte</param>
         /// <returns></returns>
         public bool WriteBytes(byte[] data)
         {

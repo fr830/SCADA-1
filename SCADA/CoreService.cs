@@ -49,7 +49,7 @@ namespace SCADA
         /// <summary>
         /// RFID（Key：IP地址最后一位，Value：RFID）
         /// </summary>
-        public SortedDictionary<int, RFIDItem> RFIDs { get; private set; }
+        public SortedDictionary<int, RFIDReader> RFIDs { get; private set; }
 
         /// <summary>
         /// 核心服务初始化，获取PLC、机床、RFID的连接
@@ -62,11 +62,11 @@ namespace SCADA
             {
                 MachineTools.Add(i, new MachineTool(macIPs[i]));
             }
-            RFIDs = new SortedDictionary<int, RFIDItem>();
+            RFIDs = new SortedDictionary<int, RFIDReader>();
             var rfidIPs = My.BLL.SettingGet(My.AdminID, "RFIDIP").ToString().Split(';');
             for (int i = 0; i < rfidIPs.Length; i++)
             {
-                RFIDs.Add(i + 2, new RFIDItem(i + 2, rfidIPs[i]));
+                RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
             }
         }
 

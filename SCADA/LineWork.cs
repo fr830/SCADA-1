@@ -29,7 +29,7 @@ namespace SCADA
 
         void Entry_Read_IsRequested(object sender, EventArgs e)
         {
-            var item = sender as RFIDItem;
+            var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
             PLC.BitSet(item.Index, 1);
@@ -37,7 +37,7 @@ namespace SCADA
 
         void LineWork_Read_IsRequested(object sender, EventArgs e)
         {
-            var item = sender as RFIDItem;
+            var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
             PLC.BitSet(item.Index, 1);
@@ -58,7 +58,7 @@ namespace SCADA
 
         void LineWork_Write_Process_Success_IsRequested(object sender, EventArgs e)
         {
-            var item = sender as RFIDItem;
+            var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
             data.SetProcessResult(EnumProcessResult.Successed);
@@ -68,7 +68,7 @@ namespace SCADA
 
         void LineWork_Write_Process_Failure_IsRequested(object sender, EventArgs e)
         {
-            var item = sender as RFIDItem;
+            var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
             data.SetProcessResult(EnumProcessResult.Failed);

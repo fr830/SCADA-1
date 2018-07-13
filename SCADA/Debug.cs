@@ -118,11 +118,11 @@ namespace SCADA
 
         private void buttonRFIDRead_Click(object sender, EventArgs e)
         {
-            var item = comboBoxRFIDs.SelectedValue as RFIDItem;
+            var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item == null) return;
             var data = item.ReadBytes();
             if (data == null) return;
-            var str = RFIDItem.BytesToHexString(data);
+            var str = RFIDReader.BytesToHexString(data);
             for (int i = 2; i < str.Length; i += 3)
             {
                 str = str.Insert(i, i == 17 ? "+" : "_");
@@ -138,7 +138,7 @@ namespace SCADA
 
         private void buttonRFIDWrite_Click(object sender, EventArgs e)
         {
-            var item = comboBoxRFIDs.SelectedValue as RFIDItem;
+            var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item == null) return;
             var data = new RFIDData((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue, (EnumClean)comboBoxClean.SelectedValue, (EnumGauge)comboBoxGauge.SelectedValue, (EnumGaugeResult)comboBoxGaugeResult.SelectedValue, null);
             item.Write(data);
@@ -147,7 +147,7 @@ namespace SCADA
 
         private void buttonRFIDInit_Click(object sender, EventArgs e)
         {
-            var item = comboBoxRFIDs.SelectedValue as RFIDItem;
+            var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item == null) return;
             item.Init((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
             buttonRFIDRead.PerformClick();
