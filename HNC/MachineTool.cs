@@ -24,7 +24,7 @@ namespace HNC
 
         public MachineTool(string ip, string connectionString = null)
         {
-#if DEBUG
+#if DEBUG1
             connectionString = "localhost:6379,allowAdmin=true";
 #endif
             ConnectionString = connectionString ?? ConfigurationManager.ConnectionStrings["Redis"].ConnectionString;

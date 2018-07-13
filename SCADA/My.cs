@@ -21,24 +21,24 @@ namespace SCADA
         /// </summary>
         public static readonly DateTime StartTime = DateTime.Now;
 
-        public static readonly BLLCustom BLL;
+        public static BLLCustom BLL { get; private set; }
 
         /// <summary>
         /// Admin用户的ID
         /// </summary>
-        public static readonly string AdminID;
+        public static string AdminID { get; private set; }
 
         /// <summary>
         /// 工厂ID
         /// </summary>
-        public static readonly string LocationID;
+        public static string LocationID { get; private set; }
 
         /// <summary>
         /// 数据系统字典
         /// Key：编号，从0开始，0表示PLC
         /// Value：MachineTool
         /// </summary>
-        public static readonly SortedDictionary<int, MachineTool> MachineTools = new SortedDictionary<int, MachineTool>();
+        public static SortedDictionary<int, MachineTool> MachineTools { get; private set; }
 
         public static MachineTool PLC
         {
@@ -57,44 +57,27 @@ namespace SCADA
         /// Key：编号，从2开始
         /// Value：RFID读写器
         /// </summary>
-        public static readonly SortedDictionary<int, RFIDReader> RFIDs = new SortedDictionary<int, RFIDReader>();
+        public static SortedDictionary<int, RFIDReader> RFIDs { get; private set; }
 
         /// <summary>
         /// 产线
         /// </summary>
-        public static readonly Work_Line Work_Line;
+        public static Work_Line Work_Line { get; private set; }
 
         /// <summary>
         /// PLC
         /// </summary>
-        public static readonly Work_PLC Work_PLC;
+        public static Work_PLC Work_PLC { get; private set; }
 
         /// <summary>
         /// 三维仿真
         /// </summary>
-        public static readonly Work_Simulation Work_Simulation;
+        public static Work_Simulation Work_Simulation { get; private set; }
 
         /// <summary>
         /// WMS
         /// </summary>
-        public static readonly Work_WMS Work_WMS;
-
-        static My()
-        {
-            BLL = BLLCustom.Instance;
-            AdminID = BLL.GetUserIDByUsername("admin");
-            LocationID = BLL.GetLocationIDByLocationName(LocationName);
-            if (string.IsNullOrWhiteSpace(LocationID))
-            {
-                InitializeDB();
-                LocationID = BLL.GetLocationIDByLocationName(LocationName);
-            }
-            Initialize();
-            Work_Line = Work_Line.Instance;
-            Work_PLC = Work_PLC.Instance;
-            Work_Simulation = Work_Simulation.Instance;
-            Work_WMS = Work_WMS.Instance;
-        }
+        public static Work_WMS Work_WMS { get; private set; }
 
         /// <summary>
         /// 初始化数据库
@@ -125,7 +108,7 @@ namespace SCADA
                 State = EnumHelper.GetName(TLocation.EnumState.正常),
                 Description = LocationName,
             };
-            BLL.TLocation.Insert(location, My.AdminID);
+            BLL.TLocation.Insert(location, AdminID);
             BLL.SettingAdd(AdminID, "SelectedLocation", LocationID);
             string[] wpNames = { "小圆", "中圆", "大圆", "底座", "装配成品" };
             var workpieceIDs = new List<string>();
@@ -201,20 +184,34 @@ namespace SCADA
         }
 
         /// <summary>
-        /// 初始化，获取PLC、机床、RFID的连接
+        /// 初始化
         /// </summary>
-        private static void Initialize()
+        public static void Initialize()
         {
-            var macIPs = My.BLL.SettingGet(My.AdminID, "MacIP").ToString().Split(';');
+            BLL = BLLCustom.Instance;
+            AdminID = BLL.GetUserIDByUsername("admin");
+            LocationID = BLL.GetLocationIDByLocationName(LocationName);
+            if (string.IsNullOrWhiteSpace(LocationID))
+            {
+                InitializeDB();
+                LocationID = BLL.GetLocationIDByLocationName(LocationName);
+            }
+            var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
+            MachineTools = new SortedDictionary<int, MachineTool>();
             for (int i = 0; i < macIPs.Length; i++)
             {
-                My.MachineTools.Add(i, new MachineTool(macIPs[i]));
+                MachineTools.Add(i, new MachineTool(macIPs[i]));
             }
-            var rfidIPs = My.BLL.SettingGet(My.AdminID, "RFIDIP").ToString().Split(';');
+            var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
+            RFIDs = new SortedDictionary<int, RFIDReader>();
             for (int i = 0; i < rfidIPs.Length; i++)
             {
-                My.RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
+                RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
             }
+            Work_Line = Work_Line.Instance;
+            Work_PLC = Work_PLC.Instance;
+            Work_Simulation = Work_Simulation.Instance;
+            Work_WMS = Work_WMS.Instance;
         }
 
     }
