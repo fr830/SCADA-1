@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RFID;
+using System.Collections;
 
 namespace SCADA
 {
@@ -21,50 +22,28 @@ namespace SCADA
         private void Debug_Load(object sender, EventArgs e)
         {
             comboBoxRegType.SelectedIndex = 7;
-
-            comboBoxRFIDs.DataSource = new BindingSource(My.CoreService.RFIDs, "");
-            comboBoxRFIDs.DisplayMember = "Key";
-            comboBoxRFIDs.ValueMember = "Value";
-
-            var dictNo = Enum.GetValues(typeof(EnumNo))
-               .Cast<EnumNo>()
-               .ToDictionary(t => t.ToString(), t => t);
-            comboBoxNo.DataSource = new BindingSource(dictNo, "");
-            comboBoxNo.DisplayMember = "Key";
-            comboBoxNo.ValueMember = "Value";
-
-            var dictWorkpiece = Enum.GetValues(typeof(EnumWorkpiece))
-                .Cast<EnumWorkpiece>()
-                .ToDictionary(t => t.ToString(), t => t);
-            comboBoxWorkpiece.DataSource = new BindingSource(dictWorkpiece, "");
-            comboBoxWorkpiece.DisplayMember = "Key";
-            comboBoxWorkpiece.ValueMember = "Value";
-
-            var dictClean = Enum.GetValues(typeof(EnumClean))
-               .Cast<EnumClean>()
-               .ToDictionary(t => t.ToString(), t => t);
-            comboBoxClean.DataSource = new BindingSource(dictClean, "");
-            comboBoxClean.DisplayMember = "Key";
-            comboBoxClean.ValueMember = "Value";
-
-            var dictGauge = Enum.GetValues(typeof(EnumGauge))
-               .Cast<EnumGauge>()
-               .ToDictionary(t => t.ToString(), t => t);
-            comboBoxGauge.DataSource = new BindingSource(dictGauge, "");
-            comboBoxGauge.DisplayMember = "Key";
-            comboBoxGauge.ValueMember = "Value";
-
-            var dictGaugeResult = Enum.GetValues(typeof(EnumGaugeResult))
-               .Cast<EnumGaugeResult>()
-               .ToDictionary(t => t.ToString(), t => t);
-            comboBoxGaugeResult.DataSource = new BindingSource(dictGaugeResult, "");
-            comboBoxGaugeResult.DisplayMember = "Key";
-            comboBoxGaugeResult.ValueMember = "Value";
+            SetComboboxDataSource(comboBoxRFIDs, My.RFIDs);
+            SetComboboxDataSource<EnumNo>(comboBoxNo);
+            SetComboboxDataSource<EnumWorkpiece>(comboBoxWorkpiece);
+            SetComboboxDataSource<EnumClean>(comboBoxClean);
+            SetComboboxDataSource<EnumGauge>(comboBoxGauge);
+            SetComboboxDataSource<EnumGaugeResult>(comboBoxGaugeResult);
         }
 
-        HNC.MachineTool PLC = My.CoreService.PLC;
+        private void SetComboboxDataSource<TEnum>(ComboBox cb) where TEnum : struct, IComparable, IFormattable, IConvertible
+        {
+            var dict = Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToDictionary(t => t.ToString(), t => t);
+            SetComboboxDataSource(cb, dict);
+        }
 
-        HNC.HncRegType RegType
+        private void SetComboboxDataSource(ComboBox cb, IDictionary dict)
+        {
+            cb.DataSource = new BindingSource(dict, "");
+            cb.DisplayMember = "Key";
+            cb.ValueMember = "Value";
+        }
+
+        private HNC.HncRegType RegType
         {
             get
             {
@@ -74,7 +53,7 @@ namespace SCADA
             }
         }
 
-        int Index
+        private int Index
         {
             get
             {
@@ -84,7 +63,7 @@ namespace SCADA
             }
         }
 
-        int Bit
+        private int Bit
         {
             get
             {
@@ -94,7 +73,7 @@ namespace SCADA
             }
         }
 
-        async void SetPLCResultAsync(object result)
+        private async Task SetPLCResultAsync(object result)
         {
             if (result != null)
             {
@@ -104,53 +83,71 @@ namespace SCADA
             textBoxResult.Text = string.Empty;
         }
 
-        private void buttonWrite_Click(object sender, EventArgs e)
+        private async void buttonWrite_Click(object sender, EventArgs e)
         {
-            SetPLCResultAsync(PLC.BitSet(Index, Bit, RegType));
+            buttonWrite.Enabled = false;
+            await SetPLCResultAsync(My.PLC.BitSet(Index, Bit, RegType));
+            buttonWrite.Enabled = true;
         }
 
-        private void buttonRead_Click(object sender, EventArgs e)
+        private async void buttonRead_Click(object sender, EventArgs e)
         {
-            SetPLCResultAsync(PLC.BitExist(Index, Bit, RegType));
+            buttonRead.Enabled = false;
+            await SetPLCResultAsync(My.PLC.BitExist(Index, Bit, RegType));
+            buttonRead.Enabled = true;
         }
 
         private IList<KeyValuePair<byte, EnumProcessResult>> process = new List<KeyValuePair<byte, EnumProcessResult>>();
 
         private void buttonRFIDRead_Click(object sender, EventArgs e)
         {
+            buttonRFIDRead.Enabled = false;
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
-            if (item == null) return;
-            var data = item.ReadBytes();
-            if (data == null) return;
-            var str = RFIDReader.BytesToHexString(data);
-            for (int i = 2; i < str.Length; i += 3)
+            if (item != null)
             {
-                str = str.Insert(i, i == 17 ? "+" : "_");
+                var data = item.ReadBytes();
+                if (data != null)
+                {
+                    var str = RFIDReader.BytesToHexString(data);
+                    for (int i = 2; i < str.Length; i += 3)
+                    {
+                        str = str.Insert(i, i == 17 ? "+" : "_");
+                    }
+                    var rData = RFIDData.Deserialize(data);
+                    textBoxRFIDData.Text = str;
+                    comboBoxNo.SelectedValue = rData.No;
+                    comboBoxWorkpiece.SelectedValue = rData.Workpiece;
+                    comboBoxClean.SelectedValue = rData.Clean;
+                    comboBoxGauge.SelectedValue = rData.Gauge;
+                    comboBoxGaugeResult.SelectedValue = rData.GaugeResult;
+                }
             }
-            var rData = RFIDData.Deserialize(data);
-            textBoxRFIDData.Text = str;
-            comboBoxNo.SelectedValue = rData.No;
-            comboBoxWorkpiece.SelectedValue = rData.Workpiece;
-            comboBoxClean.SelectedValue = rData.Clean;
-            comboBoxGauge.SelectedValue = rData.Gauge;
-            comboBoxGaugeResult.SelectedValue = rData.GaugeResult;
+            buttonRFIDRead.Enabled = true;
         }
 
         private void buttonRFIDWrite_Click(object sender, EventArgs e)
         {
+            buttonRFIDWrite.Enabled = false;
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
-            if (item == null) return;
-            var data = new RFIDData((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue, (EnumClean)comboBoxClean.SelectedValue, (EnumGauge)comboBoxGauge.SelectedValue, (EnumGaugeResult)comboBoxGaugeResult.SelectedValue, null);
-            item.Write(data);
-            buttonRFIDRead.PerformClick();
+            if (item != null)
+            {
+                var data = new RFIDData((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue, (EnumClean)comboBoxClean.SelectedValue, (EnumGauge)comboBoxGauge.SelectedValue, (EnumGaugeResult)comboBoxGaugeResult.SelectedValue, null);
+                item.Write(data);
+                buttonRFIDRead.PerformClick();
+            }
+            buttonRFIDWrite.Enabled = true;
         }
 
         private void buttonRFIDInit_Click(object sender, EventArgs e)
         {
+            buttonRFIDInit.Enabled = false;
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
-            if (item == null) return;
-            item.Init((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
-            buttonRFIDRead.PerformClick();
+            if (item != null)
+            {
+                item.Init((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
+                buttonRFIDRead.PerformClick();
+            }
+            buttonRFIDInit.Enabled = true;
         }
     }
 }

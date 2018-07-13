@@ -92,14 +92,14 @@
   <ItemGroup>
     <Compile Include="Common.cs" />
     <Compile Include="ControlExtensions.cs" />
-    <Compile Include="CoreService.cs" />
+    <Compile Include="Work_PLC.cs" />
     <Compile Include="Debug.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Debug.Designer.cs">
       <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
-    <Compile Include="LineWork.cs" />
+    <Compile Include="Work_Line.cs" />
     <Compile Include="RFID.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +133,8 @@
       <DependentUpon>UserControl_RFID.cs</DependentUpon>
     </Compile>
     <Compile Include="Win32Api.cs" />
+    <Compile Include="Work_Simulation.cs" />
+    <Compile Include="Work_WMS.cs" />
     <Compile Include="_Layout.cs">
       <SubType>Form</SubType>
     </Compile>

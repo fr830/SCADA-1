@@ -128,23 +128,23 @@ namespace SCADA
         private void buttonRun_Click(object sender, EventArgs e)
         {
             buttonRun.Enabled = false;
-            if (My.CoreService.IsRunning)
+            if (My.Work_PLC.IsRunning)
             {
-                My.CoreService.Stop();
+                My.Work_PLC.Stop();
             }
             else
             {
-                My.CoreService.Start();
+                My.Work_PLC.Start();
             }
-            Color c = My.CoreService.IsRunning ? Color.Green : Color.Red;
+            Color c = My.Work_PLC.IsRunning ? Color.Green : Color.Red;
             pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
             var graph = Graphics.FromImage(pictureBoxStatus.Image);
             graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             graph.FillEllipse(new SolidBrush(c), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
             graph.Save();
             labelStatus.ForeColor = c;
-            labelStatus.Text = My.CoreService.IsRunning ? "运行" : "停止";
-            buttonRun.Text = My.CoreService.IsRunning ? "停止" : "启动";
+            labelStatus.Text = My.Work_PLC.IsRunning ? "运行" : "停止";
+            buttonRun.Text = My.Work_PLC.IsRunning ? "停止" : "启动";
             buttonRun.Enabled = true;
         }
     }
