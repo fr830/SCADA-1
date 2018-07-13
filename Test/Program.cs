@@ -18,8 +18,8 @@ namespace Test
             if (item.HFReader.ConnectStatus == Sygole.HFReader.ConnectStatusEnum.CONNECTED)
             {
                 var data = Enumerable.Repeat<byte>(0xFF, 32).ToArray();
-                item.Write(data);
-                Console.WriteLine(item.Read_HexString());
+                item.WriteBytes(data);
+                Console.WriteLine(item.ReadHexString());
             }
             Console.ReadKey(true);
         }

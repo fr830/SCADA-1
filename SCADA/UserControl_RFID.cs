@@ -52,13 +52,13 @@ namespace SCADA
 
         void CommEvent_CommSendHandler(object sender, CommEventArgs e)
         {
-            var text = "请求数据:" + Environment.NewLine + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
+            var text = "请求:" + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
             WriteLog(text);
         }
 
         void CommEvent_CommReceiveHandler(object sender, CommEventArgs e)
         {
-            var text = "响应数据:" + Environment.NewLine + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
+            var text = "响应:" + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
             WriteLog(text);
         }
 
@@ -114,7 +114,7 @@ namespace SCADA
                 }
             });
         }
-        
+
         private void richTextBoxLog_TextChanged(object sender, EventArgs e)
         {
             richTextBoxLog.ScrollToCaret();

@@ -7,6 +7,9 @@ using Sygole.HFReader;
 
 namespace RFID
 {
+    /// <summary>
+    /// RFID读写器
+    /// </summary>
     public class RFIDItem
     {
         public int Index { get; private set; }
@@ -47,27 +50,48 @@ namespace RFID
         byte DataLen = 0;
         byte BlockSize = 4;
 
+        public bool Write(RFIDData data)
+        {
+            return WriteBytes(data.Serialize());
+        }
+
+        public RFIDData Read()
+        {
+            return RFIDData.Deserialize(ReadBytes());
+        }
+
         /// <summary>
         /// 写数据（最大32B）
         /// </summary>
         /// <param name="data">最大32B</param>
         /// <returns></returns>
-        public bool Write(byte[] data)
+        public bool WriteBytes(byte[] data)
         {
             return Status_enum.SUCCESS == HFReader.WriteMBlock(ReaderID, Opcode, UID, StartBlock, BlockCnt, (int)BlockSize, data, Antenna);
         }
 
-        public byte[] Read()
+        public byte[] ReadBytes()
         {
             return Status_enum.SUCCESS == HFReader.ReadMBlock(ReaderID, Opcode, UID, StartBlock, BlockCnt, ref Data, ref DataLen, Antenna) ? Data.Take(DataLen).ToArray() : null;
         }
 
-        public string Read_HexString()
+        public string ReadHexString()
         {
             return Status_enum.SUCCESS == HFReader.ReadMBlock(ReaderID, Opcode, UID, StartBlock, BlockCnt, ref Data, ref DataLen, Antenna) ? BytesToHexString(Data, DataLen) : string.Empty;
         }
 
-        internal static string BytesToHexString(byte[] data, int length = -1, int start = 0)
+        /// <summary>
+        /// 初始化RFID信息
+        /// </summary>
+        /// <param name="workpiece">工件类型</param>
+        /// <returns>是否成功</returns>
+        public bool Init(EnumNo no, EnumWorkpiece workpiece)
+        {
+            var data = RFIDData.GetDefaut(no, workpiece).Serialize();
+            return WriteBytes(data);
+        }
+
+        public static string BytesToHexString(byte[] data, int length = -1, int start = 0)
         {
             if (length < 0)
             {

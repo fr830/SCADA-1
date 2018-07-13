@@ -63,7 +63,7 @@
             this.richTextBoxLog.BackColor = System.Drawing.Color.White;
             this.tableLayoutPanel.SetColumnSpan(this.richTextBoxLog, 6);
             this.richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxLog.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBoxLog.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.richTextBoxLog.ForeColor = System.Drawing.Color.Black;
             this.richTextBoxLog.Location = new System.Drawing.Point(203, 3);
             this.richTextBoxLog.Name = "richTextBoxLog";
