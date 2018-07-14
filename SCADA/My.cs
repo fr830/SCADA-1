@@ -232,7 +232,7 @@ namespace SCADA
         /// </summary>
         public static async void InitializeAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 BLL = BLLCustom.Instance;
                 AdminID = BLL.GetUserIDByUsername("admin");
@@ -280,7 +280,8 @@ namespace SCADA
                 Work_WMS = Work_WMS.Instance;
                 OnPartCompleted("后台服务连接成功", 80);
                 Initialized = true;
-                OnPartCompleted("系统加载完成", 95);
+                OnPartCompleted("系统加载完成", 98);
+                await Task.Delay(1000);
                 OnAllCompleted("即将进入总控界面");
             });
         }

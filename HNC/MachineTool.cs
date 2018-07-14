@@ -24,7 +24,7 @@ namespace HNC
 
         public MachineTool(string ip, string connectionString = null)
         {
-#if DEBUG
+#if NONET
             connectionString = "localhost:6379,allowAdmin=true";
 #endif
             if (Redis == null || !Redis.IsConnected)
@@ -40,7 +40,9 @@ namespace HNC
                     sub = Redis.GetSubscriber();
                 }
             }
-            //throw new ArgumentException(string.Format("未找到IP为{0}的机床！", ip));
+#if !DEBUG
+            throw new ArgumentException(string.Format("未找到IP为{0}的机床！", ip));
+#endif
         }
 
         internal MachineTool(IDatabase database, ISubscriber subscriber)
