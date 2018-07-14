@@ -18,45 +18,32 @@ namespace SCADA
             InitializeComponent();
         }
 
-        private async void Splash_Shown(object sender, EventArgs e)
+        private void Splash_Load(object sender, EventArgs e)
         {
-            await RunProgress();
-            this.Close();
+            My.PartCompleted += My_PartCompleted;
+            My.AllCompleted += My_AllCompleted;
         }
 
-        private readonly IList<string> Logs = new List<string> {
-            "系统正在加载中","连接数据库","获取基础数据","连接PLC","连接机床",
-            "加载核心服务","加载Web服务","加载外部服务","系统加载完成","进入控制界面",
-        };
-
-        public event EventHandler LoadingComplete;
-
-        public async Task RunProgress()
+        void My_PartCompleted(object sender, MyInitializeEventArgs e)
         {
-            await Task.Run(() =>
+            this.InvokeEx(c =>
             {
-                for (int i = 0; this.Visible; i++)
+                richTextBox.AppendText(e.ToString());
+                if (e.Value < progressBar.Maximum)
                 {
-                    Thread.Sleep(300);
-                    this.InvokeEx(() =>
-                    {
-                        if (progressBar.Value < progressBar.Maximum)
-                        {
-                            richTextBox.AppendText(DateTime.Now.ToString() + "\t" + Logs[i] + Environment.NewLine);
-                            progressBar.Value += progressBar.Step;
-                        }
-                        else
-                        {
-                            this.Visible = false;
-                            if (LoadingComplete != null)
-                            {
-                                LoadingComplete(null, new EventArgs());
-                            }
-                        }
-                    });
+                    progressBar.Value = e.Value;
                 }
             });
-
         }
+
+        void My_AllCompleted(object sender, MyInitializeEventArgs e)
+        {
+            this.InvokeEx(c =>
+            {
+                richTextBox.AppendText(e.ToString());
+                progressBar.Value = e.Value;
+            });
+        }
+
     }
 }

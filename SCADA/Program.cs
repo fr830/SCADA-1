@@ -27,7 +27,6 @@ namespace SCADA
             }
             else
             {
-                My.Initialize();
                 Application.Run(new _Layout());
             }
         }
@@ -35,13 +34,13 @@ namespace SCADA
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             MessageBox.Show(e.Exception.Message, "线程异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Environment.Exit(2);
+            //Environment.Exit(2);
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             MessageBox.Show((e.ExceptionObject as Exception).Message, "未处理的异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Environment.Exit(1);
+            //Environment.Exit(1);
         }
 
         /// <summary>

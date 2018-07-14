@@ -33,12 +33,18 @@ namespace SCADA
 #endif
             Visible = false;
             var splash = new Splash();
-            splash.LoadingComplete += (ss, se) => { this.InvokeEx(c => c.Visible = true); };
             splash.Show();
+            My.AllCompleted += async (ms, me) =>
+            {
+                this.InvokeEx(c => c.InitTabPage());
+                await Task.Delay(1000);
+                splash.InvokeEx(c => c.Close());
+                this.InvokeEx(c => c.Visible = true);
+            };
+            My.InitializeAsync();
             menuStrip.Visible = false;//暂时不启用菜单栏
             InitStatus();
             InitInfo();
-            InitTabPage();
         }
 
         private void _Layout_Shown(object sender, EventArgs e)

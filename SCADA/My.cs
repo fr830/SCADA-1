@@ -6,11 +6,55 @@ using RFID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SCADA
 {
+    public class MyInitializeEventArgs
+    {
+        public DateTime Time { get; private set; }
+
+        public string Message { get; private set; }
+
+        public int Value { get; private set; }
+
+        public MyInitializeEventArgs(string message, int value)
+        {
+            Time = DateTime.Now;
+            Message = message;
+            Value = value;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}\t{1}{2}", Time, Message, Environment.NewLine);
+        }
+    }
+
     static class My
     {
+        public static bool Initialized { get; private set; }
+
+        public static event EventHandler<MyInitializeEventArgs> PartCompleted;
+
+        private static void OnPartCompleted(string message, int value)
+        {
+            if (PartCompleted != null)
+            {
+                PartCompleted(null, new MyInitializeEventArgs(message, value));
+            }
+        }
+
+        public static event EventHandler<MyInitializeEventArgs> AllCompleted;
+
+        private static void OnAllCompleted(string message)
+        {
+            if (AllCompleted != null)
+            {
+                AllCompleted(null, new MyInitializeEventArgs(message, 100));
+            }
+        }
+
         /// <summary>
         /// 工厂名称
         /// </summary>
@@ -186,32 +230,59 @@ namespace SCADA
         /// <summary>
         /// 初始化
         /// </summary>
-        public static void Initialize()
+        public static async void InitializeAsync()
         {
-            BLL = BLLCustom.Instance;
-            AdminID = BLL.GetUserIDByUsername("admin");
-            LocationID = BLL.GetLocationIDByLocationName(LocationName);
-            if (string.IsNullOrWhiteSpace(LocationID))
+            await Task.Run(() =>
             {
-                InitializeDB();
+                BLL = BLLCustom.Instance;
+                AdminID = BLL.GetUserIDByUsername("admin");
                 LocationID = BLL.GetLocationIDByLocationName(LocationName);
-            }
-            var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
-            MachineTools = new SortedDictionary<int, MachineTool>();
-            for (int i = 0; i < macIPs.Length; i++)
-            {
-                MachineTools.Add(i, new MachineTool(macIPs[i]));
-            }
-            var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
-            RFIDs = new SortedDictionary<int, RFIDReader>();
-            for (int i = 0; i < rfidIPs.Length; i++)
-            {
-                RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
-            }
-            Work_Line = Work_Line.Instance;
-            Work_PLC = Work_PLC.Instance;
-            Work_Simulation = Work_Simulation.Instance;
-            Work_WMS = Work_WMS.Instance;
+                OnPartCompleted("数据库连接成功", 20);
+                if (string.IsNullOrWhiteSpace(LocationID))
+                {
+                    InitializeDB();
+                    LocationID = BLL.GetLocationIDByLocationName(LocationName);
+                    if (!string.IsNullOrWhiteSpace(LocationID))
+                    {
+                        OnPartCompleted("数据库初始化成功", 30);
+                    }
+                    else
+                    {
+                        OnPartCompleted("数据库初始化失败！", 30);
+                    }
+                }
+                var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
+                MachineTools = new SortedDictionary<int, MachineTool>();
+                for (int i = 0; i < macIPs.Length; i++)
+                {
+                    try
+                    {
+                        MachineTools.Add(i, new MachineTool(macIPs[i]));
+                    }
+                    catch (Exception)
+                    {
+                        OnPartCompleted("数控系统" + macIPs[i] + "连接失败！", 40);
+                        break;
+                        //throw;
+                    }
+                }
+                OnPartCompleted("数控系统连接成功", 40);
+                var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
+                RFIDs = new SortedDictionary<int, RFIDReader>();
+                for (int i = 0; i < rfidIPs.Length; i++)
+                {
+                    RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
+                }
+                OnPartCompleted("RFID连接成功", 60);
+                Work_Line = Work_Line.Instance;
+                Work_PLC = Work_PLC.Instance;
+                Work_Simulation = Work_Simulation.Instance;
+                Work_WMS = Work_WMS.Instance;
+                OnPartCompleted("后台服务连接成功", 80);
+                Initialized = true;
+                OnPartCompleted("系统加载完成", 95);
+                OnAllCompleted("即将进入总控界面");
+            });
         }
 
     }

@@ -17,18 +17,21 @@ namespace HNC
         /// </summary>
         public static string ConnectionString { get; private set; }
 
-        private IConnectionMultiplexer Redis;
+        private static IConnectionMultiplexer Redis;
         private const int databases = 16;
         private readonly IDatabase db;
         private readonly ISubscriber sub;
 
         public MachineTool(string ip, string connectionString = null)
         {
-#if DEBUG1
+#if DEBUG
             connectionString = "localhost:6379,allowAdmin=true";
 #endif
-            ConnectionString = connectionString ?? ConfigurationManager.ConnectionStrings["Redis"].ConnectionString;
-            Redis = ConnectionMultiplexer.Connect(ConnectionString);
+            if (Redis == null || !Redis.IsConnected)
+            {
+                ConnectionString = connectionString ?? ConfigurationManager.ConnectionStrings["Redis"].ConnectionString;
+                Redis = ConnectionMultiplexer.Connect(ConnectionString);
+            }
             for (int i = 0; i < databases; i++)
             {
                 if (Redis.GetDatabase(i).StringGet("IP") == ip)
