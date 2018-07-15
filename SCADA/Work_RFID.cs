@@ -8,22 +8,23 @@ using HNC;
 
 namespace SCADA
 {
-    class Work_Line
+    class Work_RFID
     {
-        private static readonly Lazy<Work_Line> lazy = new Lazy<Work_Line>(() => new Work_Line());
+        private static readonly Lazy<Work_RFID> lazy = new Lazy<Work_RFID>(() => new Work_RFID());
 
-        public static Work_Line Instance { get { return lazy.Value; } }
-        
-        private Work_Line()
+        public static Work_RFID Instance { get { return lazy.Value; } }
+
+        private Work_RFID()
         {
             for (int i = 2; i < My.RFIDs.Count - 1; i++)
             {
-                My.RFIDs[i].Read_IsRequested += LineWork_Read_IsRequested;
-                My.RFIDs[i].Write_Process_Success_IsRequested += LineWork_Write_Process_Success_IsRequested;
-                My.RFIDs[i].Write_Process_Failure_IsRequested += LineWork_Write_Process_Failure_IsRequested;
+                My.RFIDs[i].Read_IsRequested += RFID_Read_IsRequested;
+                My.RFIDs[i].Write_Process_Success_IsRequested += RFID_Write_Process_Success_IsRequested;
+                My.RFIDs[i].Write_Process_Failure_IsRequested += RFID_Write_Process_Failure_IsRequested;
             }
             My.RFIDs[7].Read_IsRequested += Entry_Read_IsRequested;
         }
+
 
         void Entry_Read_IsRequested(object sender, EventArgs e)
         {
@@ -33,7 +34,7 @@ namespace SCADA
             My.PLC.BitSet(item.Index, 1);
         }
 
-        void LineWork_Read_IsRequested(object sender, EventArgs e)
+        void RFID_Read_IsRequested(object sender, EventArgs e)
         {
             var item = sender as RFIDReader;
             if (item == null) return;
@@ -54,7 +55,7 @@ namespace SCADA
             My.PLC.BitSet(item.Index, (int)data.Workpiece + 3);
         }
 
-        void LineWork_Write_Process_Success_IsRequested(object sender, EventArgs e)
+        void RFID_Write_Process_Success_IsRequested(object sender, EventArgs e)
         {
             var item = sender as RFIDReader;
             if (item == null) return;
@@ -64,7 +65,7 @@ namespace SCADA
             My.PLC.BitSet(item.Index, 12);
         }
 
-        void LineWork_Write_Process_Failure_IsRequested(object sender, EventArgs e)
+        void RFID_Write_Process_Failure_IsRequested(object sender, EventArgs e)
         {
             var item = sender as RFIDReader;
             if (item == null) return;

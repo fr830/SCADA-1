@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace SCADA
 {
-    public partial class RFID : Form
+    public partial class RFIDPage : Form
     {
-        public RFID()
+        public RFIDPage()
         {
             InitializeComponent();
         }

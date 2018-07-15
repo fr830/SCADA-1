@@ -218,15 +218,15 @@ namespace RFID
         }
 
         /// <summary>
-        /// 获取RFID数据
+        /// 获取默认RFID数据
         /// </summary>
         /// <param name="no">工件编号</param>
         /// <param name="workpiece">工件类型</param>
         /// <returns>RFID数据</returns>
-        public static RFIDData GetDefaut(EnumNo no, EnumWorkpiece workpiece)
+        public static RFIDData GetDefaut(EnumWorkpiece workpiece)
         {
             var data = new RFIDData();
-            data.No = no;
+            data.No = EnumNo.No0;
             data.Workpiece = workpiece;
             switch (workpiece)
             {

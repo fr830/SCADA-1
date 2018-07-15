@@ -1,6 +1,6 @@
 ﻿namespace SCADA
 {
-    partial class RFID
+    partial class RFIDPage
     {
         /// <summary>
         /// Required designer variable.

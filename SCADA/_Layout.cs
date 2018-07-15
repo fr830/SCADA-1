@@ -18,7 +18,7 @@ namespace SCADA
     {
         List<Type> TabPageFormTypes = new List<Type>
         { 
-            typeof(Home), typeof(RFID), typeof(Debug) 
+            typeof(Home), typeof(RFIDPage)
         };
 
         public _Layout()
@@ -29,6 +29,7 @@ namespace SCADA
         private void _Layout_Load(object sender, EventArgs e)
         {
 #if DEBUG
+            TabPageFormTypes.Add(typeof(Debug));
             FormClosing -= _Layout_FormClosing;
 #endif
             Visible = false;

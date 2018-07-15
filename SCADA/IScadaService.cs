@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.ServiceModel.Routing;
+using System.IO;
 
 namespace SCADA
 {
@@ -17,7 +18,15 @@ namespace SCADA
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        [WebGet(UriTemplate = "/", BodyStyle = WebMessageBodyStyle.Bare)]
+        [WebGet(UriTemplate = "/", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         string TestService();
+
+        /// <summary>
+        /// 初始化RFID信息
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        [WebInvoke(UriTemplate = "InitRFID", Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
+        string InitRFID(Stream stream);
     }
 }

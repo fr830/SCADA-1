@@ -144,7 +144,7 @@ namespace SCADA
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item != null)
             {
-                item.Init((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
+                item.Init((EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
                 buttonRFIDRead.PerformClick();
             }
             buttonRFIDInit.Enabled = true;

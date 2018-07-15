@@ -85,9 +85,9 @@ namespace RFID
         /// </summary>
         /// <param name="workpiece">工件类型</param>
         /// <returns>是否成功</returns>
-        public bool Init(EnumNo no, EnumWorkpiece workpiece)
+        public bool Init(EnumWorkpiece workpiece)
         {
-            var data = RFIDData.GetDefaut(no, workpiece).Serialize();
+            var data = RFIDData.GetDefaut(workpiece).Serialize();
             return WriteBytes(data);
         }
 
@@ -156,5 +156,6 @@ namespace RFID
                 Print_QR_Code_IsRequested(this, new EventArgs());
             }
         }
+
     }
 }

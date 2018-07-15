@@ -57,6 +57,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper">
       <HintPath>..\ExternItems\Dapper.dll</HintPath>
@@ -79,6 +82,10 @@
     <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternItems\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Sygole.HFReader">
       <HintPath>..\ExternItems\Sygole.HFReader.dll</HintPath>
@@ -109,12 +116,12 @@
     <Compile Include="Debug.Designer.cs">
       <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
-    <Compile Include="Work_Line.cs" />
-    <Compile Include="RFID.cs">
+    <Compile Include="Work_RFID.cs" />
+    <Compile Include="RFIDPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RFID.Designer.cs">
-      <DependentUpon>RFID.cs</DependentUpon>
+    <Compile Include="RFIDPage.Designer.cs">
+      <DependentUpon>RFIDPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
@@ -156,8 +163,8 @@
     <EmbeddedResource Include="Debug.resx">
       <DependentUpon>Debug.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RFID.resx">
-      <DependentUpon>RFID.cs</DependentUpon>
+    <EmbeddedResource Include="RFIDPage.resx">
+      <DependentUpon>RFIDPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
@@ -175,6 +182,7 @@
     <EmbeddedResource Include="_Layout.resx">
       <DependentUpon>_Layout.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
