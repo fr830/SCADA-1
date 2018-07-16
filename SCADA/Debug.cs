@@ -83,6 +83,13 @@ namespace SCADA
             textBoxResult.Text = string.Empty;
         }
 
+        private async void buttonRead_Click(object sender, EventArgs e)
+        {
+            buttonRead.Enabled = false;
+            await SetPLCResultAsync(My.PLC.BitExist(Index, Bit, RegType));
+            buttonRead.Enabled = true;
+        }
+
         private async void buttonWrite_Click(object sender, EventArgs e)
         {
             buttonWrite.Enabled = false;
@@ -90,11 +97,11 @@ namespace SCADA
             buttonWrite.Enabled = true;
         }
 
-        private async void buttonRead_Click(object sender, EventArgs e)
+        private async void buttonClear_Click(object sender, EventArgs e)
         {
-            buttonRead.Enabled = false;
-            await SetPLCResultAsync(My.PLC.BitExist(Index, Bit, RegType));
-            buttonRead.Enabled = true;
+            buttonClear.Enabled = false;
+            await SetPLCResultAsync(My.PLC.BitClear(Index, Bit, RegType));
+            buttonClear.Enabled = true;
         }
 
         private IList<KeyValuePair<byte, EnumProcessResult>> process = new List<KeyValuePair<byte, EnumProcessResult>>();

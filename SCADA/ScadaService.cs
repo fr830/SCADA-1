@@ -20,7 +20,7 @@ namespace SCADA
     {
         public string TestService()
         {
-            return new MySResult("服务正在运行", true).ToString();
+            return new SvResult("服务正在运行", true).ToString();
         }
 
         private IDictionary<string, object> ParseQueryString(Stream stream)
@@ -39,20 +39,20 @@ namespace SCADA
             var type = dict["type"] as string;
             if (string.IsNullOrWhiteSpace(type))
             {
-                return new MySResult("请求参数错误！").ToString();
+                return new SvResult("请求参数错误！").ToString();
             }
             RFID.EnumWorkpiece wp;
             if (!Enum.TryParse<RFID.EnumWorkpiece>(type, true, out wp))
             {
-                return new MySResult("解析参数错误！").ToString();
+                return new SvResult("解析参数错误！").ToString();
             }
             if (My.RFIDs[8].Init(wp))
             {
-                return MySResult.OK;
+                return SvResult.OK;
             }
             else
             {
-                return new MySResult("RFID信息写入失败！").ToString();
+                return new SvResult("RFID信息写入失败！").ToString();
             }
         }
 
@@ -71,6 +71,7 @@ namespace SCADA
         public string PutIn()
         {
             var data = My.RFIDs[8].Read();
+            if (data == null) return SvResult.Error;
             var state = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
             var wpID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", EnumHelper.GetName(data.Workpiece))).ID;
             var pc = My.BLL.TWorkpieceProcess.GetList(Tool.CreateDict("State", state, "WorkpieceID", wpID)).FirstOrDefault();
@@ -104,12 +105,13 @@ namespace SCADA
                 My.BLL.TOrder.Update(order, My.AdminID);
             }
 
-            return MySResult.OK;
+            return SvResult.OK;
         }
 
         public string PutOut()
         {
             var data = My.RFIDs[9].Read();
+            if (data == null) return SvResult.Error;
             var order = GetExecOrder();
             var pc = new TWorkpieceProcess();
             pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
@@ -118,17 +120,17 @@ namespace SCADA
             pc.WorkpieceID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", EnumHelper.GetName(data.Workpiece))).ID;
             pc.OrderID = order.ID;
             My.BLL.TWorkpieceProcess.Insert(pc, My.AdminID);
-            return MySResult.OK;
+            return SvResult.OK;
         }
     }
 
-    public class MySResult
+    public class SvResult
     {
         public bool Success { get; set; }
 
         public string Message { get; set; }
 
-        public MySResult(string message = "", bool success = false)
+        public SvResult(string message = "", bool success = false)
         {
             Success = success;
             Message = message;
@@ -143,7 +145,7 @@ namespace SCADA
         {
             get
             {
-                return JsonConvert.SerializeObject(new MySResult { Success = true });
+                return JsonConvert.SerializeObject(new SvResult { Success = true });
             }
         }
 
@@ -151,7 +153,7 @@ namespace SCADA
         {
             get
             {
-                return JsonConvert.SerializeObject(new MySResult { Success = false });
+                return JsonConvert.SerializeObject(new SvResult { Success = false });
             }
         }
     }

@@ -88,7 +88,7 @@ namespace SCADA
                         switch (Item.HFReader.ConnectStatus)
                         {
                             case ConnectStatusEnum.CONNECTED:
-                                c.Text = "通讯正常";
+                                c.Text = "连接正常";
                                 buttonConnect.InvokeEx(bc => bc.Enabled = false);
                                 //buttonDisconnect.InvokeEx(bd => bd.Enabled = true);
                                 break;
@@ -98,7 +98,7 @@ namespace SCADA
                                 //buttonDisconnect.InvokeEx(bd => bd.Enabled = true);
                                 break;
                             case ConnectStatusEnum.CONNECTLOST:
-                                c.Text = "通讯中断";
+                                c.Text = "连接中断";
                                 buttonConnect.InvokeEx(bc => bc.Enabled = true);
                                 //buttonDisconnect.InvokeEx(bd => bd.Enabled = false);
                                 break;

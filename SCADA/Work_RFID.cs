@@ -14,6 +14,11 @@ namespace SCADA
 
         public static Work_RFID Instance { get { return lazy.Value; } }
 
+        public static Dictionary<EnumWorkpiece, int> WpBitDict = new Dictionary<EnumWorkpiece, int>
+        {
+            {EnumWorkpiece.A,4},{EnumWorkpiece.B,5},{EnumWorkpiece.C,6},{EnumWorkpiece.D,7},{EnumWorkpiece.E,8},
+        };
+
         private Work_RFID()
         {
             for (int i = 2; i < My.RFIDs.Count - 1; i++)
@@ -23,6 +28,15 @@ namespace SCADA
                 My.RFIDs[i].Write_Process_Failure_IsRequested += RFID_Write_Process_Failure_IsRequested;
             }
             My.RFIDs[7].Read_IsRequested += Entry_Read_IsRequested;
+            My.RFIDs[7].Print_QR_Code_IsRequested += Entry_Print_QR_Code_IsRequested;
+        }
+
+        void Entry_Print_QR_Code_IsRequested(object sender, EventArgs e)
+        {
+            var item = sender as RFIDReader;
+            if (item == null) return;
+            //TODO
+            My.PLC.BitSet(item.Index, 11);
         }
 
 
@@ -31,7 +45,11 @@ namespace SCADA
             var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
+            if (data == null) return;
             My.PLC.BitSet(item.Index, 1);
+            //TODO
+            My.PLC.BitSet(item.Index, 4);
+            //TODO
         }
 
         void RFID_Read_IsRequested(object sender, EventArgs e)
@@ -39,6 +57,7 @@ namespace SCADA
             var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
+            if (data == null) return;
             My.PLC.BitSet(item.Index, 1);
             if (data.GetProcessSite() == item.Index - 1)
             {
@@ -52,7 +71,7 @@ namespace SCADA
             {
                 My.PLC.BitClear(item.Index, i);
             }
-            My.PLC.BitSet(item.Index, (int)data.Workpiece + 3);
+            My.PLC.BitSet(item.Index, WpBitDict[data.Workpiece]);
         }
 
         void RFID_Write_Process_Success_IsRequested(object sender, EventArgs e)
@@ -60,6 +79,7 @@ namespace SCADA
             var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
+            if (data == null) return;
             data.SetProcessResult(EnumProcessResult.Successed);
             item.Write(data);
             My.PLC.BitSet(item.Index, 12);
@@ -70,6 +90,7 @@ namespace SCADA
             var item = sender as RFIDReader;
             if (item == null) return;
             var data = item.Read();
+            if (data == null) return;
             data.SetProcessResult(EnumProcessResult.Failed);
             item.Write(data);
             My.PLC.BitSet(item.Index, 12);

@@ -56,13 +56,14 @@
             this.buttonRFIDWrite = new System.Windows.Forms.Button();
             this.comboBoxRFIDs = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.buttonClear = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonWrite
             // 
-            this.buttonWrite.Location = new System.Drawing.Point(129, 103);
+            this.buttonWrite.Location = new System.Drawing.Point(87, 103);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(75, 23);
             this.buttonWrite.TabIndex = 0;
@@ -88,6 +89,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonClear);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.textBoxResult);
             this.groupBox1.Controls.Add(this.buttonRead);
@@ -100,7 +102,7 @@
             this.groupBox1.Controls.Add(this.textBoxBit);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(239, 149);
+            this.groupBox1.Size = new System.Drawing.Size(265, 149);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC";
@@ -119,12 +121,12 @@
             this.textBoxResult.Location = new System.Drawing.Point(79, 76);
             this.textBoxResult.Name = "textBoxResult";
             this.textBoxResult.ReadOnly = true;
-            this.textBoxResult.Size = new System.Drawing.Size(125, 21);
+            this.textBoxResult.Size = new System.Drawing.Size(164, 21);
             this.textBoxResult.TabIndex = 8;
             // 
             // buttonRead
             // 
-            this.buttonRead.Location = new System.Drawing.Point(46, 103);
+            this.buttonRead.Location = new System.Drawing.Point(6, 103);
             this.buttonRead.Name = "buttonRead";
             this.buttonRead.Size = new System.Drawing.Size(75, 23);
             this.buttonRead.TabIndex = 7;
@@ -148,7 +150,7 @@
             "REG_TYPE_P"});
             this.comboBoxRegType.Location = new System.Drawing.Point(79, 23);
             this.comboBoxRegType.Name = "comboBoxRegType";
-            this.comboBoxRegType.Size = new System.Drawing.Size(125, 20);
+            this.comboBoxRegType.Size = new System.Drawing.Size(164, 20);
             this.comboBoxRegType.TabIndex = 6;
             // 
             // label1
@@ -196,7 +198,7 @@
             this.groupBox2.Controls.Add(this.buttonRFIDWrite);
             this.groupBox2.Controls.Add(this.comboBoxRFIDs);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(257, 12);
+            this.groupBox2.Location = new System.Drawing.Point(283, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(587, 149);
             this.groupBox2.TabIndex = 4;
@@ -349,6 +351,16 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "RFIDNo:";
             // 
+            // buttonClear
+            // 
+            this.buttonClear.Location = new System.Drawing.Point(168, 103);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(75, 23);
+            this.buttonClear.TabIndex = 10;
+            this.buttonClear.Text = "Clear";
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -397,5 +409,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button buttonRFIDInit;
+        private System.Windows.Forms.Button buttonClear;
     }
 }

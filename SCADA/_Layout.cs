@@ -28,8 +28,8 @@ namespace SCADA
 
         private void _Layout_Load(object sender, EventArgs e)
         {
-#if DEBUG
             TabPageFormTypes.Add(typeof(Debug));
+#if DEBUG
             FormClosing -= _Layout_FormClosing;
 #endif
             Visible = false;

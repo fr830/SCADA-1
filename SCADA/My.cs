@@ -116,7 +116,7 @@ namespace SCADA
         /// <summary>
         /// 产线
         /// </summary>
-        public static Work_RFID Work_Line { get; private set; }
+        public static Work_RFID Work_RFID { get; private set; }
 
         /// <summary>
         /// PLC
@@ -163,6 +163,7 @@ namespace SCADA
                 Description = LocationName,
             };
             BLL.TLocation.Insert(location, AdminID);
+            LocationID = location.ID;
             BLL.SettingAdd(AdminID, "SelectedLocation", LocationID);
             string[] wpNames = { "小圆", "中圆", "大圆", "底座", "装配成品" };
             var workpieceIDs = new List<string>();
@@ -189,6 +190,7 @@ namespace SCADA
                 WorkpieceID = workpieceIDs.LastOrDefault(),
             };
             BLL.TManufacture.Insert(manufacture, AdminID);
+            ManufactureID = manufacture.ID;
             foreach (var wpid in workpieceIDs)
             {
                 var mw = new TManufactureWorkpiece
@@ -247,20 +249,23 @@ namespace SCADA
                 BLL = BLLCustom.Instance;
                 AdminID = BLL.GetUserIDByUsername("admin");
                 OnPartCompleted("数据库连接成功", 20);
+                LocationID = BLL.GetLocationIDByLocationName(LocationName);
                 if (string.IsNullOrWhiteSpace(LocationID))
                 {
                     InitializeDB();
-                    if (!string.IsNullOrWhiteSpace(LocationID))
-                    {
-                        OnPartCompleted("数据库初始化成功", 30);
-                    }
-                    else
-                    {
-                        OnPartCompleted("数据库初始化失败！", 30);
-                    }
                 }
-                LocationID = BLL.GetLocationIDByLocationName(LocationName);
-                ManufactureID = BLL.TManufacture.GetModel(Tool.CreateDict("Name", ManufactureName)).ID;
+                else
+                {
+                    ManufactureID = BLL.TManufacture.GetModel(Tool.CreateDict("Name", ManufactureName)).ID;
+                }
+                if (!string.IsNullOrWhiteSpace(LocationID))
+                {
+                    OnPartCompleted("数据库初始化成功", 30);
+                }
+                else
+                {
+                    OnPartCompleted("数据库初始化失败！", 30);
+                }
                 var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
                 MachineTools = new SortedDictionary<int, MachineTool>();
                 for (int i = 0; i < macIPs.Length; i++)
@@ -271,9 +276,15 @@ namespace SCADA
                     }
                     catch (Exception)
                     {
-                        OnPartCompleted("数控系统" + macIPs[i] + "连接失败！", 40);
+                        if (i == 0)
+                        {
+                            throw new Exception("PLC连接失败，IP：" + macIPs[i]);
+                        }
+                        else
+                        {
+                            OnPartCompleted("数控系统" + macIPs[i] + "连接失败！", 40);
+                        }
                         break;
-                        //throw;
                     }
                 }
                 OnPartCompleted("数控系统连接成功", 40);
@@ -284,7 +295,7 @@ namespace SCADA
                     RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
                 }
                 OnPartCompleted("RFID连接成功", 60);
-                Work_Line = Work_RFID.Instance;
+                Work_RFID = Work_RFID.Instance;
                 Work_PLC = Work_PLC.Instance;
                 Work_Simulation = Work_Simulation.Instance;
                 Work_WMS = Work_WMS.Instance;

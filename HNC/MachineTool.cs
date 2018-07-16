@@ -32,16 +32,22 @@ namespace HNC
                 ConnectionString = connectionString ?? ConfigurationManager.ConnectionStrings["Redis"].ConnectionString;
                 Redis = ConnectionMultiplexer.Connect(ConnectionString);
             }
+            bool found = false;
             for (int i = 0; i < databases; i++)
             {
                 if (Redis.GetDatabase(i).StringGet("IP") == ip)
                 {
                     db = Redis.GetDatabase(i);
                     sub = Redis.GetSubscriber();
+                    found = true;
+                    break;
                 }
             }
 #if !DEBUG
-            throw new ArgumentException(string.Format("未找到IP为{0}的机床！", ip));
+            if (!found)
+            {
+                throw new ArgumentException(string.Format("未找到IP为{0}的机床！", ip));
+            }
 #endif
         }
 

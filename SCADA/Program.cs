@@ -33,7 +33,7 @@ namespace SCADA
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            MessageBox.Show(e.Exception.Message, "线程异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(e.Exception.ToString(), "线程异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #if !DEBUG
             Environment.Exit(2);
 #endif
@@ -41,7 +41,7 @@ namespace SCADA
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show((e.ExceptionObject as Exception).Message, "未处理的异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show((e.ExceptionObject as Exception).ToString(), "未处理的异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #if !DEBUG
             Environment.Exit(1);
 #endif
