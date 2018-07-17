@@ -84,52 +84,36 @@ namespace SCADA
                         My.PLC.BitClear(0, 10);
                         OnScan_IsRequested();
                     }
-                    foreach (var item in My.RFIDs)
+                    foreach (var item in My.RFIDs.Where(p => p.Key == EnumPSite.S1 || p.Key == EnumPSite.S2 || p.Key == EnumPSite.S3 || p.Key == EnumPSite.S4 || p.Key == EnumPSite.S5_Assemble))
                     {
                         var i = Work_RFID.SiteIndexDict[item.Key];
                         var RFID = item.Value;
-                        if (item.Key == EnumPSite.S6_Alignment)
+                        if (My.PLC.BitExist(i, 0))
                         {
-                            if (My.PLC.BitExist(i, 0))
-                            {
-                                My.PLC.BitClear(i, 0);
-                                RFID.OnRead_IsRequested();
-                            }
-                            if (My.PLC.BitExist(i, 10))
-                            {
-                                My.PLC.BitClear(i, 10);
-                                RFID.OnPrint_QR_Code_IsRequested();
-                            }
+                            My.PLC.BitClear(i, 0);
+                            RFID.OnRead_IsRequested();
                         }
-                        else if (item.Key == EnumPSite.S7_Up)
+                        if (My.PLC.BitExist(i, 10))
                         {
-
+                            My.PLC.BitClear(i, 10);
+                            RFID.OnWrite_Process_Success_IsRequested();
                         }
-                        else if (item.Key == EnumPSite.S8_Down)
+                        if (My.PLC.BitExist(i, 11))
                         {
-
+                            My.PLC.BitClear(i, 11);
+                            RFID.OnWrite_Process_Failure_IsRequested();
                         }
-                        else if (item.Key == EnumPSite.S9_Manual)
+                    }
+                    {
+                        if (My.PLC.BitExist(Work_RFID.SiteIndexDict[EnumPSite.S6_Alignment], 0))
                         {
-
+                            My.PLC.BitClear(Work_RFID.SiteIndexDict[EnumPSite.S6_Alignment], 0);
+                            My.RFIDs[EnumPSite.S6_Alignment].OnRead_IsRequested();
                         }
-                        else
+                        if (My.PLC.BitExist(Work_RFID.SiteIndexDict[EnumPSite.S6_Alignment], 10))
                         {
-                            if (My.PLC.BitExist(i, 0))
-                            {
-                                My.PLC.BitClear(i, 0);
-                                RFID.OnRead_IsRequested();
-                            }
-                            if (My.PLC.BitExist(i, 10))
-                            {
-                                My.PLC.BitClear(i, 10);
-                                RFID.OnWrite_Process_Success_IsRequested();
-                            }
-                            if (My.PLC.BitExist(i, 11))
-                            {
-                                My.PLC.BitClear(i, 11);
-                                RFID.OnWrite_Process_Failure_IsRequested();
-                            }
+                            My.PLC.BitClear(Work_RFID.SiteIndexDict[EnumPSite.S6_Alignment], 10);
+                            My.RFIDs[EnumPSite.S6_Alignment].OnPrint_QR_Code_IsRequested();
                         }
                     }
                 }
