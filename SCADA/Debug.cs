@@ -23,11 +23,10 @@ namespace SCADA
         {
             comboBoxRegType.SelectedIndex = 7;
             SetComboboxDataSource(comboBoxRFIDs, My.RFIDs);
-            SetComboboxDataSource<EnumNo>(comboBoxNo);
             SetComboboxDataSource<EnumWorkpiece>(comboBoxWorkpiece);
             SetComboboxDataSource<EnumClean>(comboBoxClean);
             SetComboboxDataSource<EnumGauge>(comboBoxGauge);
-            SetComboboxDataSource<EnumGaugeResult>(comboBoxGaugeResult);
+            SetComboboxDataSource<EnumAssemble>(comboBoxAssemble);
         }
 
         private void SetComboboxDataSource<TEnum>(ComboBox cb) where TEnum : struct, IComparable, IFormattable, IConvertible
@@ -104,7 +103,7 @@ namespace SCADA
             buttonClear.Enabled = true;
         }
 
-        private IList<KeyValuePair<byte, EnumProcessResult>> process = new List<KeyValuePair<byte, EnumProcessResult>>();
+        private RFIDData Data { get; set; }
 
         private void buttonRFIDRead_Click(object sender, EventArgs e)
         {
@@ -118,15 +117,14 @@ namespace SCADA
                     var str = RFIDReader.BytesToHexString(data);
                     for (int i = 2; i < str.Length; i += 3)
                     {
-                        str = str.Insert(i, i == 17 ? "+" : "_");
+                        str = str.Insert(i, i == 65 ? "+" : "_");
                     }
-                    var rData = RFIDData.Deserialize(data);
+                    Data = RFIDData.Deserialize(data);
                     textBoxRFIDData.Text = str;
-                    comboBoxNo.SelectedValue = rData.No;
-                    comboBoxWorkpiece.SelectedValue = rData.Workpiece;
-                    comboBoxClean.SelectedValue = rData.Clean;
-                    comboBoxGauge.SelectedValue = rData.Gauge;
-                    comboBoxGaugeResult.SelectedValue = rData.GaugeResult;
+                    comboBoxWorkpiece.SelectedValue = Data.Workpiece;
+                    comboBoxClean.SelectedValue = Data.Clean;
+                    comboBoxGauge.SelectedValue = Data.Gauge;
+                    comboBoxAssemble.SelectedValue = Data.Assemble;
                 }
             }
             buttonRFIDRead.Enabled = true;
@@ -136,10 +134,13 @@ namespace SCADA
         {
             buttonRFIDWrite.Enabled = false;
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
-            if (item != null)
+            if (item != null && Data != null)
             {
-                var data = new RFIDData((EnumNo)comboBoxNo.SelectedValue, (EnumWorkpiece)comboBoxWorkpiece.SelectedValue, (EnumClean)comboBoxClean.SelectedValue, (EnumGauge)comboBoxGauge.SelectedValue, (EnumGaugeResult)comboBoxGaugeResult.SelectedValue, null);
-                item.Write(data);
+                Data.Workpiece = (EnumWorkpiece)comboBoxWorkpiece.SelectedValue;
+                Data.Clean = (EnumClean)comboBoxClean.SelectedValue;
+                Data.Gauge = (EnumGauge)comboBoxGauge.SelectedValue;
+                Data.Assemble = (EnumAssemble)comboBoxAssemble.SelectedValue;
+                item.Write(Data);
                 buttonRFIDRead.PerformClick();
             }
             buttonRFIDWrite.Enabled = true;
@@ -151,7 +152,7 @@ namespace SCADA
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item != null)
             {
-                item.Init((EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
+                item.Init(new Guid(), (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
                 buttonRFIDRead.PerformClick();
             }
             buttonRFIDInit.Enabled = true;

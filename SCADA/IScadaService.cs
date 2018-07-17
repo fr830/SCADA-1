@@ -28,5 +28,13 @@ namespace SCADA
         [OperationContract]
         [WebInvoke(UriTemplate = "InitRFID", Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         string InitRFID(Stream stream);
+
+        /// <summary>
+        /// 请求读取RFID信息
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        [WebInvoke(UriTemplate = "Read", Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
+        string Read(int site);
     }
 }

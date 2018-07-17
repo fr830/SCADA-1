@@ -7,6 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using HNC.MES.Common;
 using HNC.MES.Model;
+using Newtonsoft.Json;
+using System.Net;
+using System.IO;
+using System.Configuration;
 
 
 namespace SCADA
@@ -33,64 +37,46 @@ namespace SCADA
             host.Open();
         }
 
-        /// <summary>
-        /// 请求WMS系统工件
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="count"></param>
-        private void RequestWorkpiece(string name, int count)
+        private WMSResult WMSPost(string uri, string json)
         {
-            RFID.EnumWorkpiece wp;
-            if (Enum.TryParse(name, true, out wp))
+            var data = Encoding.UTF8.GetBytes(json);
+            var request = WebRequest.Create(uri) as HttpWebRequest;
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.ContentLength = data.Length;
+            using (var requestStream = request.GetRequestStream())
             {
-                RequestWorkpiece(wp, count);
+                requestStream.Write(data, 0, data.Length);
+            }
+            var response = request.GetResponse() as HttpWebResponse;
+            var responseStream = response.GetResponseStream();
+            using (var sr = new StreamReader(responseStream, Encoding.UTF8))
+            {
+                string str = sr.ReadToEnd();
+                return JsonConvert.DeserializeObject<WMSResult>(str);
             }
         }
 
         /// <summary>
-        /// 请求WMS系统工件
+        /// 出库
         /// </summary>
-        /// <param name="wp"></param>
-        /// <param name="count"></param>
-        private void RequestWorkpiece(RFID.EnumWorkpiece wp, int count)
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public WMSResult Down(IList<WMSData> list)
         {
-            switch (wp)
-            {
-                case RFID.EnumWorkpiece.A:
-                    break;
-                case RFID.EnumWorkpiece.B:
-                    break;
-                case RFID.EnumWorkpiece.C:
-                    break;
-                case RFID.EnumWorkpiece.D:
-                    break;
-                case RFID.EnumWorkpiece.E:
-                    break;
-                default:
-                    break;
-            }
+            return WMSPost(ConfigurationManager.AppSettings["WMSDown"], JsonConvert.SerializeObject(list));
         }
 
+        /// <summary>
+        /// 入库
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public WMSResult Up(WMSData data)
+        {
+            return WMSPost(ConfigurationManager.AppSettings["WMSUp"], JsonConvert.SerializeObject(data));
+        }
 
-        //public event EventHandler<WorkpiecePutEventArgs> WorkpiecePutIn;
-
-        //public void OnWorkpiecePutIn(RFID.EnumWorkpiece wp)
-        //{
-        //    if (WorkpiecePutIn != null)
-        //    {
-        //        WorkpiecePutIn(this, new WorkpiecePutEventArgs(wp));
-        //    }
-        //}
-
-        //public event EventHandler<WorkpiecePutEventArgs> WorkpiecePutOut;
-
-        //public void OnWorkpiecePutOut(RFID.EnumWorkpiece wp)
-        //{
-        //    if (WorkpiecePutOut != null)
-        //    {
-        //        WorkpiecePutOut(this, new WorkpiecePutEventArgs(wp));
-        //    }
-        //}
 
 
         private CancellationTokenSource cts;
@@ -139,21 +125,6 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     Thread.Sleep(500);
-                    foreach (var order in My.BLL.TOrder.GetList())
-                    {
-                        if (order.State == EnumHelper.GetName(TOrder.EnumState.启动))
-                        {
-                            order.State = EnumHelper.GetName(TOrder.EnumState.执行);
-                            My.BLL.TOrder.Update(order, My.AdminID);
-                            foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
-                            {
-                                detail.StartTime = DateTime.Now;
-                                My.BLL.TOrderDetail.Update(detail, My.AdminID);
-                                var name = My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID);
-                                RequestWorkpiece(name, detail.QuantityDemanded);
-                            }
-                        }
-                    }
 
                 }
             }, token);
@@ -162,7 +133,7 @@ namespace SCADA
 
     }
 
-    public class WorkpiecePutEventArgs
+    public class WorkpiecePutEventArgs : EventArgs
     {
         public RFID.EnumWorkpiece Workpiece { get; private set; }
 
@@ -171,4 +142,54 @@ namespace SCADA
             Workpiece = wp;
         }
     }
+
+    /// <summary>
+    /// 入库数据
+    /// </summary>
+    public class WMSData
+    {
+        /// <summary>
+        /// A-E
+        /// </summary>
+        public string code { get; set; }
+
+        /// <summary>
+        /// GUID
+        /// </summary>
+        public string trayId { get; set; }
+
+        /// <summary>
+        /// 0空盘 1有料
+        /// </summary>
+        public int quantity { get; set; }
+
+        public WMSData(string name, int count, string guid = null)
+        {
+            code = name;
+            quantity = count;
+            trayId = guid;
+        }
+    }
+
+    public class WMSResult
+    {
+        public string code { get; set; }
+
+        public string msg { get; set; }
+
+        public string data { get; set; }
+
+        public static WMSResult Error
+        {
+            get
+            {
+                return new WMSResult
+                {
+                    code = "-1",
+                    msg = "请求解析错误"
+                };
+            }
+        }
+    }
+
 }

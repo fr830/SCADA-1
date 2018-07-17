@@ -13,9 +13,9 @@ namespace RFID
     public enum EnumLOGO : byte { HNC = 59 }
 
     /// <summary>
-    /// 编号(2)
+    /// 预留定义(2)
     /// </summary>
-    public enum EnumNo : byte { No0 = 0, No1 = 1, No2, No3, No4, No5, No6, No7, No8, No9, No10 }
+    public enum EnumObligate : byte { None = byte.MaxValue }
 
     /// <summary>
     /// 工件类型(3)
@@ -81,26 +81,6 @@ namespace RFID
         /// </summary>
         Wanted = 1,
         /// <summary>
-        /// 成功
-        /// </summary>
-        Successed = 4,
-        /// <summary>
-        /// 失败
-        /// </summary>
-        Failed = 8
-    }
-
-    /// <summary>
-    /// 检测结果(6)
-    /// </summary>
-    public enum EnumGaugeResult : byte
-    {
-        None = 0,
-        /// <summary>
-        /// 等待中
-        /// </summary>
-        Waiting = 1,
-        /// <summary>
         /// 合格
         /// </summary>
         Qualified = 4,
@@ -111,9 +91,76 @@ namespace RFID
     }
 
     /// <summary>
+    /// 装配(6)
+    /// </summary>
+    public enum EnumAssemble : byte
+    {
+        /// <summary>
+        /// 不需要
+        /// </summary>
+        Unwanted = 0,
+        /// <summary>
+        /// 需要
+        /// </summary>
+        Wanted = 1,
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Successed = 4,
+        /// <summary>
+        /// 失败
+        /// </summary>
+        Failed = 8
+    }
+
+    public enum EnumPSite : byte
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// 1号顶升机构：车床
+        /// </summary>
+        S1,
+        /// <summary>
+        /// 2号顶升机构：钻攻中心
+        /// </summary>
+        S2,
+        /// <summary>
+        /// 3号顶升机构：三轴加工中心（850B）
+        /// </summary>
+        S3,
+        /// <summary>
+        /// 4号顶升机构：五轴加工中心
+        /// </summary>
+        S4,
+        /// <summary>
+        /// 5号顶升机构：装配台
+        /// </summary>
+        S5_Assemble,
+        /// <summary>
+        /// 6号顶升机构：定位台
+        /// </summary>
+        S6_Alignment,
+        /// <summary>
+        /// 7号WMS入库
+        /// </summary>
+        S7_Up,
+        /// <summary>
+        /// 8号WMS出库
+        /// </summary>
+        S8_Down,
+        /// <summary>
+        /// 9号WMS手动
+        /// </summary>
+        S9_Manual
+    }
+
+    /// <summary>
     /// 当前工序加工结果
     /// </summary>
-    public enum EnumProcessResult : byte
+    public enum EnumPResult : byte
     {
         /// <summary>
         /// 无
@@ -134,6 +181,19 @@ namespace RFID
     }
     #endregion
 
+    public class ProcessData
+    {
+        public EnumPSite Site { get; private set; }
+
+        public EnumPResult Result { get; set; }
+
+        public ProcessData(EnumPSite site, EnumPResult result = EnumPResult.Waiting)
+        {
+            Site = site;
+            Result = result;
+        }
+    }
+
     /// <summary>
     /// RFID数据格式定义
     /// 从第7个Byte开始
@@ -144,18 +204,21 @@ namespace RFID
     public class RFIDData
     {
         public const int DataLength = 32;
+        public Guid Guid { get; private set; }
         public EnumLOGO LOGO { get; private set; }
-        public EnumNo No { get; private set; }
-        public EnumWorkpiece Workpiece { get; private set; }
-        public EnumClean Clean { get; private set; }
-        public EnumGauge Gauge { get; private set; }
-        public EnumGaugeResult GaugeResult { get; private set; }
-        public IList<KeyValuePair<byte, EnumProcessResult>> Processes { get; private set; }
+        public EnumObligate Obligate { get; private set; }
+        public EnumWorkpiece Workpiece { get; set; }
+        public EnumClean Clean { get; set; }
+        public EnumGauge Gauge { get; set; }
+        public EnumAssemble Assemble { get; set; }
+        public IList<ProcessData> ProcessDataList { get; set; }
 
-        private RFIDData()
+        private RFIDData(Guid guid)
         {
+            Guid = guid;
             LOGO = EnumLOGO.HNC;
-            Processes = new List<KeyValuePair<byte, EnumProcessResult>>();
+            Obligate = EnumObligate.None;
+            ProcessDataList = new List<ProcessData>();
         }
 
         /// <summary>
@@ -165,56 +228,47 @@ namespace RFID
         /// <param name="workpiece">工件类型</param>
         /// <param name="clean">清洗</param>
         /// <param name="gauge">检测</param>
-        /// <param name="gaugeResult">检测结果</param>
-        /// <param name="sites">工序</param>
-        public RFIDData(EnumNo no, EnumWorkpiece workpiece, EnumClean clean, EnumGauge gauge, EnumGaugeResult gaugeResult, IList<byte> sites = null)
+        /// <param name="assemble">检测结果</param>
+        /// <param name="processData">工序</param>
+        public RFIDData(Guid guid, EnumWorkpiece workpiece, EnumClean clean, EnumGauge gauge, EnumAssemble assemble, IList<ProcessData> processData = null)
         {
+            Guid = guid;
             LOGO = EnumLOGO.HNC;
-            No = no;
+            Obligate = EnumObligate.None;
             Workpiece = workpiece;
             Clean = clean;
             Gauge = gauge;
-            GaugeResult = gaugeResult;
-            if (sites == null)
-            {
-                sites = new List<byte>();
-            }
-            Processes = ToProcesses(sites);
+            Assemble = assemble;
+            ProcessDataList = processData;
         }
 
-        public byte GetProcessSite()
+        public EnumPSite GetProcessSite()
         {
-            for (int i = 0; i < Processes.Count; i++)
+            if (ProcessDataList == null || ProcessDataList.Count == 0)
             {
-                if (Processes[i].Value == EnumProcessResult.Waiting)
+                return EnumPSite.None;
+            }
+            for (int i = 0; i < ProcessDataList.Count; i++)
+            {
+                if (ProcessDataList[i].Result == EnumPResult.Waiting)
                 {
-                    return Processes[i].Key;
+                    return ProcessDataList[i].Site;
                 }
             }
-            return 0;
+            return EnumPSite.None;
         }
 
-        public bool SetProcessResult(EnumProcessResult result = EnumProcessResult.Successed)
+        public bool SetProcessResult(EnumPResult result = EnumPResult.Successed)
         {
-            for (int i = 0; i < Processes.Count; i++)
+            for (int i = 0; i < ProcessDataList.Count; i++)
             {
-                if (Processes[i].Value == EnumProcessResult.Waiting)
+                if (ProcessDataList[i].Result == EnumPResult.Waiting)
                 {
-                    Processes[i] = new KeyValuePair<byte, EnumProcessResult>(Processes[i].Key, result);
+                    ProcessDataList[i].Result = result;
                     return true;
                 }
             }
             return false;
-        }
-
-        private static IList<KeyValuePair<byte, EnumProcessResult>> ToProcesses(IList<byte> sites)
-        {
-            return sites.Select(s => new KeyValuePair<byte, EnumProcessResult>(s, EnumProcessResult.Waiting)).ToList();
-        }
-
-        private static IList<KeyValuePair<byte, EnumProcessResult>> ToProcesses(params byte[] sites)
-        {
-            return ToProcesses(sites.ToList());
         }
 
         /// <summary>
@@ -223,42 +277,41 @@ namespace RFID
         /// <param name="no">工件编号</param>
         /// <param name="workpiece">工件类型</param>
         /// <returns>RFID数据</returns>
-        public static RFIDData GetDefaut(EnumWorkpiece workpiece)
+        public static RFIDData GetDefaut(Guid guid, EnumWorkpiece workpiece, EnumAssemble assemble = EnumAssemble.Wanted)
         {
-            var data = new RFIDData();
-            data.No = EnumNo.No0;
+            var data = new RFIDData(guid);
+            data.Obligate = EnumObligate.None;
             data.Workpiece = workpiece;
+            data.Assemble = assemble;
             switch (workpiece)
             {
                 case EnumWorkpiece.A:
                     data.Clean = EnumClean.Wanted;
                     data.Gauge = EnumGauge.Wanted;
-                    data.GaugeResult = EnumGaugeResult.Waiting;
-                    data.Processes = ToProcesses(1, 3, 2, 5);
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S1));
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S3));
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S2));
                     break;
                 case EnumWorkpiece.B:
                     data.Clean = EnumClean.Wanted;
                     data.Gauge = EnumGauge.Wanted;
-                    data.GaugeResult = EnumGaugeResult.Waiting;
-                    data.Processes = ToProcesses(1, 3, 5);
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S1));
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S3));
                     break;
                 case EnumWorkpiece.C:
                     data.Clean = EnumClean.Wanted;
                     data.Gauge = EnumGauge.Wanted;
-                    data.GaugeResult = EnumGaugeResult.Waiting;
-                    data.Processes = ToProcesses(1, 3, 5);
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S1));
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S3));
                     break;
                 case EnumWorkpiece.D:
                     data.Clean = EnumClean.Wanted;
                     data.Gauge = EnumGauge.Wanted;
-                    data.GaugeResult = EnumGaugeResult.Waiting;
-                    data.Processes = ToProcesses(4, 5);
+                    data.ProcessDataList.Add(new ProcessData(EnumPSite.S4));
                     break;
                 case EnumWorkpiece.E:
                     data.Clean = EnumClean.Wanted;
                     data.Gauge = EnumGauge.Wanted;
-                    data.GaugeResult = EnumGaugeResult.Waiting;
-                    data.Processes = ToProcesses(5, 6);
                     break;
                 default:
                     break;
@@ -275,16 +328,21 @@ namespace RFID
         {
             if (d == null) return null;
             var data = new byte[DataLength];
-            data[0] = (byte)d.LOGO;
-            data[1] = (byte)d.No;
-            data[2] = (byte)d.Workpiece;
-            data[3] = (byte)d.Clean;
-            data[4] = (byte)d.Gauge;
-            data[5] = (byte)d.GaugeResult;
-            for (int i = 0; i < d.Processes.Count; i++)
+            var guidBytes = d.Guid.ToByteArray();
+            for (int i = 0; i < guidBytes.Length; i++)
             {
-                data[i * 2 + 6] = d.Processes[i].Key;
-                data[i * 2 + 7] = (byte)d.Processes[i].Value;
+                data[i] = guidBytes[i];
+            }
+            data[16] = (byte)d.LOGO;
+            data[17] = (byte)d.Obligate;
+            data[18] = (byte)d.Workpiece;
+            data[19] = (byte)d.Clean;
+            data[20] = (byte)d.Gauge;
+            data[21] = (byte)d.Assemble;
+            for (int i = 0; i < d.ProcessDataList.Count; i++)
+            {
+                data[i * 2 + 22] = (byte)d.ProcessDataList[i].Site;
+                data[i * 2 + 23] = (byte)d.ProcessDataList[i].Result;
             }
             return data;
         }
@@ -292,22 +350,24 @@ namespace RFID
         public static RFIDData Deserialize(byte[] data)
         {
             if (data == null || data.Length != DataLength) return null;
-            var r = new RFIDData();
-            r.LOGO = (EnumLOGO)data[0];
-            r.No = (EnumNo)data[1];
-            r.Workpiece = (EnumWorkpiece)data[2];
-            r.Clean = (EnumClean)data[3];
-            r.Gauge = (EnumGauge)data[4];
-            r.GaugeResult = (EnumGaugeResult)data[5];
+            var r = new RFIDData(Guid.Empty);
+            r.Guid = new Guid(data.Take(16).ToArray());
+            r.LOGO = (EnumLOGO)data[16];
+            r.Obligate = (EnumObligate)data[17];
+            r.Workpiece = (EnumWorkpiece)data[18];
+            r.Clean = (EnumClean)data[19];
+            r.Gauge = (EnumGauge)data[20];
+            r.Assemble = (EnumAssemble)data[21];
             for (int i = 0; i < data.Length; i += 2)
             {
-                if (data[i + 6] == 0)
+                if (data[i + 22] == 0)
                 {
                     break;
                 }
                 else
                 {
-                    r.Processes.Add(new KeyValuePair<byte, EnumProcessResult>(data[i + 6], (EnumProcessResult)data[i + 7]));
+                    var processData = new ProcessData((EnumPSite)data[i + 22], (EnumPResult)data[i + 23]);
+                    r.ProcessDataList.Add(processData);
                 }
             }
             return r;

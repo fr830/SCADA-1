@@ -277,5 +277,19 @@ namespace HNC
             return Publish(message.ToString());
         }
 
+        /// <summary>
+        /// 测试宏变量
+        /// </summary>
+        /// <returns></returns>
+        public string HNC_GetUserVar()
+        {
+            string key = "MacroVariables:USER";
+            if (!db.KeyExists(key))
+            {
+                return string.Empty;
+            }
+            return db.HashGet(key, 50040).ToString();
+        }
+
     }
 }

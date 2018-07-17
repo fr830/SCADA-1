@@ -32,6 +32,7 @@
             this.textBoxIndex = new System.Windows.Forms.TextBox();
             this.textBoxBit = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonClear = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxResult = new System.Windows.Forms.TextBox();
             this.buttonRead = new System.Windows.Forms.Button();
@@ -45,18 +46,16 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBoxGaugeResult = new System.Windows.Forms.ComboBox();
+            this.comboBoxAssemble = new System.Windows.Forms.ComboBox();
             this.comboBoxGauge = new System.Windows.Forms.ComboBox();
             this.comboBoxClean = new System.Windows.Forms.ComboBox();
-            this.comboBoxNo = new System.Windows.Forms.ComboBox();
             this.comboBoxWorkpiece = new System.Windows.Forms.ComboBox();
             this.textBoxRFIDData = new System.Windows.Forms.TextBox();
             this.buttonRFIDRead = new System.Windows.Forms.Button();
             this.buttonRFIDWrite = new System.Windows.Forms.Button();
             this.comboBoxRFIDs = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.buttonClear = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -106,6 +105,16 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC";
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.Location = new System.Drawing.Point(168, 103);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(75, 23);
+            this.buttonClear.TabIndex = 10;
+            this.buttonClear.Text = "Clear";
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // label4
             // 
@@ -187,11 +196,9 @@
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.comboBoxGaugeResult);
+            this.groupBox2.Controls.Add(this.comboBoxAssemble);
             this.groupBox2.Controls.Add(this.comboBoxGauge);
             this.groupBox2.Controls.Add(this.comboBoxClean);
-            this.groupBox2.Controls.Add(this.comboBoxNo);
             this.groupBox2.Controls.Add(this.comboBoxWorkpiece);
             this.groupBox2.Controls.Add(this.textBoxRFIDData);
             this.groupBox2.Controls.Add(this.buttonRFIDRead);
@@ -218,11 +225,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(414, 77);
+            this.label10.Location = new System.Drawing.Point(402, 77);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(47, 12);
+            this.label10.Size = new System.Drawing.Size(59, 12);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Result:";
+            this.label10.Text = "Assemble:";
             // 
             // label9
             // 
@@ -236,7 +243,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(420, 51);
+            this.label8.Location = new System.Drawing.Point(420, 26);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 12);
             this.label8.TabIndex = 22;
@@ -245,29 +252,20 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(438, 26);
+            this.label7.Location = new System.Drawing.Point(223, 26);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(23, 12);
+            this.label7.Size = new System.Drawing.Size(65, 12);
             this.label7.TabIndex = 21;
-            this.label7.Text = "Wp:";
+            this.label7.Text = "Workpiece:";
             // 
-            // label6
+            // comboBoxAssemble
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(265, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(23, 12);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "No:";
-            // 
-            // comboBoxGaugeResult
-            // 
-            this.comboBoxGaugeResult.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxGaugeResult.FormattingEnabled = true;
-            this.comboBoxGaugeResult.Location = new System.Drawing.Point(467, 74);
-            this.comboBoxGaugeResult.Name = "comboBoxGaugeResult";
-            this.comboBoxGaugeResult.Size = new System.Drawing.Size(94, 20);
-            this.comboBoxGaugeResult.TabIndex = 17;
+            this.comboBoxAssemble.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAssemble.FormattingEnabled = true;
+            this.comboBoxAssemble.Location = new System.Drawing.Point(467, 74);
+            this.comboBoxAssemble.Name = "comboBoxAssemble";
+            this.comboBoxAssemble.Size = new System.Drawing.Size(94, 20);
+            this.comboBoxAssemble.TabIndex = 17;
             // 
             // comboBoxGauge
             // 
@@ -282,25 +280,16 @@
             // 
             this.comboBoxClean.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxClean.FormattingEnabled = true;
-            this.comboBoxClean.Location = new System.Drawing.Point(467, 48);
+            this.comboBoxClean.Location = new System.Drawing.Point(467, 23);
             this.comboBoxClean.Name = "comboBoxClean";
             this.comboBoxClean.Size = new System.Drawing.Size(94, 20);
             this.comboBoxClean.TabIndex = 15;
-            // 
-            // comboBoxNo
-            // 
-            this.comboBoxNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxNo.FormattingEnabled = true;
-            this.comboBoxNo.Location = new System.Drawing.Point(294, 23);
-            this.comboBoxNo.Name = "comboBoxNo";
-            this.comboBoxNo.Size = new System.Drawing.Size(94, 20);
-            this.comboBoxNo.TabIndex = 14;
             // 
             // comboBoxWorkpiece
             // 
             this.comboBoxWorkpiece.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWorkpiece.FormattingEnabled = true;
-            this.comboBoxWorkpiece.Location = new System.Drawing.Point(467, 23);
+            this.comboBoxWorkpiece.Location = new System.Drawing.Point(294, 23);
             this.comboBoxWorkpiece.Name = "comboBoxWorkpiece";
             this.comboBoxWorkpiece.Size = new System.Drawing.Size(94, 20);
             this.comboBoxWorkpiece.TabIndex = 13;
@@ -351,25 +340,25 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "RFIDNo:";
             // 
-            // buttonClear
+            // groupBox3
             // 
-            this.buttonClear.Location = new System.Drawing.Point(168, 103);
-            this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(75, 23);
-            this.buttonClear.TabIndex = 10;
-            this.buttonClear.Text = "Clear";
-            this.buttonClear.UseVisualStyleBackColor = true;
-            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            this.groupBox3.Location = new System.Drawing.Point(12, 167);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(265, 150);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "WMS";
             // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 397);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Debug";
-            this.Text = "Debug";
+            this.Text = "a";
             this.Load += new System.EventHandler(this.Debug_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -399,16 +388,15 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxRFIDData;
         private System.Windows.Forms.ComboBox comboBoxWorkpiece;
-        private System.Windows.Forms.ComboBox comboBoxNo;
         private System.Windows.Forms.ComboBox comboBoxClean;
         private System.Windows.Forms.ComboBox comboBoxGauge;
-        private System.Windows.Forms.ComboBox comboBoxGaugeResult;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBoxAssemble;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button buttonRFIDInit;
         private System.Windows.Forms.Button buttonClear;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }

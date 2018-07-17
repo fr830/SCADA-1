@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using HNC.MES.Common;
 using HNC.MES.Model;
+using RFID;
 
 namespace SCADA
 {
@@ -46,14 +47,41 @@ namespace SCADA
             {
                 return new SvResult("解析参数错误！").ToString();
             }
-            if (My.RFIDs[8].Init(wp))
-            {
-                return SvResult.OK;
-            }
             else
             {
-                return new SvResult("RFID信息写入失败！").ToString();
+                var order = GetExecOrder();
+                var pc = new TWorkpieceProcess();
+                pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
+                pc.LocationID = My.LocationID;
+                pc.ManufactureID = My.ManufactureID;
+                pc.WorkpieceID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", type.ToUpper())).ID;
+                pc.OrderID = order.ID;
+                My.BLL.TWorkpieceProcess.Insert(pc, My.AdminID);
+                var guid = new Guid(pc.ID);
+                if (My.RFIDs[EnumPSite.S9_Manual].Init(guid, wp))
+                {
+                    return SvResult.OK;
+                }
+                else
+                {
+                    My.BLL.TWorkpieceProcess.DeleteReal(pc);
+                    return new SvResult("RFID信息写入失败！").ToString();
+                }
             }
+        }
+
+        public string Read(int site)
+        {
+            var PSite = site == 1 ? EnumPSite.S7_Up : EnumPSite.S8_Down;
+            if (PSite == EnumPSite.S7_Up)
+            {
+                PutIn();
+            }
+            else if (PSite == EnumPSite.S8_Down)
+            {
+                PutOut();
+            }
+            return string.Empty;
         }
 
         private TOrder GetExecOrder()
@@ -70,14 +98,12 @@ namespace SCADA
 
         public string PutIn()
         {
-            var data = My.RFIDs[8].Read();
+            var data = My.RFIDs[EnumPSite.S7_Up].Read();
             if (data == null) return SvResult.Error;
-            var state = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
             var wpID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", EnumHelper.GetName(data.Workpiece))).ID;
-            var pc = My.BLL.TWorkpieceProcess.GetList(Tool.CreateDict("State", state, "WorkpieceID", wpID)).FirstOrDefault();
+            var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
             pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
             My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
-
             var order = GetExecOrder();
             foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
             {
@@ -104,23 +130,20 @@ namespace SCADA
                 order.State = EnumHelper.GetName(TOrder.EnumState.完成);
                 My.BLL.TOrder.Update(order, My.AdminID);
             }
-
             return SvResult.OK;
         }
 
         public string PutOut()
         {
-            var data = My.RFIDs[9].Read();
-            if (data == null) return SvResult.Error;
-            var order = GetExecOrder();
-            var pc = new TWorkpieceProcess();
-            pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
-            pc.LocationID = My.LocationID;
-            pc.ManufactureID = My.ManufactureID;
-            pc.WorkpieceID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", EnumHelper.GetName(data.Workpiece))).ID;
-            pc.OrderID = order.ID;
-            My.BLL.TWorkpieceProcess.Insert(pc, My.AdminID);
-            return SvResult.OK;
+            var data = My.RFIDs[EnumPSite.S8_Down].Read();
+            if (data == null)
+            {
+                return SvResult.Error;
+            }
+            else
+            {
+                return SvResult.OK;
+            }
         }
     }
 

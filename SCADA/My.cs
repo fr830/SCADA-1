@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SCADA
 {
-    public class MyInitializeEventArgs
+    public class MyInitializeEventArgs : EventArgs
     {
         public DateTime Time { get; private set; }
 
@@ -92,7 +92,7 @@ namespace SCADA
         /// Key：编号，从0开始，0表示PLC
         /// Value：MachineTool
         /// </summary>
-        public static SortedDictionary<int, MachineTool> MachineTools { get; private set; }
+        public static Dictionary<int, MachineTool> MachineTools { get; private set; }
 
         public static MachineTool PLC
         {
@@ -108,10 +108,10 @@ namespace SCADA
 
         /// <summary>
         /// RFID读写器字典
-        /// Key：编号，从2开始
+        /// Key：加工位置
         /// Value：RFID读写器
         /// </summary>
-        public static SortedDictionary<int, RFIDReader> RFIDs { get; private set; }
+        public static Dictionary<EnumPSite, RFIDReader> RFIDs { get; private set; }
 
         /// <summary>
         /// 产线
@@ -267,7 +267,7 @@ namespace SCADA
                     OnPartCompleted("数据库初始化失败！", 30);
                 }
                 var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
-                MachineTools = new SortedDictionary<int, MachineTool>();
+                MachineTools = new Dictionary<int, MachineTool>();
                 for (int i = 0; i < macIPs.Length; i++)
                 {
                     try
@@ -289,11 +289,16 @@ namespace SCADA
                 }
                 OnPartCompleted("数控系统连接成功", 40);
                 var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
-                RFIDs = new SortedDictionary<int, RFIDReader>();
-                for (int i = 0; i < rfidIPs.Length; i++)
-                {
-                    RFIDs.Add(i + 2, new RFIDReader(i + 2, rfidIPs[i]));
-                }
+                RFIDs = new Dictionary<EnumPSite, RFIDReader>();
+                RFIDs.Add(EnumPSite.S1, new RFIDReader(EnumPSite.S1, rfidIPs[0]));
+                RFIDs.Add(EnumPSite.S2, new RFIDReader(EnumPSite.S2, rfidIPs[1]));
+                RFIDs.Add(EnumPSite.S3, new RFIDReader(EnumPSite.S3, rfidIPs[2]));
+                RFIDs.Add(EnumPSite.S4, new RFIDReader(EnumPSite.S4, rfidIPs[3]));
+                RFIDs.Add(EnumPSite.S5_Assemble, new RFIDReader(EnumPSite.S5_Assemble, rfidIPs[4]));
+                RFIDs.Add(EnumPSite.S6_Alignment, new RFIDReader(EnumPSite.S6_Alignment, rfidIPs[5]));
+                RFIDs.Add(EnumPSite.S7_Up, new RFIDReader((EnumPSite.S7_Up), rfidIPs[6]));
+                RFIDs.Add(EnumPSite.S8_Down, new RFIDReader((EnumPSite.S7_Up), rfidIPs[7]));
+                RFIDs.Add(EnumPSite.S9_Manual, new RFIDReader((EnumPSite.S7_Up), rfidIPs[8]));
                 OnPartCompleted("RFID连接成功", 60);
                 Work_RFID = Work_RFID.Instance;
                 Work_PLC = Work_PLC.Instance;

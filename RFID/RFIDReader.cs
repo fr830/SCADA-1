@@ -12,7 +12,7 @@ namespace RFID
     /// </summary>
     public class RFIDReader
     {
-        public int Index { get; private set; }
+        public EnumPSite Site { get; private set; }
 
         public HFReader HFReader { get; private set; }
 
@@ -20,9 +20,9 @@ namespace RFID
 
         public int Port { get; private set; }
 
-        public RFIDReader(int index, string ip, int port = 3001)
+        public RFIDReader(EnumPSite site, string ip, int port = 3001)
         {
-            Index = index;
+            Site = site;
             IPAddress = ip;
             Port = port;
             HFReader = new HFReader();
@@ -85,9 +85,9 @@ namespace RFID
         /// </summary>
         /// <param name="workpiece">工件类型</param>
         /// <returns>是否成功</returns>
-        public bool Init(EnumWorkpiece workpiece)
+        public bool Init(Guid guid, EnumWorkpiece workpiece)
         {
-            var data = RFIDData.GetDefaut(workpiece).Serialize();
+            var data = RFIDData.GetDefaut(guid, workpiece).Serialize();
             return WriteBytes(data);
         }
 
