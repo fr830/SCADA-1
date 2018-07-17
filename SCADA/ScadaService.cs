@@ -70,18 +70,32 @@ namespace SCADA
             }
         }
 
-        public string Read(int site)
+        public string Read(Stream stream)
         {
-            var PSite = site == 1 ? EnumPSite.S7_Up : EnumPSite.S8_Down;
-            if (PSite == EnumPSite.S7_Up)
+            var dict = ParseQueryString(stream);
+            var obj = dict["site"] as string;
+            if (string.IsNullOrWhiteSpace(obj))
             {
-                PutIn();
+                return new SvResult("请求参数错误！").ToString();
             }
-            else if (PSite == EnumPSite.S8_Down)
+            int site = 0;
+            if (!int.TryParse(obj, out site))
             {
-                PutOut();
+                return new SvResult("解析参数错误！").ToString();
             }
-            return string.Empty;
+            else
+            {
+                var PSite = site == 1 ? EnumPSite.S7_Up : EnumPSite.S8_Down;
+                if (PSite == EnumPSite.S7_Up)
+                {
+                    return PutIn();
+                }
+                else if (PSite == EnumPSite.S8_Down)
+                {
+                    return PutOut();
+                }
+                return SvResult.Error;
+            }
         }
 
         private TOrder GetExecOrder()

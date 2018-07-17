@@ -35,6 +35,6 @@ namespace SCADA
         /// <returns></returns>
         [OperationContract]
         [WebInvoke(UriTemplate = "Read", Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
-        string Read(int site);
+        string Read(Stream stream);
     }
 }
