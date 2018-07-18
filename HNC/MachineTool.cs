@@ -24,7 +24,7 @@ namespace HNC
 
         public MachineTool(string ip, string connectionString = null)
         {
-#if NONET
+#if OFFLINE
             connectionString = "localhost:6379,allowAdmin=true";
 #endif
             if (Redis == null || !Redis.IsConnected)

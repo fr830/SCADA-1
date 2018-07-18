@@ -133,6 +133,8 @@ namespace SCADA
         /// </summary>
         public static Work_WMS Work_WMS { get; private set; }
 
+        public static Work_MES Work_MES { get; private set; }
+
         /// <summary>
         /// 初始化数据库
         /// </summary>
@@ -165,17 +167,18 @@ namespace SCADA
             BLL.TLocation.Insert(location, AdminID);
             LocationID = location.ID;
             BLL.SettingAdd(AdminID, "SelectedLocation", LocationID);
-            string[] wpNames = { "小圆", "中圆", "大圆", "底座", "装配成品" };
+            string[] wpNames = { "A", "B", "C", "D", "E" };
+            string[] wpDescriptions = { "小圆", "中圆", "大圆", "底座", "装配成品" };
             var workpieceIDs = new List<string>();
-            foreach (var name in wpNames)
+            for (int i = 0; i < wpNames.Length; i++)
             {
                 var workpiece = new TWorkpiece
                 {
                     LocationID = LocationID,
-                    Name = name,
+                    Name = wpNames[i],
                     Type = EnumHelper.GetName(TWorkpiece.EnumType.默认),
                     State = EnumHelper.GetName(TWorkpiece.EnumState.正常),
-                    Description = name,
+                    Description = wpDescriptions[i],
                 };
                 BLL.TWorkpiece.Insert(workpiece, AdminID);
                 workpieceIDs.Add(workpiece.ID);
@@ -297,13 +300,14 @@ namespace SCADA
                 RFIDs.Add(EnumPSite.S5_Assemble, new RFIDReader(EnumPSite.S5_Assemble, rfidIPs[4]));
                 RFIDs.Add(EnumPSite.S6_Alignment, new RFIDReader(EnumPSite.S6_Alignment, rfidIPs[5]));
                 RFIDs.Add(EnumPSite.S7_Up, new RFIDReader((EnumPSite.S7_Up), rfidIPs[6]));
-                RFIDs.Add(EnumPSite.S8_Down, new RFIDReader((EnumPSite.S7_Up), rfidIPs[7]));
-                RFIDs.Add(EnumPSite.S9_Manual, new RFIDReader((EnumPSite.S7_Up), rfidIPs[8]));
+                RFIDs.Add(EnumPSite.S8_Down, new RFIDReader((EnumPSite.S8_Down), rfidIPs[7]));
+                RFIDs.Add(EnumPSite.S9_Manual, new RFIDReader((EnumPSite.S9_Manual), rfidIPs[8]));
                 OnPartCompleted("RFID连接成功", 60);
                 Work_PLC = Work_PLC.Instance;
                 Work_RFID = Work_RFID.Instance;
                 Work_Simulation = Work_Simulation.Instance;
                 Work_WMS = Work_WMS.Instance;
+                Work_MES = Work_MES.Instance;
                 OnPartCompleted("后台服务连接成功", 80);
                 Initialized = true;
                 OnPartCompleted("系统加载完成", 98);

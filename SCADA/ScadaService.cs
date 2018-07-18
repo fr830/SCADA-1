@@ -49,13 +49,11 @@ namespace SCADA
             }
             else
             {
-                var order = GetExecOrder();
                 var pc = new TWorkpieceProcess();
                 pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
                 pc.LocationID = My.LocationID;
                 pc.ManufactureID = My.ManufactureID;
                 pc.WorkpieceID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", type.ToUpper())).ID;
-                pc.OrderID = order.ID;
                 My.BLL.TWorkpieceProcess.Insert(pc, My.AdminID);
                 var guid = new Guid(pc.ID);
                 if (My.RFIDs[EnumPSite.S9_Manual].Init(guid, wp))
@@ -65,7 +63,7 @@ namespace SCADA
                 else
                 {
                     My.BLL.TWorkpieceProcess.DeleteReal(pc);
-                    return SvResult.RFISWriteFail;
+                    return SvResult.RFIDWriteFail;
                 }
             }
         }
@@ -73,13 +71,12 @@ namespace SCADA
         public string Read(Stream stream)
         {
             var dict = ParseQueryString(stream);
-            var obj = dict["site"] as string;
-            if (string.IsNullOrWhiteSpace(obj))
+            if (!dict.ContainsKey("site"))
             {
                 return SvResult.ParameterError;
             }
             int site = 0;
-            if (!int.TryParse(obj, out site))
+            if (!int.TryParse(dict["site"].ToString(), out site))
             {
                 return SvResult.AnalyticError;
             }
@@ -117,7 +114,10 @@ namespace SCADA
         public string PutIn()
         {
             var data = My.RFIDs[EnumPSite.S7_Up].Read();
-            if (data == null) return SvResult.Fail;
+            if (data == null)
+            {
+                return SvResult.RFIDReadFail;
+            }
             var wpID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", EnumHelper.GetName(data.Workpiece))).ID;
             var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
             pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
@@ -164,7 +164,7 @@ namespace SCADA
             var data = My.RFIDs[EnumPSite.S8_Down].Read();
             if (data == null)
             {
-                return SvResult.Fail;
+                return SvResult.RFIDReadFail;
             }
             else
             {
@@ -186,13 +186,13 @@ namespace SCADA
                             }
                             else
                             {
-                                return SvResult.RFISWriteFail;
+                                return SvResult.RFIDWriteFail;
                             }
                         }
                     }
                     else
                     {
-                        if(data.Assemble== EnumAssemble.Wanted)
+                        if (data.Assemble == EnumAssemble.Wanted)
                         {
                             data.Assemble = EnumAssemble.Unwanted;
                             if (My.RFIDs[EnumPSite.S8_Down].Write(data))
@@ -201,7 +201,7 @@ namespace SCADA
                             }
                             else
                             {
-                                return SvResult.RFISWriteFail;
+                                return SvResult.RFIDWriteFail;
                             }
                         }
                     }
@@ -268,7 +268,15 @@ namespace SCADA
             }
         }
 
-        public static string RFISWriteFail
+        public static string RFIDReadFail
+        {
+            get
+            {
+                return new SvResult("RFID信息读取失败！").ToString();
+            }
+        }
+
+        public static string RFIDWriteFail
         {
             get
             {

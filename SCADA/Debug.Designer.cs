@@ -56,8 +56,11 @@
             this.comboBoxRFIDs = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonSpin = new System.Windows.Forms.Button();
+            this.buttonUp = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonWrite
@@ -342,12 +345,34 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonUp);
+            this.groupBox3.Controls.Add(this.buttonSpin);
             this.groupBox3.Location = new System.Drawing.Point(12, 167);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(265, 171);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "WMS";
+            // 
+            // buttonSpin
+            // 
+            this.buttonSpin.Location = new System.Drawing.Point(6, 20);
+            this.buttonSpin.Name = "buttonSpin";
+            this.buttonSpin.Size = new System.Drawing.Size(75, 23);
+            this.buttonSpin.TabIndex = 11;
+            this.buttonSpin.Text = "Spin";
+            this.buttonSpin.UseVisualStyleBackColor = true;
+            this.buttonSpin.Click += new System.EventHandler(this.buttonSpin_Click);
+            // 
+            // buttonUp
+            // 
+            this.buttonUp.Location = new System.Drawing.Point(87, 20);
+            this.buttonUp.Name = "buttonUp";
+            this.buttonUp.Size = new System.Drawing.Size(75, 23);
+            this.buttonUp.TabIndex = 12;
+            this.buttonUp.Text = "Up";
+            this.buttonUp.UseVisualStyleBackColor = true;
+            this.buttonUp.Click += new System.EventHandler(this.buttonUp_Click);
             // 
             // Debug
             // 
@@ -364,6 +389,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -398,5 +424,7 @@
         private System.Windows.Forms.Button buttonRFIDInit;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button buttonSpin;
+        private System.Windows.Forms.Button buttonUp;
     }
 }

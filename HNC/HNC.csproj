@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugNoNet|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\DebugNoNet\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NONET</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;OFFLINE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>

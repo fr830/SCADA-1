@@ -30,32 +30,32 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		NoNet|Any CPU = NoNet|Any CPU
+		Offline|Any CPU = Offline|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.NoNet|Any CPU.ActiveCfg = DebugNoNet|Any CPU
-		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.NoNet|Any CPU.Build.0 = DebugNoNet|Any CPU
+		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Offline|Any CPU.ActiveCfg = DebugNoNet|Any CPU
+		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Offline|Any CPU.Build.0 = DebugNoNet|Any CPU
 		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51245E6C-4F6D-4295-9F57-801BA5B476CC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.NoNet|Any CPU.ActiveCfg = DebugNoNet|Any CPU
-		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.NoNet|Any CPU.Build.0 = DebugNoNet|Any CPU
+		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Offline|Any CPU.ActiveCfg = DebugNoNet|Any CPU
+		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Offline|Any CPU.Build.0 = DebugNoNet|Any CPU
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F06BA067-50F3-44D1-8EA8-67350D96A09B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.NoNet|Any CPU.ActiveCfg = DebugNoNet|Any CPU
-		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.NoNet|Any CPU.Build.0 = DebugNoNet|Any CPU
+		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Offline|Any CPU.ActiveCfg = DebugNoNet|Any CPU
+		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Offline|Any CPU.Build.0 = DebugNoNet|Any CPU
 		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6485F7FC-37D5-4086-965E-2DFC08F017D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.NoNet|Any CPU.ActiveCfg = DebugNoNet|Any CPU
-		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.NoNet|Any CPU.Build.0 = DebugNoNet|Any CPU
+		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Offline|Any CPU.ActiveCfg = DebugNoNet|Any CPU
+		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Offline|Any CPU.Build.0 = DebugNoNet|Any CPU
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

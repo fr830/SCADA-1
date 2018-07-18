@@ -152,10 +152,24 @@ namespace SCADA
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item != null)
             {
-                item.Init(new Guid(), (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
+                item.Init(Guid.NewGuid(), (EnumWorkpiece)comboBoxWorkpiece.SelectedValue);
                 buttonRFIDRead.PerformClick();
             }
             buttonRFIDInit.Enabled = true;
+        }
+
+        private async void buttonSpin_Click(object sender, EventArgs e)
+        {
+            buttonSpin.Enabled = false;
+            await Task.Run(() => My.Work_WMS.Spin());
+            buttonSpin.Enabled = true;
+        }
+
+        private async void buttonUp_Click(object sender, EventArgs e)
+        {
+            buttonUp.Enabled = false;
+            await Task.Run(() => My.Work_WMS.Up(new WMSData("A", 1)));
+            buttonUp.Enabled = true;
         }
     }
 }

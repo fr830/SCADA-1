@@ -39,21 +39,30 @@ namespace SCADA
 
         private WMSResult WMSPost(string uri, string json)
         {
-            var data = Encoding.UTF8.GetBytes(json);
-            var request = WebRequest.Create(uri) as HttpWebRequest;
-            request.Method = "POST";
-            request.ContentType = "application/json";
-            request.ContentLength = data.Length;
-            using (var requestStream = request.GetRequestStream())
+            try
             {
-                requestStream.Write(data, 0, data.Length);
+                var data = Encoding.UTF8.GetBytes(json);
+                var request = WebRequest.Create(uri) as HttpWebRequest;
+                request.Method = "POST";
+                request.Timeout = 10 * 60 * 1000;
+                request.ContentType = "application/json";
+                request.ContentLength = data.Length;
+                using (var requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(data, 0, data.Length);
+                }
+                var response = request.GetResponse() as HttpWebResponse;
+                var responseStream = response.GetResponseStream();
+                using (var sr = new StreamReader(responseStream, Encoding.UTF8))
+                {
+                    string str = sr.ReadToEnd();
+                    return JsonConvert.DeserializeObject<WMSResult>(str);
+                }
             }
-            var response = request.GetResponse() as HttpWebResponse;
-            var responseStream = response.GetResponseStream();
-            using (var sr = new StreamReader(responseStream, Encoding.UTF8))
+            catch (Exception)
             {
-                string str = sr.ReadToEnd();
-                return JsonConvert.DeserializeObject<WMSResult>(str);
+                return WMSResult.Error;
+                //throw;
             }
         }
 
@@ -75,6 +84,15 @@ namespace SCADA
         public WMSResult Up(WMSData data)
         {
             return WMSPost(ConfigurationManager.AppSettings["WMSUp"], JsonConvert.SerializeObject(data));
+        }
+
+        /// <summary>
+        /// 入库皮带线运行
+        /// </summary>
+        /// <returns></returns>
+        public WMSResult Spin()
+        {
+            return WMSPost(ConfigurationManager.AppSettings["WMSSpin"], string.Empty);
         }
 
 
@@ -159,7 +177,7 @@ namespace SCADA
         public string trayId { get; set; }
 
         /// <summary>
-        /// 0空盘 1有料
+        /// 0空盘 1半成品
         /// </summary>
         public int quantity { get; set; }
 
