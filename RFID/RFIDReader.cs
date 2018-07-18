@@ -105,57 +105,5 @@ namespace RFID
             return sb.ToString();
         }
 
-        /// <summary>
-        /// 请求读
-        /// </summary>
-        public event EventHandler Read_IsRequested;
-
-        public void OnRead_IsRequested()
-        {
-            if (Read_IsRequested != null)
-            {
-                Read_IsRequested(this, new EventArgs());
-            }
-        }
-
-        /// <summary>
-        /// 请求写（加工成功）
-        /// </summary>
-        public event EventHandler Write_Process_Success_IsRequested;
-
-        public void OnWrite_Process_Success_IsRequested()
-        {
-            if (Write_Process_Success_IsRequested != null)
-            {
-                Write_Process_Success_IsRequested(this, new EventArgs());
-            }
-        }
-
-        /// <summary>
-        /// 请求写（加工失败）
-        /// </summary>
-        public event EventHandler Write_Process_Failure_IsRequested;
-
-        public void OnWrite_Process_Failure_IsRequested()
-        {
-            if (Write_Process_Failure_IsRequested != null)
-            {
-                Write_Process_Failure_IsRequested(this, new EventArgs());
-            }
-        }
-
-        /// <summary>
-        /// 请求打印二维码
-        /// </summary>
-        public event EventHandler Print_QR_Code_IsRequested;
-
-        public void OnPrint_QR_Code_IsRequested()
-        {
-            if (Print_QR_Code_IsRequested != null)
-            {
-                Print_QR_Code_IsRequested(this, new EventArgs());
-            }
-        }
-
     }
 }

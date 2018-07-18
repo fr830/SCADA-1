@@ -21,7 +21,7 @@ namespace SCADA
     {
         public string TestService()
         {
-            return new SvResult("服务正在运行", true).ToString();
+            return SvResult.IsRunning;
         }
 
         private IDictionary<string, object> ParseQueryString(Stream stream)
@@ -40,12 +40,12 @@ namespace SCADA
             var type = dict["type"] as string;
             if (string.IsNullOrWhiteSpace(type))
             {
-                return new SvResult("请求参数错误！").ToString();
+                return SvResult.ParameterError;
             }
             RFID.EnumWorkpiece wp;
             if (!Enum.TryParse<RFID.EnumWorkpiece>(type, true, out wp))
             {
-                return new SvResult("解析参数错误！").ToString();
+                return SvResult.AnalyticError;
             }
             else
             {
@@ -65,7 +65,7 @@ namespace SCADA
                 else
                 {
                     My.BLL.TWorkpieceProcess.DeleteReal(pc);
-                    return new SvResult("RFID信息写入失败！").ToString();
+                    return SvResult.RFISWriteFail;
                 }
             }
         }
@@ -76,12 +76,12 @@ namespace SCADA
             var obj = dict["site"] as string;
             if (string.IsNullOrWhiteSpace(obj))
             {
-                return new SvResult("请求参数错误！").ToString();
+                return SvResult.ParameterError;
             }
             int site = 0;
             if (!int.TryParse(obj, out site))
             {
-                return new SvResult("解析参数错误！").ToString();
+                return SvResult.AnalyticError;
             }
             else
             {
@@ -94,7 +94,7 @@ namespace SCADA
                 {
                     return PutOut();
                 }
-                return SvResult.Error;
+                return SvResult.Fail;
             }
         }
 
@@ -110,15 +110,23 @@ namespace SCADA
             return null;
         }
 
+        /// <summary>
+        /// 自动入库
+        /// </summary>
+        /// <returns></returns>
         public string PutIn()
         {
             var data = My.RFIDs[EnumPSite.S7_Up].Read();
-            if (data == null) return SvResult.Error;
+            if (data == null) return SvResult.Fail;
             var wpID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", EnumHelper.GetName(data.Workpiece))).ID;
             var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
             pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
             My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
             var order = GetExecOrder();
+            if (order == null)
+            {
+                return SvResult.OrderNullError;
+            }
             foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
             {
                 if (wpID == detail.WorkpieceID
@@ -147,15 +155,57 @@ namespace SCADA
             return SvResult.OK;
         }
 
+        /// <summary>
+        /// 自动出库
+        /// </summary>
+        /// <returns></returns>
         public string PutOut()
         {
             var data = My.RFIDs[EnumPSite.S8_Down].Read();
             if (data == null)
             {
-                return SvResult.Error;
+                return SvResult.Fail;
             }
             else
             {
+                var order = GetExecOrder();
+                if (order == null)
+                {
+                    return SvResult.OrderNullError;
+                }
+                foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
+                {
+                    if (My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID) == EnumHelper.GetName(EnumWorkpiece.E))
+                    {
+                        if (data.Assemble == EnumAssemble.Unwanted)
+                        {
+                            data.Assemble = EnumAssemble.Wanted;
+                            if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                            {
+                                return SvResult.OK;
+                            }
+                            else
+                            {
+                                return SvResult.RFISWriteFail;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(data.Assemble== EnumAssemble.Wanted)
+                        {
+                            data.Assemble = EnumAssemble.Unwanted;
+                            if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                            {
+                                return SvResult.OK;
+                            }
+                            else
+                            {
+                                return SvResult.RFISWriteFail;
+                            }
+                        }
+                    }
+                }
                 return SvResult.OK;
             }
         }
@@ -182,17 +232,58 @@ namespace SCADA
         {
             get
             {
-                return JsonConvert.SerializeObject(new SvResult { Success = true });
+                return new SvResult("", true).ToString();
             }
         }
 
-        public static string Error
+        public static string Fail
         {
             get
             {
-                return JsonConvert.SerializeObject(new SvResult { Success = false });
+                return new SvResult("", false).ToString();
             }
         }
+
+        public static string IsRunning
+        {
+            get
+            {
+                return new SvResult("服务正在运行", true).ToString();
+            }
+        }
+
+        public static string ParameterError
+        {
+            get
+            {
+                return new SvResult("请求参数错误！").ToString();
+            }
+        }
+
+        public static string AnalyticError
+        {
+            get
+            {
+                return new SvResult("解析参数错误！").ToString();
+            }
+        }
+
+        public static string RFISWriteFail
+        {
+            get
+            {
+                return new SvResult("RFID信息写入失败！").ToString();
+            }
+        }
+
+        public static string OrderNullError
+        {
+            get
+            {
+                return new SvResult("未查询到相关订单！").ToString();
+            }
+        }
+
     }
 
 }

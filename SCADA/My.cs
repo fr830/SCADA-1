@@ -300,8 +300,8 @@ namespace SCADA
                 RFIDs.Add(EnumPSite.S8_Down, new RFIDReader((EnumPSite.S7_Up), rfidIPs[7]));
                 RFIDs.Add(EnumPSite.S9_Manual, new RFIDReader((EnumPSite.S7_Up), rfidIPs[8]));
                 OnPartCompleted("RFID连接成功", 60);
-                Work_RFID = Work_RFID.Instance;
                 Work_PLC = Work_PLC.Instance;
+                Work_RFID = Work_RFID.Instance;
                 Work_Simulation = Work_Simulation.Instance;
                 Work_WMS = Work_WMS.Instance;
                 OnPartCompleted("后台服务连接成功", 80);

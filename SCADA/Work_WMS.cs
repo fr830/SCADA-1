@@ -24,7 +24,7 @@ namespace SCADA
         private Work_WMS()
         {
             RunScadaService();
-            Start();
+            //Start();
         }
 
         /// <summary>
