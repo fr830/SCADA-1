@@ -168,8 +168,15 @@ namespace SCADA
         private async void buttonUp_Click(object sender, EventArgs e)
         {
             buttonUp.Enabled = false;
-            await Task.Run(() => My.Work_WMS.Up(new WMSData("A", 1)));
+            await Task.Run(() => My.Work_WMS.In(new WMSData("A", 1)));
             buttonUp.Enabled = true;
+        }
+
+        private async void buttonRS8_Click(object sender, EventArgs e)
+        {
+            buttonRS8.Enabled = false;
+            await Task.Run(() => My.Work_Vision.Camera_IsRequested(null, new PLCEventArgs(EnumPSite.S8_Down, 1)));
+            buttonRS8.Enabled = true;
         }
     }
 }

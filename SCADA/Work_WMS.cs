@@ -25,6 +25,16 @@ namespace SCADA
         {
             RunScadaService();
             //Start();
+            My.Work_PLC.WorkpieceIn += In_IsRequested;
+        }
+
+        void In_IsRequested(object sender, EventArgs e)
+        {
+            var result = Spin();
+            if (result.code == "0")
+            {
+
+            }
         }
 
         /// <summary>
@@ -59,9 +69,9 @@ namespace SCADA
                     return JsonConvert.DeserializeObject<WMSResult>(str);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return WMSResult.Error;
+                return new WMSResult { code = "-1", msg = ex.Message };
                 //throw;
             }
         }
@@ -71,7 +81,7 @@ namespace SCADA
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public WMSResult Down(IList<WMSData> list)
+        public WMSResult Out(IList<WMSData> list)
         {
             return WMSPost(ConfigurationManager.AppSettings["WMSDown"], JsonConvert.SerializeObject(list));
         }
@@ -81,7 +91,7 @@ namespace SCADA
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public WMSResult Up(WMSData data)
+        public WMSResult In(WMSData data)
         {
             return WMSPost(ConfigurationManager.AppSettings["WMSUp"], JsonConvert.SerializeObject(data));
         }
@@ -149,16 +159,6 @@ namespace SCADA
         }
 
 
-    }
-
-    public class WorkpiecePutEventArgs : EventArgs
-    {
-        public RFID.EnumWorkpiece Workpiece { get; private set; }
-
-        public WorkpiecePutEventArgs(RFID.EnumWorkpiece wp)
-        {
-            Workpiece = wp;
-        }
     }
 
     /// <summary>

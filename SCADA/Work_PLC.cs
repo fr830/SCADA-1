@@ -73,19 +73,19 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     Thread.Sleep(500);
-                    if (My.PLC.BitExist(0, 0))
+                    if (My.PLC.BitExist(1, 0))
                     {
-                        My.PLC.BitClear(0, 0);
-                        OnCamera_IsRequested();
+                        My.PLC.BitClear(1, 0);
+                        OnCamera(EnumPSite.S8_Down, 1);
                     }
-                    if (My.PLC.BitExist(0, 10))
+                    if (My.PLC.BitExist(1, 10))
                     {
-                        My.PLC.BitClear(0, 10);
-                        OnScan_IsRequested();
+                        My.PLC.BitClear(1, 10);
+                        OnScan(EnumPSite.S8_Down, 1);
                     }
                     foreach (EnumPSite site in Enum.GetValues(typeof(EnumPSite)))
                     {
-                        if (site < EnumPSite.S1 || site > EnumPSite.S5_Assemble)
+                        if (site < EnumPSite.S1 || site > EnumPSite.S4)
                         {
                             continue;
                         }
@@ -93,136 +93,201 @@ namespace SCADA
                         if (My.PLC.BitExist(i, 0))
                         {
                             My.PLC.BitClear(i, 0);
-                            OnRead_IsRequested(site, i);
+                            OnProcessRead(site, i);
                         }
                         if (My.PLC.BitExist(i, 10))
                         {
                             My.PLC.BitClear(i, 10);
-                            OnWrite_Process_Success_IsRequested(site, i);
+                            OnProcessWriteSuccess(site, i);
                         }
                         if (My.PLC.BitExist(i, 11))
                         {
                             My.PLC.BitClear(i, 11);
-                            OnWrite_Process_Failure_IsRequested(site, i);
+                            OnProcessWriteFailure(site, i);
                         }
                     }
+                    if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S5_Assemble], 0))
                     {
-                        if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S6_Alignment], 0))
-                        {
-                            My.PLC.BitClear(SiteIndexDict[EnumPSite.S6_Alignment], 0);
-                            OnEntry_IsRequested(SiteIndexDict[EnumPSite.S6_Alignment]);
-                        }
-                        if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S6_Alignment], 10))
-                        {
-                            My.PLC.BitClear(SiteIndexDict[EnumPSite.S6_Alignment], 10);
-                            OnPrint_QR_Code_IsRequested(SiteIndexDict[EnumPSite.S6_Alignment]);
-                        }
+                        My.PLC.BitClear(SiteIndexDict[EnumPSite.S5_Assemble], 0);
+                        OnAssembleRead(SiteIndexDict[EnumPSite.S5_Assemble]);
+                    }
+                    if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S5_Assemble], 10))
+                    {
+                        My.PLC.BitClear(SiteIndexDict[EnumPSite.S5_Assemble], 10);
+                        OnAssembleWriteSuccess(SiteIndexDict[EnumPSite.S5_Assemble]);
+                    }
+                    if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S5_Assemble], 11))
+                    {
+                        My.PLC.BitClear(SiteIndexDict[EnumPSite.S5_Assemble], 11);
+                        OnAssembleWriteFailure(SiteIndexDict[EnumPSite.S5_Assemble]);
+                    }
+                    if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S6_Alignment], 0))
+                    {
+                        My.PLC.BitClear(SiteIndexDict[EnumPSite.S6_Alignment], 0);
+                        OnAlignmentRead(SiteIndexDict[EnumPSite.S6_Alignment]);
+                    }
+                    if (My.PLC.BitExist(SiteIndexDict[EnumPSite.S6_Alignment], 10))
+                    {
+                        My.PLC.BitClear(SiteIndexDict[EnumPSite.S6_Alignment], 10);
+                        OnPrintQRCode(EnumPSite.S6_Alignment, SiteIndexDict[EnumPSite.S6_Alignment]);
                     }
                 }
             }, token);
         }
 
         /// <summary>
-        /// 请求读
+        /// 加工请求读
         /// </summary>
-        public event EventHandler<RFIDEventArgs> Read_IsRequested;
+        public event EventHandler<PLCEventArgs> ProcessRead;
 
-        private void OnRead_IsRequested(EnumPSite site, int index)
+        private void OnProcessRead(EnumPSite site, int index)
         {
-            if (Read_IsRequested != null)
+            if (ProcessRead != null)
             {
-                Read_IsRequested(this, new RFIDEventArgs(site, index));
+                ProcessRead(this, new PLCEventArgs(site, index));
+            }
+        }
+
+        /// <summary>
+        /// 加工请求写成功
+        /// </summary>
+        public event EventHandler<PLCEventArgs> ProcessWriteSuccess;
+
+        private void OnProcessWriteSuccess(EnumPSite site, int index)
+        {
+            if (ProcessWriteSuccess != null)
+            {
+                ProcessWriteSuccess(this, new PLCEventArgs(site, index));
+            }
+        }
+
+        /// <summary>
+        /// 加工请求写失败
+        /// </summary>
+        public event EventHandler<PLCEventArgs> ProcessWriteFailure;
+
+        private void OnProcessWriteFailure(EnumPSite site, int index)
+        {
+            if (ProcessWriteFailure != null)
+            {
+                ProcessWriteFailure(this, new PLCEventArgs(site, index));
+            }
+        }
+
+        /// <summary>
+        /// 装配台请求读
+        /// </summary>
+        public event EventHandler<PLCEventArgs> AssembleRead;
+
+        private void OnAssembleRead(int index, EnumPSite site = EnumPSite.S5_Assemble)
+        {
+            if (AssembleRead != null)
+            {
+                AssembleRead(this, new PLCEventArgs(site, index));
+            }
+        }
+
+        /// <summary>
+        /// 装配台请求写成功
+        /// </summary>
+        public event EventHandler<PLCEventArgs> AssembleWriteSuccess;
+
+        private void OnAssembleWriteSuccess(int index, EnumPSite site = EnumPSite.S5_Assemble)
+        {
+            if (AssembleWriteSuccess != null)
+            {
+                AssembleWriteSuccess(this, new PLCEventArgs(site, index));
+            }
+        }
+
+        /// <summary>
+        /// 装配台请求写失败
+        /// </summary>
+        public event EventHandler<PLCEventArgs> AssembleWriteFailure;
+
+        private void OnAssembleWriteFailure(int index, EnumPSite site = EnumPSite.S5_Assemble)
+        {
+            if (AssembleWriteFailure != null)
+            {
+                AssembleWriteFailure(this, new PLCEventArgs(site, index));
             }
         }
 
         /// <summary>
         /// 定位台请求读
         /// </summary>
-        public event EventHandler<RFIDEventArgs> Entry_IsRequested;
+        public event EventHandler<PLCEventArgs> AlignmentRead;
 
-        private void OnEntry_IsRequested(int index, EnumPSite site = EnumPSite.S6_Alignment)
+        private void OnAlignmentRead(int index, EnumPSite site = EnumPSite.S6_Alignment)
         {
-            if (Entry_IsRequested != null)
+            if (AlignmentRead != null)
             {
-                Entry_IsRequested(this, new RFIDEventArgs(site, index));
-            }
-        }
-
-        /// <summary>
-        /// 请求写（加工成功）
-        /// </summary>
-        public event EventHandler<RFIDEventArgs> Write_Process_Success_IsRequested;
-
-        private void OnWrite_Process_Success_IsRequested(EnumPSite site, int index)
-        {
-            if (Write_Process_Success_IsRequested != null)
-            {
-                Write_Process_Success_IsRequested(this, new RFIDEventArgs(site, index));
-            }
-        }
-
-        /// <summary>
-        /// 请求写（加工失败）
-        /// </summary>
-        public event EventHandler<RFIDEventArgs> Write_Process_Failure_IsRequested;
-
-        private void OnWrite_Process_Failure_IsRequested(EnumPSite site, int index)
-        {
-            if (Write_Process_Failure_IsRequested != null)
-            {
-                Write_Process_Failure_IsRequested(this, new RFIDEventArgs(site, index));
+                AlignmentRead(this, new PLCEventArgs(site, index));
             }
         }
 
         /// <summary>
         /// 请求打印二维码
         /// </summary>
-        public event EventHandler Print_QR_Code_IsRequested;
+        public event EventHandler<PLCEventArgs> PrintQRCode;
 
-        private void OnPrint_QR_Code_IsRequested(int index)
+        private void OnPrintQRCode(EnumPSite site, int index)
         {
-            if (Print_QR_Code_IsRequested != null)
+            if (PrintQRCode != null)
             {
-                Print_QR_Code_IsRequested(this, new EventArgs());
+                PrintQRCode(this, new PLCEventArgs(site, index));
             }
         }
 
         /// <summary>
         /// 请求相机拍照
         /// </summary>
-        public event EventHandler Camera_IsRequested;
+        public event EventHandler<PLCEventArgs> Camera;
 
-        private void OnCamera_IsRequested()
+        private void OnCamera(EnumPSite site, int index)
         {
-            if (Camera_IsRequested != null)
+            if (Camera != null)
             {
-                Camera_IsRequested(this, new EventArgs());
+                Camera(this, new PLCEventArgs(site, index));
             }
         }
 
         /// <summary>
         /// 请求扫码器扫码
         /// </summary>
-        public event EventHandler Scan_IsRequested;
+        public event EventHandler<PLCEventArgs> Scan;
 
-        private void OnScan_IsRequested()
+        private void OnScan(EnumPSite site, int index)
         {
-            if (Scan_IsRequested != null)
+            if (Scan != null)
             {
-                Scan_IsRequested(this, new EventArgs());
+                Scan(this, new PLCEventArgs(site, index));
+            }
+        }
+
+        /// <summary>
+        /// 入库请求
+        /// </summary>
+        public event EventHandler<PLCEventArgs> WorkpieceIn;
+
+        private void OnWorkpieceIn(EnumPSite site, int index)
+        {
+            if (WorkpieceIn != null)
+            {
+                WorkpieceIn(this, new PLCEventArgs(site, index));
             }
         }
 
 
     }
 
-    public class RFIDEventArgs : EventArgs
+    public class PLCEventArgs : EventArgs
     {
         public EnumPSite Site { get; private set; }
 
         public int Index { get; private set; }
 
-        public RFIDEventArgs(EnumPSite site, int index)
+        public PLCEventArgs(EnumPSite site, int index)
         {
             Site = site;
             Index = index;

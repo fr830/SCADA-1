@@ -104,7 +104,7 @@ namespace SCADA
                             var name = My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID);
                             list.Add(new WMSData(name, detail.QuantityDemanded));
                         }
-                        My.Work_WMS.Down(list);
+                        My.Work_WMS.Out(list);
                     }
                 }
             }

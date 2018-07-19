@@ -56,11 +56,14 @@
             this.comboBoxRFIDs = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonSpin = new System.Windows.Forms.Button();
             this.buttonUp = new System.Windows.Forms.Button();
+            this.buttonSpin = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buttonRS8 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonWrite
@@ -354,16 +357,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "WMS";
             // 
-            // buttonSpin
-            // 
-            this.buttonSpin.Location = new System.Drawing.Point(6, 20);
-            this.buttonSpin.Name = "buttonSpin";
-            this.buttonSpin.Size = new System.Drawing.Size(75, 23);
-            this.buttonSpin.TabIndex = 11;
-            this.buttonSpin.Text = "Spin";
-            this.buttonSpin.UseVisualStyleBackColor = true;
-            this.buttonSpin.Click += new System.EventHandler(this.buttonSpin_Click);
-            // 
             // buttonUp
             // 
             this.buttonUp.Location = new System.Drawing.Point(87, 20);
@@ -374,11 +367,42 @@
             this.buttonUp.UseVisualStyleBackColor = true;
             this.buttonUp.Click += new System.EventHandler(this.buttonUp_Click);
             // 
+            // buttonSpin
+            // 
+            this.buttonSpin.Location = new System.Drawing.Point(6, 20);
+            this.buttonSpin.Name = "buttonSpin";
+            this.buttonSpin.Size = new System.Drawing.Size(75, 23);
+            this.buttonSpin.TabIndex = 11;
+            this.buttonSpin.Text = "Spin";
+            this.buttonSpin.UseVisualStyleBackColor = true;
+            this.buttonSpin.Click += new System.EventHandler(this.buttonSpin_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.buttonRS8);
+            this.groupBox4.Location = new System.Drawing.Point(283, 167);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(308, 171);
+            this.groupBox4.TabIndex = 6;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Vision";
+            // 
+            // buttonRS8
+            // 
+            this.buttonRS8.Location = new System.Drawing.Point(25, 20);
+            this.buttonRS8.Name = "buttonRS8";
+            this.buttonRS8.Size = new System.Drawing.Size(75, 23);
+            this.buttonRS8.TabIndex = 13;
+            this.buttonRS8.Text = "RS8";
+            this.buttonRS8.UseVisualStyleBackColor = true;
+            this.buttonRS8.Click += new System.EventHandler(this.buttonRS8_Click);
+            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 397);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -390,6 +414,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -426,5 +451,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button buttonSpin;
         private System.Windows.Forms.Button buttonUp;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button buttonRS8;
     }
 }

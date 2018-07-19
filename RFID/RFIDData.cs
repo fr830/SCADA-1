@@ -213,6 +213,8 @@ namespace RFID
         public EnumAssemble Assemble { get; set; }
         public IList<ProcessData> ProcessDataList { get; set; }
 
+        public bool IsRough { get { return GetProcessSite() == EnumPSite.None; } }
+
         private RFIDData(Guid guid)
         {
             Guid = guid;

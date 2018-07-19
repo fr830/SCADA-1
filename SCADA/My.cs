@@ -88,12 +88,22 @@ namespace SCADA
         public static string ManufactureID { get; private set; }
 
         /// <summary>
+        /// 工件ID字典
+        /// Key：工件类型
+        /// Value：类型ID
+        /// </summary>
+        public static Dictionary<EnumWorkpiece, string> WorkpieceIDs { get; private set; }
+
+        /// <summary>
         /// 数据系统字典
         /// Key：编号，从0开始，0表示PLC
         /// Value：MachineTool
         /// </summary>
         public static Dictionary<int, MachineTool> MachineTools { get; private set; }
 
+        /// <summary>
+        /// PLC
+        /// </summary>
         public static MachineTool PLC
         {
             get
@@ -114,26 +124,34 @@ namespace SCADA
         public static Dictionary<EnumPSite, RFIDReader> RFIDs { get; private set; }
 
         /// <summary>
-        /// 产线
-        /// </summary>
-        public static Work_RFID Work_RFID { get; private set; }
-
-        /// <summary>
         /// PLC
         /// </summary>
         public static Work_PLC Work_PLC { get; private set; }
 
         /// <summary>
-        /// 三维仿真
+        /// 产线
         /// </summary>
-        public static Work_Simulation Work_Simulation { get; private set; }
+        public static Work_RFID Work_RFID { get; private set; }
 
         /// <summary>
         /// WMS
         /// </summary>
         public static Work_WMS Work_WMS { get; private set; }
 
+        /// <summary>
+        /// MES
+        /// </summary>
         public static Work_MES Work_MES { get; private set; }
+
+        /// <summary>
+        /// 视觉
+        /// </summary>
+        public static Work_Vision Work_Vision { get; private set; }
+
+        /// <summary>
+        /// 三维仿真
+        /// </summary>
+        public static Work_Simulation Work_Simulation { get; private set; }
 
         /// <summary>
         /// 初始化数据库
@@ -166,22 +184,21 @@ namespace SCADA
             };
             BLL.TLocation.Insert(location, AdminID);
             LocationID = location.ID;
-            BLL.SettingAdd(AdminID, "SelectedLocation", LocationID);
-            string[] wpNames = { "A", "B", "C", "D", "E" };
+            BLL.SettingAdd(AdminID, "SelectedLocation", LocationID, "TLocation");
+            var wps = Enum.GetValues(typeof(EnumWorkpiece)).Cast<EnumWorkpiece>().ToArray();
             string[] wpDescriptions = { "小圆", "中圆", "大圆", "底座", "装配成品" };
-            var workpieceIDs = new List<string>();
-            for (int i = 0; i < wpNames.Length; i++)
+            for (int i = 0; i < wps.Length; i++)
             {
                 var workpiece = new TWorkpiece
                 {
                     LocationID = LocationID,
-                    Name = wpNames[i],
+                    Name = Enum.GetName(typeof(EnumWorkpiece), wps[i]),
                     Type = EnumHelper.GetName(TWorkpiece.EnumType.默认),
                     State = EnumHelper.GetName(TWorkpiece.EnumState.正常),
                     Description = wpDescriptions[i],
                 };
                 BLL.TWorkpiece.Insert(workpiece, AdminID);
-                workpieceIDs.Add(workpiece.ID);
+                WorkpieceIDs.Add(wps[i], workpiece.ID);
             }
             var manufacture = new TManufacture
             {
@@ -190,11 +207,11 @@ namespace SCADA
                 Type = EnumHelper.GetName(TManufacture.EnumType.默认),
                 State = EnumHelper.GetName(TManufacture.EnumState.停止),
                 Description = ManufactureName,
-                WorkpieceID = workpieceIDs.LastOrDefault(),
+                WorkpieceID = WorkpieceIDs[EnumWorkpiece.E],
             };
             BLL.TManufacture.Insert(manufacture, AdminID);
             ManufactureID = manufacture.ID;
-            foreach (var wpid in workpieceIDs)
+            foreach (var wpid in WorkpieceIDs.Values.ToArray())
             {
                 var mw = new TManufactureWorkpiece
                 {
@@ -252,7 +269,9 @@ namespace SCADA
                 BLL = BLLCustom.Instance;
                 AdminID = BLL.GetUserIDByUsername("admin");
                 OnPartCompleted("数据库连接成功", 20);
+
                 LocationID = BLL.GetLocationIDByLocationName(LocationName);
+                WorkpieceIDs = new Dictionary<EnumWorkpiece, string>();
                 if (string.IsNullOrWhiteSpace(LocationID))
                 {
                     InitializeDB();
@@ -260,6 +279,15 @@ namespace SCADA
                 else
                 {
                     ManufactureID = BLL.TManufacture.GetModel(Tool.CreateDict("Name", ManufactureName)).ID;
+                    var wpList = BLL.TWorkpiece.GetList(Tool.CreateDict("LocationID", LocationID));
+                    foreach (var item in wpList)
+                    {
+                        EnumWorkpiece wp;
+                        if (Enum.TryParse<EnumWorkpiece>(item.Name, true, out wp))
+                        {
+                            WorkpieceIDs.Add(wp, item.ID);
+                        }
+                    }
                 }
                 if (!string.IsNullOrWhiteSpace(LocationID))
                 {
@@ -269,6 +297,7 @@ namespace SCADA
                 {
                     OnPartCompleted("数据库初始化失败！", 30);
                 }
+
                 var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
                 MachineTools = new Dictionary<int, MachineTool>();
                 for (int i = 0; i < macIPs.Length; i++)
@@ -291,6 +320,7 @@ namespace SCADA
                     }
                 }
                 OnPartCompleted("数控系统连接成功", 40);
+
                 var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
                 RFIDs = new Dictionary<EnumPSite, RFIDReader>();
                 RFIDs.Add(EnumPSite.S1, new RFIDReader(EnumPSite.S1, rfidIPs[0]));
@@ -303,14 +333,18 @@ namespace SCADA
                 RFIDs.Add(EnumPSite.S8_Down, new RFIDReader((EnumPSite.S8_Down), rfidIPs[7]));
                 RFIDs.Add(EnumPSite.S9_Manual, new RFIDReader((EnumPSite.S9_Manual), rfidIPs[8]));
                 OnPartCompleted("RFID连接成功", 60);
+
                 Work_PLC = Work_PLC.Instance;
                 Work_RFID = Work_RFID.Instance;
-                Work_Simulation = Work_Simulation.Instance;
                 Work_WMS = Work_WMS.Instance;
                 Work_MES = Work_MES.Instance;
+                Work_Simulation = Work_Simulation.Instance;
+                Work_Vision = Work_Vision.Instance;
                 OnPartCompleted("后台服务连接成功", 80);
+
                 Initialized = true;
                 OnPartCompleted("系统加载完成", 98);
+
                 await Task.Delay(1000);
                 OnAllCompleted("即将进入总控界面");
             });

@@ -16,13 +16,16 @@ namespace SCADA
 
         private Work_RFID()
         {
-            My.Work_PLC.Read_IsRequested += Read_IsRequested;
-            My.Work_PLC.Write_Process_Success_IsRequested += Write_Process_Success_IsRequested;
-            My.Work_PLC.Write_Process_Failure_IsRequested += Write_Process_Failure_IsRequested;
-            My.Work_PLC.Entry_IsRequested += Entry_IsRequested;
+            My.Work_PLC.ProcessRead += ProcessRead;
+            My.Work_PLC.ProcessWriteSuccess += ProcessWriteSuccess;
+            My.Work_PLC.ProcessWriteFailure += ProcessWriteFailure;
+            My.Work_PLC.AssembleRead += AssembleRead;
+            My.Work_PLC.AssembleWriteSuccess += AssembleWriteSuccess;
+            My.Work_PLC.AssembleWriteFailure += AssembleWriteFailure;
+            My.Work_PLC.AlignmentRead += AlignmentRead;
         }
 
-        void Read_IsRequested(object sender, RFIDEventArgs e)
+        void ProcessRead(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
@@ -42,7 +45,7 @@ namespace SCADA
             My.PLC.BitSet(e.Index, Work_PLC.WpBitDict[data.Workpiece]);
         }
 
-        void Write_Process_Success_IsRequested(object sender, RFIDEventArgs e)
+        void ProcessWriteSuccess(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
@@ -51,7 +54,7 @@ namespace SCADA
             My.PLC.BitSet(e.Index, 12);
         }
 
-        void Write_Process_Failure_IsRequested(object sender, RFIDEventArgs e)
+        void ProcessWriteFailure(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
@@ -60,7 +63,45 @@ namespace SCADA
             My.PLC.BitSet(e.Index, 12);
         }
 
-        void Entry_IsRequested(object sender, RFIDEventArgs e)
+        void AssembleRead(object sender, PLCEventArgs e)
+        {
+            var data = My.RFIDs[e.Site].Read();
+            if (data == null) return;
+            My.PLC.BitSet(e.Index, 1);
+            if (data.Assemble == EnumAssemble.Wanted)
+            {
+                My.PLC.BitSet(e.Index, 2);
+            }
+            else
+            {
+                My.PLC.BitSet(e.Index, 3);
+            }
+            for (int i = 4; i < 9; i++)
+            {
+                My.PLC.BitClear(e.Index, i);
+            }
+            My.PLC.BitSet(e.Index, Work_PLC.WpBitDict[data.Workpiece]);
+        }
+
+        private void AssembleWriteSuccess(object sender, PLCEventArgs e)
+        {
+            var data = My.RFIDs[e.Site].Read();
+            if (data == null) return;
+            data.Assemble = EnumAssemble.Successed;
+            My.RFIDs[e.Site].Write(data);
+            My.PLC.BitSet(e.Index, 12);
+        }
+
+        private void AssembleWriteFailure(object sender, PLCEventArgs e)
+        {
+            var data = My.RFIDs[e.Site].Read();
+            if (data == null) return;
+            data.Assemble = EnumAssemble.Failed;
+            My.RFIDs[e.Site].Write(data);
+            My.PLC.BitSet(e.Index, 12);
+        }
+
+        void AlignmentRead(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;

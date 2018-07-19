@@ -171,6 +171,7 @@
     </Compile>
     <Compile Include="Win32Api.cs" />
     <Compile Include="Work_Simulation.cs" />
+    <Compile Include="Work_Vision.cs" />
     <Compile Include="Work_WMS.cs" />
     <Compile Include="_Layout.cs">
       <SubType>Form</SubType>
