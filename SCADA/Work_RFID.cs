@@ -106,29 +106,45 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.BitSet(e.Index, 1);
-            if (data.GetProcessSite() != EnumPSite.None)
+            if (data.IsRough)
             {
-                My.PLC.BitSet(e.Index, 4);//非入库料盘
+                My.PLC.BitSet(e.Index, 4);
             }
-            else if (data.Assemble == EnumAssemble.Wanted)
+            else
             {
-                My.PLC.BitSet(e.Index, 4);//非入库料盘
-            }
-            else if (data.Assemble == EnumAssemble.Unwanted)
-            {
-                My.PLC.BitSet(e.Index, 5);//入库料盘_清洗模式
-            }
-            else if (data.Assemble == EnumAssemble.Successed || data.Assemble == EnumAssemble.Failed)
-            {
-                if (data.Workpiece == EnumWorkpiece.E)
+                switch (data.Assemble)
                 {
-                    My.PLC.BitSet(e.Index, 3);//入库装配体_装配模式
-                }
-                else
-                {
-                    My.PLC.BitSet(e.Index, 2);//入库空盘_装配模式
+                    case EnumAssemble.Unwanted:
+                        if (data.Workpiece != EnumWorkpiece.E)
+                        {
+                            My.PLC.BitSet(e.Index, 2);
+                        }
+                        else
+                        {
+                            My.PLC.BitSet(e.Index, 3);
+                        }
+                        break;
+                    case EnumAssemble.Wanted:
+                        My.PLC.BitSet(e.Index, 4);
+                        break;
+                    case EnumAssemble.Successed:
+                        if (data.Workpiece != EnumWorkpiece.E)
+                        {
+                            My.PLC.BitSet(e.Index, 2);
+                        }
+                        else
+                        {
+                            My.PLC.BitSet(e.Index, 3);
+                        }
+                        break;
+                    case EnumAssemble.Failed:
+                        My.PLC.BitSet(e.Index, 4);
+                        break;
+                    default:
+                        break;
                 }
             }
+            
         }
 
 
