@@ -35,6 +35,10 @@ namespace SCADA
             {
                 //TODO：提示用户，重新发起 请求入库B11.2
             }
+            else
+            {
+                My.PLC.Set(11, 3);
+            }
         }
 
         void PermitOut(object sender, PLCEventArgs e)

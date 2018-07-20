@@ -68,11 +68,11 @@ namespace SCADA
         /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
-            return new Task(() =>
+            return new Task(async () =>
             {
                 while (!token.IsCancellationRequested)
                 {
-                    Thread.Sleep(500);
+                    await Task.Delay(1000);
                     if (My.PLC.Exist(1, 0))//请求相机拍照
                     {
                         My.PLC.Clear(1, 0);

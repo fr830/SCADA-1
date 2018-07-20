@@ -68,7 +68,11 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.Set(e.Index, 1);//读取成功
-            if (data.Assemble == EnumAssemble.Wanted && data.Clean == EnumClean.Wanted)
+            if (data.IsRough)
+            {
+                My.PLC.Set(e.Index, 3);//工件不符合当前工位
+            }
+            else if (data.Assemble == EnumAssemble.Wanted && data.Clean == EnumClean.Wanted)
             {
                 My.PLC.Set(10, 0);//装配
                 My.PLC.Set(10, 1);//清洗
@@ -152,7 +156,6 @@ namespace SCADA
             {
                 My.PLC.Set(e.Index, 2);//入库料盘
             }
-
         }
 
 

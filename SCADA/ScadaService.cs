@@ -62,7 +62,7 @@ namespace SCADA
                 pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
                 pc.LocationID = My.LocationID;
                 pc.ManufactureID = My.ManufactureID;
-                pc.WorkpieceID = My.BLL.TWorkpiece.GetModel(Tool.CreateDict("Name", type.ToUpper())).ID;
+                pc.WorkpieceID = My.WorkpieceIDs[workpiece];
                 My.BLL.TWorkpieceProcess.Insert(pc, My.AdminID);
                 var guid = new Guid(pc.ID);
                 if (My.RFIDs[EnumPSite.S9_Manual].Init(guid, workpiece))
@@ -132,43 +132,51 @@ namespace SCADA
             {
                 return SvResult.RFIDReadFail;
             }
-            #region 修改订单明细，增加完成数量
-            var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
-            pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
-            My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
-            var order = GetExecOrder();
-            if (order == null)
+            try
             {
-                return SvResult.OrderNullError;
-            }
-            foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
-            {
-                if (My.WorkpieceIDs[data.Workpiece] == detail.WorkpieceID
-                    && detail.QuantityCompletion < detail.QuantityDemanded)
+                #region 修改订单明细，增加完成数量
+                var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
+                pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
+                My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
+                var order = GetExecOrder();
+                if (order == null)
                 {
-                    detail.EndTime = DateTime.Now;
-                    detail.QuantityCompletion++;
-                    My.BLL.TOrderDetail.Update(detail, My.AdminID);
-                    break;
+                    return SvResult.OrderNullError;
                 }
-            }
-            #endregion
-            #region 检查订单是否已完成
-            var allFinish = true;
-            foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
-            {
-                if (detail.QuantityCompletion < detail.QuantityDemanded)
+                foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
                 {
-                    allFinish = false;
-                    break;
+                    if (My.WorkpieceIDs[data.Workpiece] == detail.WorkpieceID
+                        && detail.QuantityCompletion < detail.QuantityDemanded)
+                    {
+                        detail.EndTime = DateTime.Now;
+                        detail.QuantityCompletion++;
+                        My.BLL.TOrderDetail.Update(detail, My.AdminID);
+                        break;
+                    }
                 }
+                #endregion
+                #region 检查订单是否已完成
+                var allFinish = true;
+                foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
+                {
+                    if (detail.QuantityCompletion < detail.QuantityDemanded)
+                    {
+                        allFinish = false;
+                        break;
+                    }
+                }
+                if (allFinish)
+                {
+                    order.State = EnumHelper.GetName(TOrder.EnumState.完成);
+                    My.BLL.TOrder.Update(order, My.AdminID);
+                }
+                #endregion
             }
-            if (allFinish)
+            catch (Exception)
             {
-                order.State = EnumHelper.GetName(TOrder.EnumState.完成);
-                My.BLL.TOrder.Update(order, My.AdminID);
+                //TODO
+                //throw;
             }
-            #endregion
             Task.Run(() =>
             {
                 var wmsData = new WMSData(Enum.GetName(typeof(EnumWorkpiece), data.Workpiece), data.Assemble == EnumAssemble.Unwanted ? 1 : 0, data.Guid.ToString());
@@ -196,46 +204,55 @@ namespace SCADA
             {
                 My.Work_Vision.RFIDData = data;
             }
-            #region 根据订单内容，修改标签数据，是否装配
-            var order = GetExecOrder();
-            if (order == null)
+            try
             {
-                return SvResult.OrderNullError;
-            }
-            foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
-            {
-                if (My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID) == EnumHelper.GetName(EnumWorkpiece.E))
+                #region 根据订单内容，修改标签数据，是否装配
+                var order = GetExecOrder();
+                if (order == null)
                 {
-                    if (data.Assemble == EnumAssemble.Unwanted)
+                    return SvResult.OrderNullError;
+                }
+                foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
+                {
+                    if (My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID) == EnumHelper.GetName(EnumWorkpiece.E))
                     {
-                        data.Assemble = EnumAssemble.Wanted;
-                        if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                        if (data.Assemble == EnumAssemble.Unwanted)
                         {
-                            return SvResult.OK;
+                            data.Assemble = EnumAssemble.Wanted;
+                            if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                            {
+                                return SvResult.OK;
+                            }
+                            else
+                            {
+                                return SvResult.RFIDWriteFail;
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (data.Assemble == EnumAssemble.Wanted)
                         {
-                            return SvResult.RFIDWriteFail;
+                            data.Assemble = EnumAssemble.Unwanted;
+                            if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                            {
+                                return SvResult.OK;
+                            }
+                            else
+                            {
+                                return SvResult.RFIDWriteFail;
+                            }
                         }
                     }
                 }
-                else
-                {
-                    if (data.Assemble == EnumAssemble.Wanted)
-                    {
-                        data.Assemble = EnumAssemble.Unwanted;
-                        if (My.RFIDs[EnumPSite.S8_Down].Write(data))
-                        {
-                            return SvResult.OK;
-                        }
-                        else
-                        {
-                            return SvResult.RFIDWriteFail;
-                        }
-                    }
-                }
+                #endregion
             }
-            #endregion
+            catch (Exception)
+            {
+                //TODO
+                //throw;
+            }
+            My.PLC.Set(11, 0);
             return SvResult.OK;
         }
     }
