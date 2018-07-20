@@ -130,6 +130,12 @@
   <ItemGroup>
     <Compile Include="Common.cs" />
     <Compile Include="ControlExtensions.cs" />
+    <Compile Include="UserControl_Vision.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl_Vision.Designer.cs">
+      <DependentUpon>UserControl_Vision.cs</DependentUpon>
+    </Compile>
     <Compile Include="Work_MES.cs" />
     <Compile Include="Work_PLC.cs" />
     <Compile Include="Debug.cs">

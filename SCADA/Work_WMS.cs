@@ -25,15 +25,23 @@ namespace SCADA
         {
             RunScadaService();
             //Start();
-            My.Work_PLC.WorkpieceIn += In_IsRequested;
+            My.Work_PLC.RequestIn += RequestIn;
+            My.Work_PLC.PermitOut += PermitOut;
         }
 
-        void In_IsRequested(object sender, EventArgs e)
+        void RequestIn(object sender, PLCEventArgs e)
         {
-            var result = Spin();
-            if (result.code == "0")
+            if (!SpinIn().IsOK)
             {
+                //TODO：提示用户，重新发起 请求入库B11.2
+            }
+        }
 
+        void PermitOut(object sender, PLCEventArgs e)
+        {
+            if (!SpinOut().IsOK)
+            {
+                //TODO：提示用户，重新发起 出库许可B11.1
             }
         }
 
@@ -69,9 +77,9 @@ namespace SCADA
                     return JsonConvert.DeserializeObject<WMSResult>(str);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new WMSResult { code = "-1", msg = ex.Message };
+                return WMSResult.Error;
                 //throw;
             }
         }
@@ -97,12 +105,30 @@ namespace SCADA
         }
 
         /// <summary>
+        /// 皮带线运行
+        /// </summary>
+        /// <returns></returns>
+        public WMSResult Spin(SpinData data)
+        {
+            return WMSPost(ConfigurationManager.AppSettings["WMSSpin"], JsonConvert.SerializeObject(data));
+        }
+
+        /// <summary>
         /// 入库皮带线运行
         /// </summary>
         /// <returns></returns>
-        public WMSResult Spin()
+        public WMSResult SpinIn()
         {
-            return WMSPost(ConfigurationManager.AppSettings["WMSSpin"], string.Empty);
+            return Spin(new SpinData { site = "1" });
+        }
+
+        /// <summary>
+        /// 出库皮带线运行
+        /// </summary>
+        /// <returns></returns>
+        public WMSResult SpinOut()
+        {
+            return Spin(new SpinData { site = "2" });
         }
 
 
@@ -162,6 +188,17 @@ namespace SCADA
     }
 
     /// <summary>
+    /// 皮带线数据
+    /// </summary>
+    public class SpinData
+    {
+        /// <summary>
+        /// 1为入库，2为出库
+        /// </summary>
+        public string site { get; set; }
+    }
+
+    /// <summary>
     /// 入库数据
     /// </summary>
     public class WMSData
@@ -177,7 +214,7 @@ namespace SCADA
         public string trayId { get; set; }
 
         /// <summary>
-        /// 0空盘 1半成品
+        /// 0空盘 1有料
         /// </summary>
         public int quantity { get; set; }
 
@@ -191,11 +228,16 @@ namespace SCADA
 
     public class WMSResult
     {
-        public string code { get; set; }
+        public long code { get; set; }
 
         public string msg { get; set; }
 
-        public string data { get; set; }
+        public object data { get; set; }
+
+        public bool IsOK
+        {
+            get { return code == 0; }
+        }
 
         public static WMSResult Error
         {
@@ -203,8 +245,20 @@ namespace SCADA
             {
                 return new WMSResult
                 {
-                    code = "-1",
+                    code = -1,
                     msg = "请求解析错误"
+                };
+            }
+        }
+
+        public static WMSResult OK
+        {
+            get
+            {
+                return new WMSResult
+                {
+                    code = 0,
+                    msg = "操作成功！"
                 };
             }
         }

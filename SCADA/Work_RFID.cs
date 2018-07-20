@@ -29,20 +29,20 @@ namespace SCADA
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
-            My.PLC.BitSet(e.Index, 1);
+            My.PLC.Set(e.Index, 1);//读取成功
             if (data.GetProcessSite() == e.Site)
             {
-                My.PLC.BitSet(e.Index, 2);
+                My.PLC.Set(e.Index, 2);//工件符合当前工位
             }
             else
             {
-                My.PLC.BitSet(e.Index, 3);
+                My.PLC.Set(e.Index, 3);//工件不符合当前工位
             }
             for (int i = 4; i < 9; i++)
             {
-                My.PLC.BitClear(e.Index, i);
+                My.PLC.Clear(e.Index, i);
             }
-            My.PLC.BitSet(e.Index, Work_PLC.WpBitDict[data.Workpiece]);
+            My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
         }
 
         void ProcessWriteSuccess(object sender, PLCEventArgs e)
@@ -51,7 +51,7 @@ namespace SCADA
             if (data == null) return;
             data.SetProcessResult(EnumPResult.Successed);
             My.RFIDs[e.Site].Write(data);
-            My.PLC.BitSet(e.Index, 12);
+            My.PLC.Set(e.Index, 12);//写入完成
         }
 
         void ProcessWriteFailure(object sender, PLCEventArgs e)
@@ -60,91 +60,99 @@ namespace SCADA
             if (data == null) return;
             data.SetProcessResult(EnumPResult.Failed);
             My.RFIDs[e.Site].Write(data);
-            My.PLC.BitSet(e.Index, 12);
+            My.PLC.Set(e.Index, 12);//写入完成
         }
 
         void AssembleRead(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
-            My.PLC.BitSet(e.Index, 1);
-            if (data.Assemble == EnumAssemble.Wanted)
+            My.PLC.Set(e.Index, 1);//读取成功
+            if (data.Assemble == EnumAssemble.Wanted && data.Clean == EnumClean.Wanted)
             {
-                My.PLC.BitSet(e.Index, 2);
+                My.PLC.Set(10, 0);//装配
+                My.PLC.Set(10, 1);//清洗
+                My.PLC.Set(e.Index, 2);//工件符合当前工位
+            }
+            else if (data.Assemble == EnumAssemble.Unwanted && data.Clean == EnumClean.Wanted)
+            {
+                My.PLC.Clear(10, 0);//不装配
+                My.PLC.Set(10, 1);//清洗
+                My.PLC.Set(e.Index, 2);//工件符合当前工位
+            }
+            else if (data.Assemble == EnumAssemble.Wanted && data.Clean == EnumClean.Unwanted)
+            {
+                My.PLC.Set(10, 0);//装配
+                My.PLC.Clear(10, 1);//不清洗
+                My.PLC.Set(e.Index, 2);//工件符合当前工位
             }
             else
             {
-                My.PLC.BitSet(e.Index, 3);
+                My.PLC.Clear(10, 0);//不装配
+                My.PLC.Clear(10, 1);//不清洗
+                My.PLC.Set(e.Index, 3);//工件不符合当前工位
             }
             for (int i = 4; i < 9; i++)
             {
-                My.PLC.BitClear(e.Index, i);
+                My.PLC.Clear(e.Index, i);
             }
-            My.PLC.BitSet(e.Index, Work_PLC.WpBitDict[data.Workpiece]);
+            My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
         }
 
-        private void AssembleWriteSuccess(object sender, PLCEventArgs e)
+        void AssembleWriteSuccess(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
-            data.Assemble = EnumAssemble.Successed;
+            if (data.Assemble == EnumAssemble.Wanted)
+            {
+                data.Assemble = EnumAssemble.Successed;
+            }
+            if (data.Clean == EnumClean.Wanted)
+            {
+                data.Clean = EnumClean.Successed;
+            }
             My.RFIDs[e.Site].Write(data);
-            My.PLC.BitSet(e.Index, 12);
+            My.PLC.Set(e.Index, 12);//写入完成
         }
 
-        private void AssembleWriteFailure(object sender, PLCEventArgs e)
+        void AssembleWriteFailure(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
-            data.Assemble = EnumAssemble.Failed;
+            if (data.Assemble == EnumAssemble.Wanted)
+            {
+                data.Assemble = EnumAssemble.Failed;
+            }
+            if (data.Clean == EnumClean.Wanted)
+            {
+                data.Clean = EnumClean.Failed;
+            }
             My.RFIDs[e.Site].Write(data);
-            My.PLC.BitSet(e.Index, 12);
+            My.PLC.Set(e.Index, 12);//写入完成
         }
 
         void AlignmentRead(object sender, PLCEventArgs e)
         {
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
-            My.PLC.BitSet(e.Index, 1);
+            My.PLC.Set(e.Index, 1);//读取成功
             if (data.IsRough)
             {
-                My.PLC.BitSet(e.Index, 4);
+                My.PLC.Set(e.Index, 4);//非入库料盘
+            }
+            else if (data.Assemble == EnumAssemble.Wanted)
+            {
+                My.PLC.Set(e.Index, 4);//非入库料盘
+            }
+            else if (data.Workpiece == EnumWorkpiece.E)
+            {
+                My.PLC.Set(e.Index, 3);//入库装配体
             }
             else
             {
-                switch (data.Assemble)
-                {
-                    case EnumAssemble.Unwanted:
-                        if (data.Workpiece != EnumWorkpiece.E)
-                        {
-                            My.PLC.BitSet(e.Index, 2);
-                        }
-                        else
-                        {
-                            My.PLC.BitSet(e.Index, 3);
-                        }
-                        break;
-                    case EnumAssemble.Wanted:
-                        My.PLC.BitSet(e.Index, 4);
-                        break;
-                    case EnumAssemble.Successed:
-                        if (data.Workpiece != EnumWorkpiece.E)
-                        {
-                            My.PLC.BitSet(e.Index, 2);
-                        }
-                        else
-                        {
-                            My.PLC.BitSet(e.Index, 3);
-                        }
-                        break;
-                    case EnumAssemble.Failed:
-                        My.PLC.BitSet(e.Index, 4);
-                        break;
-                    default:
-                        break;
-                }
+                My.PLC.Set(e.Index, 2);//入库料盘
             }
-            
+
         }
 
 

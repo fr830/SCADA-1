@@ -172,6 +172,10 @@ namespace SCADA
             Task.Run(() =>
             {
                 var wmsData = new WMSData(Enum.GetName(typeof(EnumWorkpiece), data.Workpiece), data.Assemble == EnumAssemble.Unwanted ? 1 : 0, data.Guid.ToString());
+                if (data.Workpiece == EnumWorkpiece.E)
+                {
+                    wmsData.quantity = data.Assemble == EnumAssemble.Successed ? 1 : 0;
+                }
                 My.Work_WMS.In(wmsData);
             });
             return SvResult.OK;

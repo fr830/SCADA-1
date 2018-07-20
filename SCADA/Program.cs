@@ -35,7 +35,7 @@ namespace SCADA
         {
             MessageBox.Show(e.Exception.ToString(), "线程异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #if !DEBUG
-            Environment.Exit(2);
+            //Environment.Exit(2);
 #endif
         }
 
@@ -43,7 +43,7 @@ namespace SCADA
         {
             MessageBox.Show((e.ExceptionObject as Exception).ToString(), "未处理的异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #if !DEBUG
-            Environment.Exit(1);
+            //Environment.Exit(1);
 #endif
         }
 

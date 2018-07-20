@@ -157,7 +157,7 @@ namespace HNC
             return Publish(type, index, bit, NCMessageFunction.REG_CLR);
         }
 
-        public bool BitExist(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
+        public bool Exist(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
             int value = 0;
             if (HNC_RegGetValue(type, index, out value))
@@ -167,12 +167,12 @@ namespace HNC
             return false;
         }
 
-        public bool BitSet(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
+        public bool Set(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
             return HNC_RegSetBit(type, index, bit);
         }
 
-        public bool BitClear(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
+        public bool Clear(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
             return HNC_RegClrBit(type, index, bit);
         }

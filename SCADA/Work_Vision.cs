@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Configuration;
 
 namespace SCADA
 {
@@ -13,6 +14,10 @@ namespace SCADA
         private static readonly Lazy<Work_Vision> lazy = new Lazy<Work_Vision>(() => new Work_Vision());
 
         public static Work_Vision Instance { get { return lazy.Value; } }
+
+        public IPAddress IP { get { return IPAddress.Parse(ConfigurationManager.AppSettings["VisionIP"]); } }
+
+        public int Port { get { return int.Parse(ConfigurationManager.AppSettings["VisionPort"]); } }
 
         public TcpListener TcpListener { get; private set; }
 
@@ -23,14 +28,29 @@ namespace SCADA
         private Work_Vision()
         {
             //ListenerConnect();
-            ClientConnect();
+            ClientConnectAsync();
         }
 
-        private async void ClientConnect()
+        private async void ClientConnectAsync()
         {
             TcpClient = new TcpClient();
-            await TcpClient.ConnectAsync(IPAddress.Parse("192.168.1.144"), 41160);
-            My.Work_PLC.Camera += Camera_IsRequested;
+            await Task.Run(async () =>
+            {
+                while (!TcpClient.Connected)
+                {
+                    try
+                    {
+                        TcpClient.Connect(IP, Port);
+                    }
+                    catch (Exception)
+                    {
+                        //TODO提示用户视觉连接失败
+                        //throw;
+                    }
+                    await Task.Delay(2000);
+                }
+            });
+            My.Work_PLC.Photograph += Photograph;
         }
 
         private async void ListenerConnect()
@@ -38,10 +58,10 @@ namespace SCADA
             TcpListener = new TcpListener(IPAddress.Any, 41160);
             TcpListener.Start();
             TcpClient = await TcpListener.AcceptTcpClientAsync();
-            My.Work_PLC.Camera += Camera_IsRequested;
+            My.Work_PLC.Photograph += Photograph;
         }
 
-        public void Camera_IsRequested(object sender, PLCEventArgs e)
+        public void Photograph(object sender, PLCEventArgs e)
         {
             byte[] buffer = new byte[16];
             if (TcpClient == null || !TcpClient.Connected)
@@ -51,7 +71,7 @@ namespace SCADA
             TcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
             int count = TcpClient.Client.Receive(buffer);
             var text = Encoding.UTF8.GetString(buffer);
-            My.PLC.BitSet(e.Index, 1);
+            My.PLC.Set(e.Index, 1);
             if (RFIDData == null || count != 8)
             {
                 return;
@@ -61,57 +81,57 @@ namespace SCADA
                 case RFID.EnumWorkpiece.A:
                     if (RFIDData.IsRough && text == Rough_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else if (!RFIDData.IsRough && text == Semi_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else
                     {
-                        My.PLC.BitSet(e.Index, 3);
+                        My.PLC.Set(e.Index, 3);//工件不匹配
                     }
                     break;
                 case RFID.EnumWorkpiece.B:
                     if (RFIDData.IsRough && text == Rough_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else if (!RFIDData.IsRough && text == Semi_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else
                     {
-                        My.PLC.BitSet(e.Index, 3);
+                        My.PLC.Set(e.Index, 3);//工件不匹配
                     }
                     break;
                 case RFID.EnumWorkpiece.C:
                     if (RFIDData.IsRough && text == Rough_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else if (!RFIDData.IsRough && text == Semi_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else
                     {
-                        My.PLC.BitSet(e.Index, 3);
+                        My.PLC.Set(e.Index, 3);//工件不匹配
                     }
                     break;
                 case RFID.EnumWorkpiece.D:
                     if (RFIDData.IsRough && text == Rough_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else if (!RFIDData.IsRough && text == Semi_A)
                     {
-                        My.PLC.BitSet(e.Index, 2);
+                        My.PLC.Set(e.Index, 2);//工件匹配
                     }
                     else
                     {
-                        My.PLC.BitSet(e.Index, 3);
+                        My.PLC.Set(e.Index, 3);//工件不匹配
                     }
                     break;
                 case RFID.EnumWorkpiece.E:

@@ -85,21 +85,21 @@ namespace SCADA
         private async void buttonRead_Click(object sender, EventArgs e)
         {
             buttonRead.Enabled = false;
-            await SetPLCResultAsync(My.PLC.BitExist(Index, Bit, RegType));
+            await SetPLCResultAsync(My.PLC.Exist(Index, Bit, RegType));
             buttonRead.Enabled = true;
         }
 
         private async void buttonWrite_Click(object sender, EventArgs e)
         {
             buttonWrite.Enabled = false;
-            await SetPLCResultAsync(My.PLC.BitSet(Index, Bit, RegType));
+            await SetPLCResultAsync(My.PLC.Set(Index, Bit, RegType));
             buttonWrite.Enabled = true;
         }
 
         private async void buttonClear_Click(object sender, EventArgs e)
         {
             buttonClear.Enabled = false;
-            await SetPLCResultAsync(My.PLC.BitClear(Index, Bit, RegType));
+            await SetPLCResultAsync(My.PLC.Clear(Index, Bit, RegType));
             buttonClear.Enabled = true;
         }
 
@@ -158,24 +158,38 @@ namespace SCADA
             buttonRFIDInit.Enabled = true;
         }
 
-        private async void buttonSpin_Click(object sender, EventArgs e)
+        private async void buttonSpinIn_Click(object sender, EventArgs e)
         {
-            buttonSpin.Enabled = false;
-            await Task.Run(() => My.Work_WMS.Spin());
-            buttonSpin.Enabled = true;
+            buttonSpinIn.Enabled = false;
+            await Task.Run(() => My.Work_WMS.SpinIn());
+            buttonSpinIn.Enabled = true;
         }
 
-        private async void buttonUp_Click(object sender, EventArgs e)
+        private async void buttonSpinOut_Click(object sender, EventArgs e)
         {
-            buttonUp.Enabled = false;
+            buttonSpinOut.Enabled = false;
+            await Task.Run(() => My.Work_WMS.SpinOut());
+            buttonSpinOut.Enabled = true;
+        }
+
+        private async void buttonIn_Click(object sender, EventArgs e)
+        {
+            buttonIn.Enabled = false;
             await Task.Run(() => My.Work_WMS.In(new WMSData("A", 1)));
-            buttonUp.Enabled = true;
+            buttonIn.Enabled = true;
+        }
+
+        private async void buttonOut_Click(object sender, EventArgs e)
+        {
+            buttonOut.Enabled = false;
+            await Task.Run(() => My.Work_WMS.Out(new List<WMSData> { new WMSData("A", 1) }));
+            buttonOut.Enabled = true;
         }
 
         private async void buttonRS8_Click(object sender, EventArgs e)
         {
             buttonRS8.Enabled = false;
-            await Task.Run(() => My.Work_Vision.Camera_IsRequested(null, new PLCEventArgs(EnumPSite.S8_Down, 1)));
+            await Task.Run(() => My.Work_Vision.Photograph(null, new PLCEventArgs(EnumPSite.S8_Down, 1)));
             buttonRS8.Enabled = true;
         }
     }

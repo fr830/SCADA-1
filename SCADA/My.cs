@@ -323,15 +323,10 @@ namespace SCADA
 
                 var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
                 RFIDs = new Dictionary<EnumPSite, RFIDReader>();
-                RFIDs.Add(EnumPSite.S1, new RFIDReader(EnumPSite.S1, rfidIPs[0]));
-                RFIDs.Add(EnumPSite.S2, new RFIDReader(EnumPSite.S2, rfidIPs[1]));
-                RFIDs.Add(EnumPSite.S3, new RFIDReader(EnumPSite.S3, rfidIPs[2]));
-                RFIDs.Add(EnumPSite.S4, new RFIDReader(EnumPSite.S4, rfidIPs[3]));
-                RFIDs.Add(EnumPSite.S5_Assemble, new RFIDReader(EnumPSite.S5_Assemble, rfidIPs[4]));
-                RFIDs.Add(EnumPSite.S6_Alignment, new RFIDReader(EnumPSite.S6_Alignment, rfidIPs[5]));
-                RFIDs.Add(EnumPSite.S7_Up, new RFIDReader((EnumPSite.S7_Up), rfidIPs[6]));
-                RFIDs.Add(EnumPSite.S8_Down, new RFIDReader((EnumPSite.S8_Down), rfidIPs[7]));
-                RFIDs.Add(EnumPSite.S9_Manual, new RFIDReader((EnumPSite.S9_Manual), rfidIPs[8]));
+                for (EnumPSite i = EnumPSite.S1; i <= EnumPSite.S9_Manual; i++)
+                {
+                    RFIDs.Add(i, new RFIDReader(i, rfidIPs[(int)i - 1]));
+                }
                 OnPartCompleted("RFID连接成功", 60);
 
                 Work_PLC = Work_PLC.Instance;
