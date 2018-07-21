@@ -29,6 +29,7 @@ namespace SCADA
         {
             //ListenerConnect();
             ClientConnectAsync();
+            My.Work_PLC.Photograph += Photograph;
         }
 
         private async void ClientConnectAsync()
@@ -50,7 +51,6 @@ namespace SCADA
                     await Task.Delay(2000);
                 }
             });
-            My.Work_PLC.Photograph += Photograph;
         }
 
         private async void ListenerConnect()
@@ -135,8 +135,10 @@ namespace SCADA
                     }
                     break;
                 case RFID.EnumWorkpiece.E:
+                    My.PLC.Set(e.Index, 2);//工件匹配
                     break;
                 default:
+                    My.PLC.Set(e.Index, 2);//工件匹配
                     break;
             }
         }

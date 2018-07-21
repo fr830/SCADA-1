@@ -21,6 +21,12 @@ namespace SCADA
 
         public static Work_WMS Instance { get { return lazy.Value; } }
 
+        public string WMSDownUri { get { return ConfigurationManager.AppSettings["WMSDown"]; } }
+
+        public string WMSUpUri { get { return ConfigurationManager.AppSettings["WMSUp"]; } }
+
+        public string WMSSpinUri { get { return ConfigurationManager.AppSettings["WMSSpin"]; } }
+
         private Work_WMS()
         {
             RunScadaService();
@@ -95,7 +101,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Out(IList<WMSData> list)
         {
-            return WMSPost(ConfigurationManager.AppSettings["WMSDown"], JsonConvert.SerializeObject(list));
+            return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list));
         }
 
         /// <summary>
@@ -105,7 +111,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult In(WMSData data)
         {
-            return WMSPost(ConfigurationManager.AppSettings["WMSUp"], JsonConvert.SerializeObject(data));
+            return WMSPost(WMSUpUri, JsonConvert.SerializeObject(data));
         }
 
         /// <summary>
@@ -114,7 +120,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Spin(SpinData data)
         {
-            return WMSPost(ConfigurationManager.AppSettings["WMSSpin"], JsonConvert.SerializeObject(data));
+            return WMSPost(WMSSpinUri, JsonConvert.SerializeObject(data));
         }
 
         /// <summary>

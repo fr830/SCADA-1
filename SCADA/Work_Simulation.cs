@@ -48,7 +48,7 @@ namespace SCADA
             });
         }
 
-        public async Task<bool> SendAsync<TEquipment>(TEquipment equipment) where TEquipment : Equipment
+        public async Task<bool> SendAsync(byte[] data)
         {
             if (TcpClient == null || !TcpClient.Connected)
             {
@@ -58,7 +58,7 @@ namespace SCADA
             {
                 try
                 {
-                    return TcpClient.Client.Send(CreateMessage(equipment)) > 0;
+                    return TcpClient.Client.Send(data) == data.Length;
                 }
                 catch (Exception)
                 {
@@ -68,7 +68,7 @@ namespace SCADA
             });
         }
 
-        private byte[] CreateMessage<TEquipment>(TEquipment equipment) where TEquipment : Equipment
+        public async Task<bool> SendAsync<TEquipment>(TEquipment equipment) where TEquipment : Equipment
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("&");
@@ -76,7 +76,8 @@ namespace SCADA
             sb.Append(",1,");
             sb.Append(equipment.ToString());
             sb.Append("#");
-            return Encoding.UTF8.GetBytes(sb.ToString());
+            var data = Encoding.UTF8.GetBytes(sb.ToString());
+            return await SendAsync(data);
         }
     }
 
@@ -101,7 +102,6 @@ namespace SCADA
         /// 获取动作参数
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="with"></param>
         /// <returns></returns>
         protected string GetActionParameterString(RFIDData data)
         {
@@ -243,7 +243,7 @@ namespace SCADA
     /// <summary>
     /// 码垛机
     /// </summary>
-    public class MDJ : Equipment
+    class MDJ : Equipment
     {
         public MDJ(RFIDData data, EnumActionType type)
             : base(data)

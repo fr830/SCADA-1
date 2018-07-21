@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SCADA;
 using RFID;
+using System.Net.Sockets;
+using System.Net;
 
 namespace Test
 {
@@ -12,19 +14,30 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"));
+            var messages = new List<string>
+            {
+                "&2018-07-05T05:45:09.116Z,1,CKX,1,123|4|A1#",
+                "&2018-07-05T05:45:09.116Z,1,AGV,2,123|4|A1#",
+                "&2018-07-05T05:45:09.116Z,1,JQR01,1,123|4|A1#",
+                "&2018-07-05T05:45:09.116Z,1,JQR04,1,A1#",
+                "&2018-07-05T05:45:09.116Z,1,JQR04,2,A2#",
+                "&2018-07-05T05:45:09.116Z,1,DSJ02,2,123|4|A2#",
+                "&2018-07-05T05:45:09.116Z,1,JQR04,3,A2#",
+                "&2018-07-05T05:45:09.116Z,1,JQR04,4,A3#",
+                "&2018-07-05T05:45:09.116Z,1,DSJ03,4,123|4|A3#",
+                "&2018-07-05T05:45:09.116Z,1,JQR05,1,A3#",
+                "&2018-07-05T05:45:09.116Z,1,JQR05,4,A4#",
+                "&2018-07-05T05:45:09.116Z,1,JQR02,8,A4#",
+                "&2018-07-05T05:45:09.116Z,1,JQR02,7,A4#",
+            };
 
-            Console.WriteLine(new CKX(RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A)));
+            var tcpClient = new TcpClient();
+            tcpClient.Connect(IPAddress.Parse("192.168.1.160"), 41170);
+            for (int i = 0; i < messages.Count; i++)
+            {
+                tcpClient.Client.Send(Encoding.UTF8.GetBytes(messages[i]));
+            }
 
-            //var item = new RFIDReader(EnumPSite.S3, "192.168.1.133");
-            //Console.ReadKey(true);
-            //Console.WriteLine(item.HFReader.ConnectStatus);
-            //if (item.HFReader.ConnectStatus == Sygole.HFReader.ConnectStatusEnum.CONNECTED)
-            //{
-            //    var data = Enumerable.Repeat<byte>(0xFF, 32).ToArray();
-            //    item.WriteBytes(data);
-            //    Console.WriteLine(item.ReadHexString());
-            //}
             Console.ReadKey(true);
         }
     }
