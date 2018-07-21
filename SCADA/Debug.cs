@@ -136,7 +136,6 @@ namespace SCADA
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
             if (item != null && Data != null)
             {
-                Data.Workpiece = (EnumWorkpiece)comboBoxWorkpiece.SelectedValue;
                 Data.Clean = (EnumClean)comboBoxClean.SelectedValue;
                 Data.Gauge = (EnumGauge)comboBoxGauge.SelectedValue;
                 Data.Assemble = (EnumAssemble)comboBoxAssemble.SelectedValue;

@@ -35,23 +35,13 @@ namespace SCADA
     {
         public static bool Initialized { get; private set; }
 
-        public static event EventHandler<MyInitializeEventArgs> PartCompleted;
+        public static event EventHandler<MyInitializeEventArgs> LoadCompleted;
 
-        private static void OnPartCompleted(string message, int value)
+        private static void OnLoadCompleted(string message, int value)
         {
-            if (PartCompleted != null)
+            if (LoadCompleted != null)
             {
-                PartCompleted(null, new MyInitializeEventArgs(message, value));
-            }
-        }
-
-        public static event EventHandler<MyInitializeEventArgs> AllCompleted;
-
-        private static void OnAllCompleted(string message)
-        {
-            if (AllCompleted != null)
-            {
-                AllCompleted(null, new MyInitializeEventArgs(message, 100));
+                LoadCompleted(null, new MyInitializeEventArgs(message, value));
             }
         }
 
@@ -268,7 +258,7 @@ namespace SCADA
             {
                 BLL = BLLCustom.Instance;
                 AdminID = BLL.GetUserIDByUsername("admin");
-                OnPartCompleted("数据库连接成功", 20);
+                OnLoadCompleted("数据库连接成功", 20);
 
                 LocationID = BLL.GetLocationIDByLocationName(LocationName);
                 WorkpieceIDs = new Dictionary<EnumWorkpiece, string>();
@@ -291,11 +281,11 @@ namespace SCADA
                 }
                 if (!string.IsNullOrWhiteSpace(LocationID))
                 {
-                    OnPartCompleted("数据库初始化成功", 30);
+                    OnLoadCompleted("数据库初始化成功", 30);
                 }
                 else
                 {
-                    OnPartCompleted("数据库初始化失败！", 30);
+                    OnLoadCompleted("数据库初始化失败！", 30);
                 }
 
                 var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
@@ -314,12 +304,12 @@ namespace SCADA
                         }
                         else
                         {
-                            OnPartCompleted("数控系统" + macIPs[i] + "连接失败！", 40);
+                            OnLoadCompleted("数控系统" + macIPs[i] + "连接失败！", 40);
                         }
                         break;
                     }
                 }
-                OnPartCompleted("数控系统连接成功", 40);
+                OnLoadCompleted("数控系统连接成功", 40);
 
                 var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
                 RFIDs = new Dictionary<EnumPSite, RFIDReader>();
@@ -327,21 +317,21 @@ namespace SCADA
                 {
                     RFIDs.Add(i, new RFIDReader(i, rfidIPs[(int)i - 1]));
                 }
-                OnPartCompleted("RFID连接成功", 60);
+                OnLoadCompleted("RFID连接成功", 60);
 
                 Work_PLC = Work_PLC.Instance;
                 Work_RFID = Work_RFID.Instance;
                 Work_WMS = Work_WMS.Instance;
                 Work_MES = Work_MES.Instance;
-                Work_Simulation = Work_Simulation.Instance;
                 Work_Vision = Work_Vision.Instance;
-                OnPartCompleted("后台服务连接成功", 80);
+                Work_Simulation = Work_Simulation.Instance;
+                OnLoadCompleted("后台服务连接成功", 80);
 
                 Initialized = true;
-                OnPartCompleted("系统加载完成", 98);
+                OnLoadCompleted("系统加载完成", 98);
 
                 await Task.Delay(1000);
-                OnAllCompleted("即将进入总控界面");
+                OnLoadCompleted("即将进入总控界面", 100);
             });
         }
 

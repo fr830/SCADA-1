@@ -12,8 +12,9 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(new string('0', 8));
-            Console.WriteLine(buffer.Length);
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"));
+
+            Console.WriteLine(new CKX(RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A)));
 
             //var item = new RFIDReader(EnumPSite.S3, "192.168.1.133");
             //Console.ReadKey(true);

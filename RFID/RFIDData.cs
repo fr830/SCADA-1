@@ -113,6 +113,9 @@ namespace RFID
         Failed = 8
     }
 
+    /// <summary>
+    /// 位置
+    /// </summary>
     public enum EnumPSite : byte
     {
         /// <summary>
@@ -128,7 +131,7 @@ namespace RFID
         /// </summary>
         S2,
         /// <summary>
-        /// 3号顶升机构：三轴加工中心（850B）
+        /// 3号顶升机构：铣床，三轴加工中心（850B）
         /// </summary>
         S3,
         /// <summary>
@@ -144,15 +147,15 @@ namespace RFID
         /// </summary>
         S6_Alignment,
         /// <summary>
-        /// 7号WMS入库
+        /// 7号WMS入库皮带线
         /// </summary>
         S7_Up,
         /// <summary>
-        /// 8号WMS出库
+        /// 8号WMS出库皮带线
         /// </summary>
         S8_Down,
         /// <summary>
-        /// 9号WMS手动
+        /// 9号WMS手动皮带线
         /// </summary>
         S9_Manual
     }
@@ -181,6 +184,9 @@ namespace RFID
     }
     #endregion
 
+    /// <summary>
+    /// 加工数据
+    /// </summary>
     public class ProcessData
     {
         public EnumPSite Site { get; private set; }
@@ -196,10 +202,10 @@ namespace RFID
 
     /// <summary>
     /// RFID数据格式定义
-    /// 从第7个Byte开始
+    /// 从第23个Byte开始
     /// 每2Byte代表一道工序
-    /// 1B代表工序位置[1,n]
-    /// 2B代表完成结果EnumProcessResult
+    /// 1B代表工序位置EnumPSite
+    /// 2B代表工序结果EnumPResult
     /// </summary>
     public class RFIDData
     {
@@ -207,12 +213,15 @@ namespace RFID
         public Guid Guid { get; private set; }
         public EnumLOGO LOGO { get; private set; }
         public EnumObligate Obligate { get; private set; }
-        public EnumWorkpiece Workpiece { get; set; }
+        public EnumWorkpiece Workpiece { get; private set; }
         public EnumClean Clean { get; set; }
         public EnumGauge Gauge { get; set; }
         public EnumAssemble Assemble { get; set; }
         public IList<ProcessData> ProcessDataList { get; set; }
 
+        /// <summary>
+        /// 是否为毛坯
+        /// </summary>
         public bool IsRough { get { return GetProcessSite() != EnumPSite.None; } }
 
         private RFIDData(Guid guid)
@@ -221,27 +230,6 @@ namespace RFID
             LOGO = EnumLOGO.HNC;
             Obligate = EnumObligate.None;
             ProcessDataList = new List<ProcessData>();
-        }
-
-        /// <summary>
-        /// 获取RFID数据
-        /// </summary>
-        /// <param name="no"></param>
-        /// <param name="workpiece">工件类型</param>
-        /// <param name="clean">清洗</param>
-        /// <param name="gauge">检测</param>
-        /// <param name="assemble">检测结果</param>
-        /// <param name="processData">工序</param>
-        public RFIDData(Guid guid, EnumWorkpiece workpiece, EnumClean clean, EnumGauge gauge, EnumAssemble assemble, IList<ProcessData> processData = null)
-        {
-            Guid = guid;
-            LOGO = EnumLOGO.HNC;
-            Obligate = EnumObligate.None;
-            Workpiece = workpiece;
-            Clean = clean;
-            Gauge = gauge;
-            Assemble = assemble;
-            ProcessDataList = processData;
         }
 
         public EnumPSite GetProcessSite()
@@ -262,6 +250,10 @@ namespace RFID
 
         public bool SetProcessResult(EnumPResult result = EnumPResult.Successed)
         {
+            if (ProcessDataList == null || ProcessDataList.Count == 0)
+            {
+                return false;
+            }
             for (int i = 0; i < ProcessDataList.Count; i++)
             {
                 if (ProcessDataList[i].Result == EnumPResult.Waiting)
@@ -276,44 +268,38 @@ namespace RFID
         /// <summary>
         /// 获取默认RFID数据
         /// </summary>
-        /// <param name="no">工件编号</param>
+        /// <param name="guid">工件编号</param>
         /// <param name="workpiece">工件类型</param>
-        /// <returns>RFID数据</returns>
-        public static RFIDData GetDefaut(Guid guid, EnumWorkpiece workpiece, EnumAssemble assemble = EnumAssemble.Wanted)
+        /// <param name="clean">清洗</param>
+        /// <param name="gauge">检测</param>
+        /// <param name="assemble">装配</param>
+        /// <returns>RFIDData对象</returns>
+        public static RFIDData GetDefaut(Guid guid, EnumWorkpiece workpiece, EnumClean clean = EnumClean.Wanted, EnumGauge gauge = EnumGauge.Wanted, EnumAssemble assemble = EnumAssemble.Wanted)
         {
             var data = new RFIDData(guid);
-            data.Obligate = EnumObligate.None;
             data.Workpiece = workpiece;
+            data.Clean = clean;
+            data.Gauge = gauge;
             data.Assemble = assemble;
             switch (workpiece)
             {
                 case EnumWorkpiece.A:
-                    data.Clean = EnumClean.Wanted;
-                    data.Gauge = EnumGauge.Wanted;
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S1));
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S3));
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S2));
                     break;
                 case EnumWorkpiece.B:
-                    data.Clean = EnumClean.Wanted;
-                    data.Gauge = EnumGauge.Wanted;
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S1));
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S3));
                     break;
                 case EnumWorkpiece.C:
-                    data.Clean = EnumClean.Wanted;
-                    data.Gauge = EnumGauge.Wanted;
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S1));
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S3));
                     break;
                 case EnumWorkpiece.D:
-                    data.Clean = EnumClean.Wanted;
-                    data.Gauge = EnumGauge.Wanted;
                     data.ProcessDataList.Add(new ProcessData(EnumPSite.S4));
                     break;
                 case EnumWorkpiece.E:
-                    data.Clean = EnumClean.Wanted;
-                    data.Gauge = EnumGauge.Wanted;
                     break;
                 default:
                     break;
@@ -351,9 +337,11 @@ namespace RFID
 
         public static RFIDData Deserialize(byte[] data)
         {
-            if (data == null || data.Length != DataLength) return null;
-            var r = new RFIDData(Guid.Empty);
-            r.Guid = new Guid(data.Take(16).ToArray());
+            if (data == null || data.Length != DataLength)
+            {
+                return null;
+            }
+            var r = new RFIDData(new Guid(data.Take(16).ToArray()));
             r.LOGO = (EnumLOGO)data[16];
             r.Obligate = (EnumObligate)data[17];
             r.Workpiece = (EnumWorkpiece)data[18];

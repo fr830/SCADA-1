@@ -44,7 +44,7 @@ namespace SCADA
                     }
                     catch (Exception)
                     {
-                        //TODO提示用户视觉连接失败
+                        //TODO提示用户连接失败
                         //throw;
                     }
                     await Task.Delay(2000);
@@ -63,11 +63,11 @@ namespace SCADA
 
         public void Photograph(object sender, PLCEventArgs e)
         {
-            byte[] buffer = new byte[16];
             if (TcpClient == null || !TcpClient.Connected)
             {
                 return;
             }
+            byte[] buffer = new byte[16];
             TcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
             int count = TcpClient.Client.Receive(buffer);
             var text = Encoding.UTF8.GetString(buffer);

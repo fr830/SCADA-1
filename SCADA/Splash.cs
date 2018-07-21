@@ -20,28 +20,23 @@ namespace SCADA
 
         private void Splash_Load(object sender, EventArgs e)
         {
-            My.PartCompleted += My_PartCompleted;
-            My.AllCompleted += My_AllCompleted;
+            My.LoadCompleted += LoadCompleted;
         }
 
-        void My_PartCompleted(object sender, MyInitializeEventArgs e)
+        void LoadCompleted(object sender, MyInitializeEventArgs e)
         {
             this.InvokeEx(c =>
             {
                 richTextBox.AppendText(e.ToString());
+                richTextBox.ScrollToCaret();
                 if (e.Value < progressBar.Maximum)
                 {
                     progressBar.Value = e.Value;
                 }
-            });
-        }
-
-        void My_AllCompleted(object sender, MyInitializeEventArgs e)
-        {
-            this.InvokeEx(c =>
-            {
-                richTextBox.AppendText(e.ToString());
-                progressBar.Value = e.Value;
+                else
+                {
+                    progressBar.Value = progressBar.Maximum;
+                }
             });
         }
 
