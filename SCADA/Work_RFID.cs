@@ -30,6 +30,11 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.Set(e.Index, 1);//读取成功
+            for (int i = 4; i < 9; i++)
+            {
+                My.PLC.Clear(e.Index, i);
+            }
+            My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
             if (data.GetProcessSite() == e.Site)
             {
                 My.PLC.Set(e.Index, 2);//工件符合当前工位
@@ -38,11 +43,6 @@ namespace SCADA
             {
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
             }
-            for (int i = 4; i < 9; i++)
-            {
-                My.PLC.Clear(e.Index, i);
-            }
-            My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
         }
 
         void ProcessWriteSuccess(object sender, PLCEventArgs e)
@@ -68,6 +68,11 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.Set(e.Index, 1);//读取成功
+            for (int i = 4; i < 9; i++)
+            {
+                My.PLC.Clear(e.Index, i);
+            }
+            My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
             if (data.IsRough)
             {
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
@@ -96,11 +101,6 @@ namespace SCADA
                 My.PLC.Clear(10, 1);//不清洗
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
             }
-            for (int i = 4; i < 9; i++)
-            {
-                My.PLC.Clear(e.Index, i);
-            }
-            My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
         }
 
         void AssembleWriteSuccess(object sender, PLCEventArgs e)

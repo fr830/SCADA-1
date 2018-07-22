@@ -62,10 +62,14 @@
             this.buttonSpinIn = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonRS8 = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.buttonCKX = new System.Windows.Forms.Button();
+            this.buttonRKX = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonWrite
@@ -380,11 +384,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(41, 20);
+            this.label5.Location = new System.Drawing.Point(53, 21);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 12);
+            this.label5.Size = new System.Drawing.Size(35, 12);
             this.label5.TabIndex = 0;
-            this.label5.Text = "RFIDNo:";
+            this.label5.Text = "Site:";
             // 
             // groupBox3
             // 
@@ -456,7 +460,7 @@
             this.groupBox4.Controls.Add(this.buttonRS8);
             this.groupBox4.Location = new System.Drawing.Point(308, 167);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(308, 171);
+            this.groupBox4.Size = new System.Drawing.Size(271, 171);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Vision";
@@ -474,12 +478,50 @@
             this.buttonRS8.UseVisualStyleBackColor = false;
             this.buttonRS8.Click += new System.EventHandler(this.buttonRS8_Click);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.buttonRKX);
+            this.groupBox5.Controls.Add(this.buttonCKX);
+            this.groupBox5.Location = new System.Drawing.Point(585, 167);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(272, 171);
+            this.groupBox5.TabIndex = 7;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Simulation";
+            // 
+            // buttonCKX
+            // 
+            this.buttonCKX.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonCKX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCKX.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonCKX.Location = new System.Drawing.Point(15, 20);
+            this.buttonCKX.Name = "buttonCKX";
+            this.buttonCKX.Size = new System.Drawing.Size(75, 23);
+            this.buttonCKX.TabIndex = 14;
+            this.buttonCKX.Text = "CKX";
+            this.buttonCKX.UseVisualStyleBackColor = false;
+            this.buttonCKX.Click += new System.EventHandler(this.buttonCKX_Click);
+            // 
+            // buttonRKX
+            // 
+            this.buttonRKX.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonRKX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRKX.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonRKX.Location = new System.Drawing.Point(96, 20);
+            this.buttonRKX.Name = "buttonRKX";
+            this.buttonRKX.Size = new System.Drawing.Size(75, 23);
+            this.buttonRKX.TabIndex = 15;
+            this.buttonRKX.Text = "RKX";
+            this.buttonRKX.UseVisualStyleBackColor = false;
+            this.buttonRKX.Click += new System.EventHandler(this.buttonRKX_Click);
+            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(970, 397);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -493,6 +535,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -533,5 +576,8 @@
         private System.Windows.Forms.Button buttonRS8;
         private System.Windows.Forms.Button buttonSpinOut;
         private System.Windows.Forms.Button buttonOut;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button buttonCKX;
+        private System.Windows.Forms.Button buttonRKX;
     }
 }

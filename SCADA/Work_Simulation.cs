@@ -7,6 +7,7 @@ using RFID;
 using System.Net;
 using System.Configuration;
 using System.Net.Sockets;
+using System.Collections.Concurrent;
 
 namespace SCADA
 {
@@ -20,68 +21,69 @@ namespace SCADA
 
         public int Port { get { return int.Parse(ConfigurationManager.AppSettings["SimulationPort"]); } }
 
-        public TcpClient TcpClient { get; private set; }
+        private ConcurrentQueue<byte[]> messages = new ConcurrentQueue<byte[]>();
+
+        private TcpClient tcpClient = new TcpClient();
 
         private Work_Simulation()
         {
-            ClientConnectAsync();
+            AutoSendAsync();
         }
 
-        private async void ClientConnectAsync()
+        private async void AutoSendAsync()
         {
-            TcpClient = new TcpClient();
             await Task.Run(async () =>
             {
-                while (!TcpClient.Connected)
+                while (true)
                 {
+                    await Task.Delay(1000);
                     try
                     {
-                        TcpClient.Connect(IP, Port);
+                        if (!tcpClient.Connected)
+                        {
+                            await tcpClient.ConnectAsync(IP, Port);
+                        }
+                        else
+                        {
+                            byte[] data;
+                            if (messages.TryDequeue(out data))
+                            {
+                                tcpClient.Client.Send(data);
+                            }
+                        }
                     }
                     catch (Exception)
                     {
-                        //TODO提示用户连接失败
+                        //TODO
                         //throw;
                     }
-                    await Task.Delay(2000);
                 }
             });
         }
 
-        public async Task<bool> SendAsync(byte[] data)
-        {
-            if (TcpClient == null || !TcpClient.Connected)
-            {
-                return false;
-            }
-            return await Task.Run(() =>
-            {
-                try
-                {
-                    return TcpClient.Client.Send(data) == data.Length;
-                }
-                catch (Exception)
-                {
-                    return false;
-                    //throw;
-                }
-            });
-        }
-
-        public async Task<bool> SendAsync<TEquipment>(TEquipment equipment) where TEquipment : Equipment
+        public void Send<TEquipment>(TEquipment equipment) where TEquipment : Equipment
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("&");
-            sb.Append(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"));
+            sb.Append(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));
             sb.Append(",1,");
             sb.Append(equipment.ToString());
             sb.Append("#");
             var data = Encoding.UTF8.GetBytes(sb.ToString());
-            return await SendAsync(data);
+            messages.Enqueue(data);
         }
+
+        public async Task SendAsync<TEquipment>(TEquipment equipment) where TEquipment : Equipment
+        {
+            await Task.Run(() =>
+            {
+                Send(equipment);
+            });
+        }
+
     }
 
-    public abstract class Equipment
+    abstract class Equipment
     {
         protected RFIDData RFIDData { get; set; }
 
@@ -258,7 +260,7 @@ namespace SCADA
     /// <summary>
     /// 出库线
     /// </summary>
-    public class CKX : Equipment
+    class CKX : Equipment
     {
         public CKX(RFIDData data, EnumActionType type = EnumActionType.出库线转移物料至定位台1)
             : base(data)
@@ -483,9 +485,9 @@ namespace SCADA
     /// <summary>
     /// 固定机器人3
     /// </summary>
-    class JER03 : Equipment
+    class JQR03 : Equipment
     {
-        public JER03(RFIDData data, EnumActionType type = EnumActionType.抓取下料位物料至定位台4)
+        public JQR03(RFIDData data, EnumActionType type = EnumActionType.抓取下料位物料至定位台4)
             : base(data)
         {
             ActionType = (int)type;
@@ -498,9 +500,9 @@ namespace SCADA
     /// <summary>
     /// 移动机器人1
     /// </summary>
-    class JER04 : Equipment
+    class JQR04 : Equipment
     {
-        public JER04(RFIDData data, EnumActionType type)
+        public JQR04(RFIDData data, EnumActionType type)
             : base(data)
         {
             ActionType = (int)type;
@@ -513,9 +515,9 @@ namespace SCADA
     /// <summary>
     /// 移动机器人2
     /// </summary>
-    class JER05 : Equipment
+    class JQR05 : Equipment
     {
-        public JER05(RFIDData data, EnumActionType type)
+        public JQR05(RFIDData data, EnumActionType type)
             : base(data)
         {
             ActionType = (int)type;

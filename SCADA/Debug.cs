@@ -191,5 +191,19 @@ namespace SCADA
             await Task.Run(() => My.Work_Vision.Photograph(null, new PLCEventArgs(EnumPSite.S8_Down, 1)));
             buttonRS8.Enabled = true;
         }
+
+        private async void buttonCKX_Click(object sender, EventArgs e)
+        {
+            buttonCKX.Enabled = false;
+            await My.Work_Simulation.SendAsync(new CKX(RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A)));
+            buttonCKX.Enabled = true;
+        }
+
+        private async void buttonRKX_Click(object sender, EventArgs e)
+        {
+            buttonRKX.Enabled = false;
+            await My.Work_Simulation.SendAsync(new RKX(RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A)));
+            buttonRKX.Enabled = true;
+        }
     }
 }
