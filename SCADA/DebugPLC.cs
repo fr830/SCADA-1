@@ -19,9 +19,9 @@ namespace SCADA
 
         private void DebugPLC_Load(object sender, EventArgs e)
         {
-            IList<PLCContent>[] ls = { PLCContent.listS1, PLCContent.listS2, PLCContent.listS3, PLCContent.listS4, PLCContent.listS5, PLCContent.listS6, PLCContent.listS7, PLCContent.listS8, PLCContent.listS9, PLCContent.listS10, };
-            IList<PLCContent>[] lj = { PLCContent.listJ1, PLCContent.listJ2, PLCContent.listJ3, PLCContent.listJ4, PLCContent.listJ5, PLCContent.listJ6, PLCContent.listJ7, PLCContent.listJ8, PLCContent.listJ9, PLCContent.listJ10, };
-            IList<PLCContent>[] lc = { PLCContent.listC1, PLCContent.listC2, PLCContent.listC3, PLCContent.listC4, PLCContent.listC5, PLCContent.listC6, PLCContent.listC7, PLCContent.listC8, PLCContent.listC9, PLCContent.listC10, };
+            IList<Signal>[] ls = { Signal.listS1, Signal.listS2, Signal.listS3, Signal.listS4, Signal.listS5, Signal.listS6, Signal.listS7, Signal.listS8, Signal.listS9, Signal.listS10, };
+            IList<Signal>[] lj = { Signal.listJ1, Signal.listJ2, Signal.listJ3, Signal.listJ4, Signal.listJ5, Signal.listJ6, Signal.listJ7, Signal.listJ8, Signal.listJ9, Signal.listJ10, };
+            IList<Signal>[] lc = { Signal.listC1, Signal.listC2, Signal.listC3, Signal.listC4, Signal.listC5, Signal.listC6, Signal.listC7, Signal.listC8, Signal.listC9, Signal.listC10, };
             for (int i = 0; i < ls.Length; i++)
             {
                 flowLayoutPanel.Controls.Add(new UserControl_Area((i + 1).ToString(), ls[i], lj[i], lc[i]));

@@ -71,7 +71,7 @@ namespace SCADA.Properties {
         }
         
         /// <summary>
-        ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
+        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Icon logo {
             get {
@@ -86,6 +86,26 @@ namespace SCADA.Properties {
         internal static System.Drawing.Bitmap splash {
             get {
                 object obj = ResourceManager.GetObject("splash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 微信图片_20180724115828 {
+            get {
+                object obj = ResourceManager.GetObject("微信图片_20180724115828", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 微信图片_20180724122322 {
+            get {
+                object obj = ResourceManager.GetObject("微信图片_20180724122322", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

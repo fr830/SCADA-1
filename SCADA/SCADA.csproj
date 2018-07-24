@@ -136,12 +136,18 @@
     <Compile Include="DebugPLC.Designer.cs">
       <DependentUpon>DebugPLC.cs</DependentUpon>
     </Compile>
-    <Compile Include="PLCContent.cs" />
+    <Compile Include="Signal.cs" />
     <Compile Include="UserControl_Area.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControl_Area.Designer.cs">
       <DependentUpon>UserControl_Area.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl_Monitor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl_Monitor.Designer.cs">
+      <DependentUpon>UserControl_Monitor.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl_Vision.cs">
       <SubType>UserControl</SubType>
@@ -225,6 +231,9 @@
     <EmbeddedResource Include="UserControl_Area.resx">
       <DependentUpon>UserControl_Area.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControl_Monitor.resx">
+      <DependentUpon>UserControl_Monitor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControl_RFID.resx">
       <DependentUpon>UserControl_RFID.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,6 +262,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\hnc.png" />
+    <None Include="Resources\微信图片_20180724122322.jpg" />
+    <None Include="Resources\微信图片_20180724115828.png" />
     <None Include="Resources\splash.jpg" />
   </ItemGroup>
   <ItemGroup>

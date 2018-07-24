@@ -159,22 +159,48 @@ namespace HNC
 
         public bool Exist(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
-            int value = 0;
-            if (HNC_RegGetValue(type, index, out value))
+            try
             {
-                return ((value >> bit) & 1) == 1;
+                int value = 0;
+                if (HNC_RegGetValue(type, index, out value))
+                {
+                    return ((value >> bit) & 1) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                //TODO
+                //throw;
             }
             return false;
         }
 
         public bool Set(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
-            return HNC_RegSetBit(type, index, bit);
+            try
+            {
+                return HNC_RegSetBit(type, index, bit);
+            }
+            catch (Exception)
+            {
+                //TODO
+                //throw;
+            }
+            return false;
         }
 
         public bool Clear(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
-            return HNC_RegClrBit(type, index, bit);
+            try
+            {
+                return HNC_RegClrBit(type, index, bit);
+            }
+            catch (Exception)
+            {
+                //TODO
+                //throw;
+            }
+            return false;
         }
 
         public bool HNC_NetFileSend(string localPath, string destinationPath)

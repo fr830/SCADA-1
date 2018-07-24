@@ -250,7 +250,6 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this._Layout_FormClosing);
             this.Load += new System.EventHandler(this._Layout_Load);
-            this.Shown += new System.EventHandler(this._Layout_Shown);
             this.panelInfo.ResumeLayout(false);
             this.panelInfo.PerformLayout();
             this.panelStatus.ResumeLayout(false);

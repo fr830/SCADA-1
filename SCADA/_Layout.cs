@@ -51,10 +51,6 @@ namespace SCADA
             InitInfo();
         }
 
-        private void _Layout_Shown(object sender, EventArgs e)
-        {
-        }
-
         /// <summary>
         /// 初始化状态栏
         /// </summary>

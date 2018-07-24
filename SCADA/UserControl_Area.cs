@@ -17,7 +17,7 @@ namespace SCADA
             InitializeComponent();
         }
 
-        public UserControl_Area(string title, IList<PLCContent> listS, IList<PLCContent> listJ, IList<PLCContent> listC)
+        public UserControl_Area(string title, IList<Signal> listS, IList<Signal> listJ, IList<Signal> listC)
         {
             InitializeComponent();
             groupBox.Text = title;
@@ -37,11 +37,11 @@ namespace SCADA
         void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
-            groupBox.InvokeEx(c => c.Refresh());
+            RefreshAllButtons(groupBox);
             timer.Start();
         }
 
-        private GroupBox CreateGroupBox(string groupBoxText, IList<PLCContent> list)
+        private GroupBox CreateGroupBox(string groupBoxText, IList<Signal> list)
         {
             var box = new GroupBox();
             box.Dock = DockStyle.Top;
@@ -50,14 +50,17 @@ namespace SCADA
             var panel = new FlowLayoutPanel();
             box.Controls.Add(panel);
             panel.Dock = DockStyle.Fill;
-            for (int i = 0; i < list.Count; i++)
+            if (list != null)
             {
-                panel.Controls.Add(CreateButton(list[i]));
+                for (int i = 0; i < list.Count; i++)
+                {
+                    panel.Controls.Add(CreateButton(list[i]));
+                }
             }
             return box;
         }
 
-        private Button CreateButton(PLCContent c)
+        private Button CreateButton(Signal c)
         {
             var btn = new Button();
             btn.AutoSize = true;
@@ -67,11 +70,11 @@ namespace SCADA
             btn.Text = c.Text;
             switch (c.SignalType)
             {
-                case PLCContent.EnumSignalType.状态监控:
+                case Signal.EnumSignalType.状态监控:
                     btn.Enabled = false;
                     btn.BackColor = My.PLC.Exist(c.Index, c.Bit) ? Color.Lime : Color.Transparent;
                     break;
-                case PLCContent.EnumSignalType.手动控制:
+                case Signal.EnumSignalType.手动控制:
                     btn.Enabled = true;
                     btn.BackColor = Color.DodgerBlue;
                     btn.ForeColor = Color.Transparent;
@@ -95,7 +98,15 @@ namespace SCADA
                 }
                 else if (item is Button)
                 {
-                    item.Refresh();
+                    var btn = item as Button;
+                    var content = (Signal)btn.Tag;
+                    if (content.SignalType == Signal.EnumSignalType.状态监控)
+                    {
+                        btn.InvokeEx(b =>
+                        {
+                            b.BackColor = My.PLC.Exist(content.Index, content.Bit) ? Color.Lime : Color.Transparent;
+                        });
+                    }
                 }
             }
         }
