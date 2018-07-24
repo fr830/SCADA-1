@@ -195,14 +195,18 @@ namespace SCADA
         private async void buttonCKX_Click(object sender, EventArgs e)
         {
             buttonCKX.Enabled = false;
-            await My.Work_Simulation.SendAsync(new CKX(RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A)));
+            var data = RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A);
+            await My.Work_Simulation.SendAsync(new CKX(data, CKX.EnumActionType.出库线转移物料至出库检测位));
+            await My.Work_Simulation.SendAsync(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
             buttonCKX.Enabled = true;
         }
 
         private async void buttonRKX_Click(object sender, EventArgs e)
         {
             buttonRKX.Enabled = false;
-            await My.Work_Simulation.SendAsync(new RKX(RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A)));
+            var data = RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A);
+            await My.Work_Simulation.SendAsync(new RKX(data, RKX.EnumActionType.定位台2转移物料至入库检测位));
+            await My.Work_Simulation.SendAsync(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             buttonRKX.Enabled = true;
         }
     }

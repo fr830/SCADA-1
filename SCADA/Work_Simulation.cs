@@ -8,6 +8,7 @@ using System.Net;
 using System.Configuration;
 using System.Net.Sockets;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace SCADA
 {
@@ -28,6 +29,7 @@ namespace SCADA
         private Work_Simulation()
         {
             AutoSendAsync();
+            Start();
         }
 
         private async void AutoSendAsync()
@@ -36,7 +38,7 @@ namespace SCADA
             {
                 while (true)
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
                     try
                     {
                         if (!tcpClient.Connected)
@@ -81,6 +83,132 @@ namespace SCADA
             });
         }
 
+
+        private CancellationTokenSource cts;
+        private Task task;
+
+        /// <summary>
+        /// 服务运行状态
+        /// </summary>
+        public bool IsRunning { get { return task != null; } }
+
+        /// <summary>
+        /// 启动服务
+        /// </summary>
+        public void Start()
+        {
+            Stop();
+            cts = new CancellationTokenSource();
+            task = GetServiceTask(cts.Token);
+            task.Start();
+        }
+
+        /// <summary>
+        /// 停止服务
+        /// </summary>
+        public void Stop()
+        {
+            if (task == null) return;
+            if (cts != null && !cts.IsCancellationRequested)
+            {
+                cts.Cancel();
+            }
+            task.Wait();
+            cts = null;
+            task = null;
+        }
+
+        /// <summary>
+        /// 获取服务Task
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private Task GetServiceTask(CancellationToken token)
+        {
+            return new Task(() =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    Thread.Sleep(500);
+                    if (My.PLC.Exist(12, 4))//分料
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(12, 6))//定位
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位转移物料至升降台));
+                    }
+                    if (My.PLC.Exist(12, 2))//提升机伸
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机上升));
+                    }
+                    if (My.PLC.Exist(12, 3))//提升机缩
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机下降));
+                    }
+                    if (My.PLC.Exist(21, 4))//分料
+                    {
+                        Send(new DSJ01(null, DSJ01.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(21, 2))//定位
+                    {
+                        Send(new DSJ01(null, DSJ01.EnumActionType.前阻挡位转移物料至正阻挡位));
+                    }
+                    if (My.PLC.Exist(31, 4))//分料
+                    {
+                        Send(new DSJ02(null, DSJ02.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(31, 2))//定位
+                    {
+                        Send(new DSJ02(null, DSJ02.EnumActionType.前阻挡位转移物料至正阻挡位));
+                    }
+                    if (My.PLC.Exist(41, 4))//分料
+                    {
+                        Send(new DSJ03(null, DSJ03.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(41, 2))//定位
+                    {
+                        Send(new DSJ03(null, DSJ03.EnumActionType.前阻挡位转移物料至正阻挡位));
+                    }
+                    if (My.PLC.Exist(51, 4))//分料
+                    {
+                        Send(new DSJ04(null, DSJ04.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(51, 2))//定位
+                    {
+                        Send(new DSJ04(null, DSJ04.EnumActionType.前阻挡位转移物料至正阻挡位));
+                    }
+                    if (My.PLC.Exist(61, 4))//分料
+                    {
+                        Send(new DSJ05(null, DSJ05.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(61, 2))//定位
+                    {
+                        Send(new DSJ05(null, DSJ05.EnumActionType.前阻挡位转移物料至正阻挡位));
+                    }
+                    if (My.PLC.Exist(72, 2))//分料
+                    {
+                        Send(new XLW(null, XLW.EnumActionType.前阻挡位到位));
+                    }
+                    if (My.PLC.Exist(72, 4))//定位
+                    {
+                        Send(new XLW(null, XLW.EnumActionType.前阻挡位转移物料至正阻挡位));
+                    }
+                    if (My.PLC.Exist(72, 5))
+                    {
+                        Send(new SJJ02(null, SJJ02.EnumActionType.前阻挡位转移物料至升降台));
+                    }
+                    if (My.PLC.Exist(73, 0))
+                    {
+                        Send(new SJJ02(null, SJJ02.EnumActionType.升降机上升));
+                    }
+                    if (My.PLC.Exist(73, 1))
+                    {
+                        Send(new SJJ02(null, SJJ02.EnumActionType.升降机下降));
+                    }
+                }
+            }, token);
+        }
     }
 
     abstract class Equipment
@@ -107,6 +235,10 @@ namespace SCADA
         /// <returns></returns>
         protected string GetActionParameterString(RFIDData data)
         {
+            if (data == null)
+            {
+                return string.Empty;
+            }
             StringBuilder sb = new StringBuilder();
             if (ActionParameter.HasFlag(EnumActionParameter.料盘信息))
             {
@@ -266,7 +398,7 @@ namespace SCADA
     /// </summary>
     class CKX : Equipment
     {
-        public CKX(RFIDData data, EnumActionType type = EnumActionType.出库线转移物料至定位台1)
+        public CKX(RFIDData data, EnumActionType type)
             : base(data)
         {
             ActionType = (int)type;
@@ -275,7 +407,8 @@ namespace SCADA
 
         public enum EnumActionType
         {
-            出库线转移物料至定位台1 = 1
+            出库线转移物料至出库检测位 = 1,
+            出库检测位转移物料至定位台1
         }
     }
 
@@ -284,7 +417,7 @@ namespace SCADA
     /// </summary>
     class RKX : Equipment
     {
-        public RKX(RFIDData data, EnumActionType type = EnumActionType.定位台2转移物料至入库位)
+        public RKX(RFIDData data, EnumActionType type)
             : base(data)
         {
             ActionType = (int)type;
@@ -293,7 +426,8 @@ namespace SCADA
 
         public enum EnumActionType
         {
-            定位台2转移物料至入库位 = 1
+            定位台2转移物料至入库检测位 = 1,
+            入库检测位转移物料至入库位
         }
     }
 
