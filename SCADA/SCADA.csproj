@@ -130,6 +130,19 @@
   <ItemGroup>
     <Compile Include="Common.cs" />
     <Compile Include="ControlExtensions.cs" />
+    <Compile Include="DebugPLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugPLC.Designer.cs">
+      <DependentUpon>DebugPLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PLCContent.cs" />
+    <Compile Include="UserControl_Area.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl_Area.Designer.cs">
+      <DependentUpon>UserControl_Area.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl_Vision.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,6 +157,7 @@
     <Compile Include="Debug.Designer.cs">
       <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
+    <Compile Include="Work_QRCode.cs" />
     <Compile Include="Work_RFID.cs" />
     <Compile Include="RFIDPage.cs">
       <SubType>Form</SubType>
@@ -192,6 +206,9 @@
     <EmbeddedResource Include="Debug.resx">
       <DependentUpon>Debug.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DebugPLC.resx">
+      <DependentUpon>DebugPLC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RFIDPage.resx">
       <DependentUpon>RFIDPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -204,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl_Area.resx">
+      <DependentUpon>UserControl_Area.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl_RFID.resx">
       <DependentUpon>UserControl_RFID.cs</DependentUpon>

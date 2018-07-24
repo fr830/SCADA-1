@@ -82,6 +82,7 @@ namespace SCADA
                     {
                         My.PLC.Clear(1, 10);
                         OnScan(EnumPSite.S8_Down, 1);//None!!!
+                        My.PLC.Set(1, 12);//扫码器扫码完成
                     }
                     foreach (EnumPSite site in Enum.GetValues(typeof(EnumPSite)))
                     {

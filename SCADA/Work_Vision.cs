@@ -19,29 +19,25 @@ namespace SCADA
 
         public int Port { get { return int.Parse(ConfigurationManager.AppSettings["VisionPort"]); } }
 
-        public TcpListener TcpListener { get; private set; }
-
-        public TcpClient TcpClient { get; private set; }
+        private TcpClient tcpClient = new TcpClient();
 
         public RFID.RFIDData RFIDData { get; set; }
 
         private Work_Vision()
         {
-            //ListenerConnect();
             ClientConnectAsync();
             My.Work_PLC.Photograph += Photograph;
         }
 
         private async void ClientConnectAsync()
         {
-            TcpClient = new TcpClient();
             await Task.Run(async () =>
             {
-                while (!TcpClient.Connected)
+                while (!tcpClient.Connected)
                 {
                     try
                     {
-                        TcpClient.Connect(IP, Port);
+                        await tcpClient.ConnectAsync(IP, Port);
                     }
                     catch (Exception)
                     {
@@ -53,29 +49,36 @@ namespace SCADA
             });
         }
 
-        private async void ListenerConnect()
+        public async void Photograph(object sender, PLCEventArgs e)
         {
-            TcpListener = new TcpListener(IPAddress.Any, 41160);
-            TcpListener.Start();
-            TcpClient = await TcpListener.AcceptTcpClientAsync();
-            My.Work_PLC.Photograph += Photograph;
-        }
-
-        public void Photograph(object sender, PLCEventArgs e)
-        {
-            if (TcpClient == null || !TcpClient.Connected)
+            if (!tcpClient.Connected)
             {
+                await tcpClient.ConnectAsync(IP, Port);
+                if (!tcpClient.Connected)
+                {
+                    //TODO提示连接失败
+                    return;
+                }
+            }
+            if (RFIDData == null)
+            {
+                //TODO提示RFID读取失败
                 return;
             }
             byte[] buffer = new byte[16];
-            TcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
-            int count = TcpClient.Client.Receive(buffer);
-            var text = Encoding.UTF8.GetString(buffer);
-            My.PLC.Set(e.Index, 1);
-            if (RFIDData == null || count != 8)
+            try
             {
-                return;
+                tcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
+                tcpClient.Client.Receive(buffer);
             }
+            catch (Exception)
+            {
+                //TODO提示用户拍照失败
+                return;
+                //throw;
+            }
+            var text = Encoding.UTF8.GetString(buffer);
+            My.PLC.Set(e.Index, 1);//拍照完成
             switch (RFIDData.Workpiece)
             {
                 case RFID.EnumWorkpiece.A:
@@ -138,7 +141,7 @@ namespace SCADA
                     My.PLC.Set(e.Index, 2);//工件匹配
                     break;
                 default:
-                    My.PLC.Set(e.Index, 2);//工件匹配
+                    My.PLC.Set(e.Index, 3);//工件不匹配
                     break;
             }
         }

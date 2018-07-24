@@ -254,7 +254,11 @@ namespace SCADA
             ActionParameter = EnumActionParameter.XYZ | EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 码垛机出库动作_仓库软件发送 = 1, 码垛机入库动作_仓库软件发送 }
+        public enum EnumActionType
+        {
+            码垛机出库动作_仓库软件发送 = 1,
+            码垛机入库动作_仓库软件发送
+        }
     }
 
     /// <summary>
@@ -269,7 +273,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 出库线转移物料至定位台1 = 1 }
+        public enum EnumActionType
+        {
+            出库线转移物料至定位台1 = 1
+        }
     }
 
     /// <summary>
@@ -284,7 +291,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 定位台2转移物料至入库位 = 1 }
+        public enum EnumActionType
+        {
+            定位台2转移物料至入库位 = 1
+        }
     }
 
     /// <summary>
@@ -299,7 +309,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 定位台1转移物料至AGV = 1 }
+        public enum EnumActionType
+        {
+            定位台1转移物料至AGV = 1
+        }
     }
 
     /// <summary>
@@ -314,7 +327,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 定位台4转移物料至AGV = 1 }
+        public enum EnumActionType
+        {
+            定位台4转移物料至AGV = 1
+        }
     }
 
     /// <summary>
@@ -329,7 +345,22 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { AGV从定位台1运动至定位台2 = 1, AGV从定位台1运动至定位台3, AGV从定位台1运动至定位台4, AGV从定位台2运动至定位台1, AGV从定位台2运动至定位台3, AGV从定位台2运动至定位台4, AGV从定位台3运动至定位台1, AGV从定位台3运动至定位台2, AGV从定位台3运动至定位台4, AGV从定位台4运动至定位台1, AGV从定位台4运动至定位台2, AGV从定位台4运动至定位台3, AGV转移物料至定位台3 }
+        public enum EnumActionType
+        {
+            AGV从定位台1运动至定位台2 = 1,
+            AGV从定位台1运动至定位台3,
+            AGV从定位台1运动至定位台4,
+            AGV从定位台2运动至定位台1,
+            AGV从定位台2运动至定位台3,
+            AGV从定位台2运动至定位台4,
+            AGV从定位台3运动至定位台1,
+            AGV从定位台3运动至定位台2,
+            AGV从定位台3运动至定位台4,
+            AGV从定位台4运动至定位台1,
+            AGV从定位台4运动至定位台2,
+            AGV从定位台4运动至定位台3,
+            AGV转移物料至定位台3
+        }
     }
 
     /// <summary>
@@ -344,7 +375,14 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至正阻挡位, 正阻挡位转移物料至顶升机2前阻挡位, 物料顶升, 物料下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至正阻挡位,
+            正阻挡位转移物料至顶升机2前阻挡位,
+            物料顶升,
+            物料下降
+        }
     }
 
     /// <summary>
@@ -359,7 +397,14 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至正阻挡位, 正阻挡位转移物料至顶升机3前阻挡位, 物料顶升, 物料下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至正阻挡位,
+            正阻挡位转移物料至顶升机3前阻挡位,
+            物料顶升,
+            物料下降
+        }
     }
 
     /// <summary>
@@ -374,7 +419,14 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至正阻挡位, 正阻挡位转移物料至顶升机4前阻挡位, 物料顶升, 物料下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至正阻挡位,
+            正阻挡位转移物料至顶升机4前阻挡位,
+            物料顶升,
+            物料下降
+        }
     }
 
     /// <summary>
@@ -389,7 +441,14 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至正阻挡位, 正阻挡位转移物料至顶升机5前阻挡位, 物料顶升, 物料下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至正阻挡位,
+            正阻挡位转移物料至顶升机5前阻挡位,
+            物料顶升,
+            物料下降
+        }
     }
 
     /// <summary>
@@ -404,7 +463,14 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至正阻挡位, 正阻挡位转移物料至下料位前阻挡位, 物料顶升, 物料下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至正阻挡位,
+            正阻挡位转移物料至下料位前阻挡位,
+            物料顶升,
+            物料下降
+        }
     }
 
     /// <summary>
@@ -419,7 +485,14 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至正阻挡位, 正阻挡位转移物料至升降机2, 物料顶升, 物料下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至正阻挡位,
+            正阻挡位转移物料至升降机2,
+            物料顶升,
+            物料下降
+        }
     }
 
     /// <summary>
@@ -434,7 +507,13 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位到位 = 1, 前阻挡位转移物料至升降台, 升降机上升, 升降机下降 }
+        public enum EnumActionType
+        {
+            前阻挡位到位 = 1,
+            前阻挡位转移物料至升降台,
+            升降机上升,
+            升降机下降
+        }
     }
 
     /// <summary>
@@ -449,7 +528,12 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 前阻挡位转移物料至升降台 = 1, 升降机上升, 升降机下降 }
+        public enum EnumActionType
+        {
+            前阻挡位转移物料至升降台 = 1,
+            升降机上升,
+            升降机下降
+        }
     }
 
     /// <summary>
@@ -464,7 +548,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 抓取定位台物料至流水线上料位 = 1 }
+        public enum EnumActionType
+        {
+            抓取定位台物料至流水线上料位 = 1
+        }
     }
 
     /// <summary>
@@ -479,7 +566,19 @@ namespace SCADA
             ActionParameter = EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 抓取顶升机5物料至清洗机上料位1 = 1, 抓取清洗机上料位1物料至清洗机上料位2, 抓取清洗机上料位2物料至清洗机上料位3, 抓取清洗机上料位3物料至清洗机上料位4, 抓取清洗机上料位4物料至装配台, 抓取底座至装配台, 抓取A或B或C安装到底座, 抓取成品至顶升机5, 更换为普通物料夹具, 更换为成品夹具 }
+        public enum EnumActionType
+        {
+            抓取顶升机5物料至清洗机上料位1 = 1,
+            抓取清洗机上料位1物料至清洗机上料位2,
+            抓取清洗机上料位2物料至清洗机上料位3,
+            抓取清洗机上料位3物料至清洗机上料位4,
+            抓取清洗机上料位4物料至装配台,
+            抓取底座至装配台,
+            抓取A或B或C安装到底座,
+            抓取成品至顶升机5,
+            更换为普通物料夹具,
+            更换为成品夹具
+        }
     }
 
     /// <summary>
@@ -494,7 +593,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.料盘信息 | EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 抓取下料位物料至定位台4 = 1 }
+        public enum EnumActionType
+        {
+            抓取下料位物料至定位台4 = 1
+        }
     }
 
     /// <summary>
@@ -509,7 +611,13 @@ namespace SCADA
             ActionParameter = EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 抓取顶升机1物料至车床上料位 = 1, 抓取车床上料位至顶升机1, 抓取顶升机2物料至钻攻上料位, 抓取钻攻上料位物料至顶升机2 }
+        public enum EnumActionType
+        {
+            抓取顶升机1物料至车床上料位 = 1,
+            抓取车床上料位至顶升机1,
+            抓取顶升机2物料至钻攻上料位,
+            抓取钻攻上料位物料至顶升机2
+        }
     }
 
     /// <summary>
@@ -524,7 +632,15 @@ namespace SCADA
             ActionParameter = EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 抓取顶升机3物料至翻转机下位 = 1, 抓取翻转机上位物料至三轴上料位, 抓取三轴上料位至翻转机上位, 抓取翻转机下位物料至顶升机3, 抓取顶升机4物料至五轴上料位, 抓取五轴上料位物料至顶升机4 }
+        public enum EnumActionType
+        {
+            抓取顶升机3物料至翻转机下位 = 1,
+            抓取翻转机上位物料至三轴上料位,
+            抓取三轴上料位至翻转机上位,
+            抓取翻转机下位物料至顶升机3,
+            抓取顶升机4物料至五轴上料位,
+            抓取五轴上料位物料至顶升机4
+        }
     }
 
     /// <summary>
@@ -539,7 +655,10 @@ namespace SCADA
             ActionParameter = EnumActionParameter.物料信息;
         }
 
-        public enum EnumActionType { 激光雕刻 = 1 }
+        public enum EnumActionType
+        {
+            激光雕刻 = 1
+        }
     }
 
 }

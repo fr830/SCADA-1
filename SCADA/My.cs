@@ -134,6 +134,11 @@ namespace SCADA
         public static Work_MES Work_MES { get; private set; }
 
         /// <summary>
+        /// 二维码
+        /// </summary>
+        public static Work_QRCode Work_QRCode { get; private set; }
+
+        /// <summary>
         /// 视觉
         /// </summary>
         public static Work_Vision Work_Vision { get; private set; }
@@ -323,6 +328,7 @@ namespace SCADA
                 Work_RFID = Work_RFID.Instance;
                 Work_WMS = Work_WMS.Instance;
                 Work_MES = Work_MES.Instance;
+                Work_QRCode = Work_QRCode.Instance;
                 Work_Vision = Work_Vision.Instance;
                 Work_Simulation = Work_Simulation.Instance;
                 OnLoadCompleted("后台服务连接成功", 80);

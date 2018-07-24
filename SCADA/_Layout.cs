@@ -18,7 +18,7 @@ namespace SCADA
     {
         List<Type> TabPageFormTypes = new List<Type>
         { 
-            typeof(Home), typeof(RFIDPage)
+            typeof(Home), typeof(RFIDPage),typeof(DebugPLC)
         };
 
         public _Layout()
@@ -102,6 +102,7 @@ namespace SCADA
                     continue;
                 }
                 page.Text = frm.Text;
+                frm.Width = page.Width;
                 frm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                 frm.TopLevel = false;
                 frm.Parent = page;
