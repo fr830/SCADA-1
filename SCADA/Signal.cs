@@ -63,18 +63,18 @@ namespace SCADA
             SignalType = signalType;
             HncRegType = hncRegType;
             Expect = expect;
-            Color = Color.Transparent;
+            Color = Color.RoyalBlue;
         }
 
-        public Signal(int index, int bit, string text, Color color, EnumSignalType signalType = Signal.EnumSignalType.状态监控, HNC.HncRegType hncRegType = HNC.HncRegType.REG_TYPE_R, bool expect = true)
+        public Signal(int index, int bit, string text, Color color, bool expect = true, EnumSignalType signalType = Signal.EnumSignalType.状态监控, HNC.HncRegType hncRegType = HNC.HncRegType.REG_TYPE_R)
         {
             Index = index;
             Bit = bit;
             Text = text;
             Color = color;
+            Expect = expect;
             SignalType = signalType;
             HncRegType = hncRegType;
-            Expect = expect;
         }
 
 
@@ -93,7 +93,11 @@ namespace SCADA
             new Signal(343,2,"ROB运行"),
             new Signal(343,3,"ROB故障"),
             new Signal(343,4,"分料机构就绪"),
+            new Signal(343,5,"分料机构运行"),
+            new Signal(343,6,"分料机构故障"),
             new Signal(130,7,"提升机就绪"),
+            new Signal(342,0,"提升机运行"),
+            new Signal(342,1,"提升机故障"),
         };
 
         public static IList<Signal> listJ1 = new List<Signal>
@@ -603,14 +607,18 @@ namespace SCADA
             new Signal(103,2,"钻攻中心故障"),
             new Signal(103,3,"钻攻中心允许上料"),
             new Signal(103,4,"钻攻中心允许下料"),
-            new Signal(397,0,"台1就绪"),
-            new Signal(397,1,"台1故障"),
-            new Signal(397,2,"台2就绪"),
-            new Signal(397,3,"台2故障"),
-            new Signal(397,4,"台3就绪"),
-            new Signal(397,5,"台3故障"),
-            new Signal(397,6,"台4就绪"),
-            new Signal(397,7,"台4故障"),
+            new Signal(340,0,"台1就绪"),
+            new Signal(340,1,"台1运行"),
+            new Signal(340,2,"台1故障"),
+            new Signal(340,3,"台2就绪"),
+            new Signal(340,4,"台2运行"),
+            new Signal(340,5,"台2故障"),
+            new Signal(340,6,"台3就绪"),
+            new Signal(340,7,"台3运行"),
+            new Signal(341,0,"台3故障"),
+            new Signal(341,1,"台4就绪"),
+            new Signal(341,2,"台4运行"),
+            new Signal(341,3,"台4故障"),
         };
 
         public static IList<Signal> listJ10 = new List<Signal>
@@ -648,6 +656,14 @@ namespace SCADA
             new Signal(395,7,"台3复位",  Signal.EnumSignalType.手动控制),
             new Signal(396,0,"台4复位",  Signal.EnumSignalType.手动控制),
             new Signal(396,1,"区域10故障复位",  Signal.EnumSignalType.手动控制),
+            new Signal(373,0,"台1滚筒正转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,1,"台1滚筒反转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,2,"台2滚筒正转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,3,"台2滚筒反转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,4,"台3滚筒正转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,5,"台3滚筒反转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,6,"台4滚筒正转",  Signal.EnumSignalType.手动控制),
+            new Signal(373,7,"台4滚筒反转",  Signal.EnumSignalType.手动控制),
         };
 
         #endregion

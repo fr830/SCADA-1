@@ -10,6 +10,11 @@ using System.Windows.Forms;
 
 namespace SCADA
 {
+    public enum EnumMonitorItems
+    {
+        提升机皮带, 区域, 机器人, 分料机构, 提升机, 顶升机构, 取料状态, 装配台, 清洗机, 翻转机构, 三轴, 五轴, 车床, 钻攻中心, 台1, 台2, 台3, 台4
+    }
+
     public partial class UserControl_Monitor : UserControl
     {
         private UserControl_Monitor()
@@ -17,58 +22,69 @@ namespace SCADA
             InitializeComponent();
         }
 
-        public UserControl_Monitor(params Signal[] signals)
+        public IDictionary<EnumMonitorItems, IList<Signal>> Dict { get; private set; }
+
+        public UserControl_Monitor(string title, IDictionary<EnumMonitorItems, IList<Signal>> dict)
             : this()
         {
-            Signals = signals.ToList();
+            label1.Text = title;
+            Dict = new Dictionary<EnumMonitorItems, IList<Signal>>(dict);
         }
-
-        public UserControl_Monitor(IList<Signal> signals)
-            : this()
-        {
-            Signals = new List<Signal>(signals);
-        }
-
-        public IList<Signal> Signals { get; private set; }
-
-        private System.Timers.Timer timer = new System.Timers.Timer(500);
 
         private void UserControl_Monitor_Load(object sender, EventArgs e)
         {
-            timer.Elapsed += timer_Elapsed;
-            timer.Start();
-        }
-
-        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            timer.Stop();
-            foreach (var item in Signals)
+            foreach (var item in Dict)
             {
-                if (item.IsExpected)
+                if (item.Key == EnumMonitorItems.提升机皮带)
                 {
-                    DrawInfo(item.Text, item.Color);
+                    for (int i = 0; i < item.Value.Count; i++)
+                    {
+                        var s = new UserControl_SignalPB(item.Value[i]);
+                        flowLayoutPanel2.Controls.Add(s);
+                    }
+                }
+                else if (item.Key == EnumMonitorItems.区域)
+                {
+                    #region 区域
+                    Task.Run(async () =>
+                    {
+                        while (true)
+                        {
+                            await Task.Delay(1000);
+                            foreach (var signal in item.Value)
+                            {
+                                if (!signal.IsExpected)
+                                {
+                                    if (signal.Text == "自动" || signal.Text == "手动")
+                                    {
+                                        label3.InvokeEx(c =>
+                                        {
+                                            c.Text = signal.Text;
+                                            c.ForeColor = signal.Color;
+                                        });
+
+                                    }
+                                    else
+                                    {
+                                        label5.InvokeEx(c =>
+                                        {
+                                            c.Text = signal.Text;
+                                            c.ForeColor = signal.Color;
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    #endregion
+                }
+                else
+                {
+                    flowLayoutPanel1.Controls.Add(new UserControl_SignalTB(Enum.GetName(typeof(EnumMonitorItems), item.Key) + "：", item.Value));
                 }
             }
-            timer.Start();
         }
 
-        private void DrawInfo(string text, Color color)
-        {
-            pictureBox.InvokeEx(c =>
-            {
-                pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-                var graph = Graphics.FromImage(pictureBox.Image);
-                graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                graph.FillEllipse(new SolidBrush(color), 10, 10, pictureBox.Width - 20, pictureBox.Height - 20);
-                graph.Save();
-            });
-            label.InvokeEx(c =>
-            {
-                label.ForeColor = color;
-                label.Text = text;
-            });
-        }
 
     }
-
 }

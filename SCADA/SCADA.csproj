@@ -149,6 +149,18 @@
     <Compile Include="UserControl_Monitor.Designer.cs">
       <DependentUpon>UserControl_Monitor.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControl_SignalPB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl_SignalPB.Designer.cs">
+      <DependentUpon>UserControl_SignalPB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl_SignalTB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl_SignalTB.Designer.cs">
+      <DependentUpon>UserControl_SignalTB.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl_Vision.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -234,8 +246,14 @@
     <EmbeddedResource Include="UserControl_Monitor.resx">
       <DependentUpon>UserControl_Monitor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControl_SignalPB.resx">
+      <DependentUpon>UserControl_SignalPB.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControl_RFID.resx">
       <DependentUpon>UserControl_RFID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl_SignalTB.resx">
+      <DependentUpon>UserControl_SignalTB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="_Layout.resx">
       <DependentUpon>_Layout.cs</DependentUpon>

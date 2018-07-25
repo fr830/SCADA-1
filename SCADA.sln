@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFID", "RFID\RFID.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNC", "HNC\HNC.csproj", "{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QRCode", "QRCode\QRCode.csproj", "{23EDE67C-F9E9-409C-841E-4F90A0A46620}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,12 @@ Global
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Offline|Any CPU.Build.0 = DebugNoNet|Any CPU
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF4EF905-26FD-4579-8F23-F3B4970C3E7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23EDE67C-F9E9-409C-841E-4F90A0A46620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23EDE67C-F9E9-409C-841E-4F90A0A46620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23EDE67C-F9E9-409C-841E-4F90A0A46620}.Offline|Any CPU.ActiveCfg = Release|Any CPU
+		{23EDE67C-F9E9-409C-841E-4F90A0A46620}.Offline|Any CPU.Build.0 = Release|Any CPU
+		{23EDE67C-F9E9-409C-841E-4F90A0A46620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23EDE67C-F9E9-409C-841E-4F90A0A46620}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
