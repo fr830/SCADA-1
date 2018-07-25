@@ -14,6 +14,12 @@ namespace SCADA
 
         private Work_QRCode()
         {
+            My.Work_PLC.Scan += Scan;
+        }
+
+        void Scan(object sender, PLCEventArgs e)
+        {
+            My.PLC.Set(1, 12);//扫码器扫码完成
         }
     }
 }

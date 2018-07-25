@@ -128,13 +128,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common.cs" />
     <Compile Include="ControlExtensions.cs" />
+    <Compile Include="ConvertHelper.cs" />
     <Compile Include="DebugPLC.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DebugPLC.Designer.cs">
       <DependentUpon>DebugPLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Recovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Recovery.Designer.cs">
+      <DependentUpon>Recovery.cs</DependentUpon>
     </Compile>
     <Compile Include="Signal.cs" />
     <Compile Include="UserControl_Area.cs">
@@ -226,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DebugPLC.resx">
       <DependentUpon>DebugPLC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Recovery.resx">
+      <DependentUpon>Recovery.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RFIDPage.resx">
       <DependentUpon>RFIDPage.cs</DependentUpon>

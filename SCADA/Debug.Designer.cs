@@ -63,8 +63,8 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonRS8 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.buttonCKX = new System.Windows.Forms.Button();
             this.buttonRKX = new System.Windows.Forms.Button();
+            this.buttonCKX = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -80,7 +80,7 @@
             this.buttonWrite.Location = new System.Drawing.Point(106, 103);
             this.buttonWrite.Name = "buttonWrite";
             this.buttonWrite.Size = new System.Drawing.Size(75, 23);
-            this.buttonWrite.TabIndex = 0;
+            this.buttonWrite.TabIndex = 1;
             this.buttonWrite.Text = "Write";
             this.buttonWrite.UseVisualStyleBackColor = false;
             this.buttonWrite.Click += new System.EventHandler(this.buttonWrite_Click);
@@ -90,7 +90,7 @@
             this.textBoxIndex.Location = new System.Drawing.Point(98, 49);
             this.textBoxIndex.Name = "textBoxIndex";
             this.textBoxIndex.Size = new System.Drawing.Size(42, 21);
-            this.textBoxIndex.TabIndex = 1;
+            this.textBoxIndex.TabIndex = 4;
             this.textBoxIndex.Text = "1";
             // 
             // textBoxBit
@@ -98,7 +98,7 @@
             this.textBoxBit.Location = new System.Drawing.Point(181, 49);
             this.textBoxBit.Name = "textBoxBit";
             this.textBoxBit.Size = new System.Drawing.Size(42, 21);
-            this.textBoxBit.TabIndex = 2;
+            this.textBoxBit.TabIndex = 5;
             this.textBoxBit.Text = "0";
             // 
             // groupBox1
@@ -117,7 +117,7 @@
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(290, 149);
-            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC";
             // 
@@ -129,7 +129,7 @@
             this.buttonClear.Location = new System.Drawing.Point(187, 103);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(75, 23);
-            this.buttonClear.TabIndex = 10;
+            this.buttonClear.TabIndex = 2;
             this.buttonClear.Text = "Clear";
             this.buttonClear.UseVisualStyleBackColor = false;
             this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
@@ -150,7 +150,7 @@
             this.textBoxResult.Name = "textBoxResult";
             this.textBoxResult.ReadOnly = true;
             this.textBoxResult.Size = new System.Drawing.Size(164, 21);
-            this.textBoxResult.TabIndex = 8;
+            this.textBoxResult.TabIndex = 6;
             // 
             // buttonRead
             // 
@@ -160,7 +160,7 @@
             this.buttonRead.Location = new System.Drawing.Point(25, 103);
             this.buttonRead.Name = "buttonRead";
             this.buttonRead.Size = new System.Drawing.Size(75, 23);
-            this.buttonRead.TabIndex = 7;
+            this.buttonRead.TabIndex = 0;
             this.buttonRead.Text = "Read";
             this.buttonRead.UseVisualStyleBackColor = false;
             this.buttonRead.Click += new System.EventHandler(this.buttonRead_Click);
@@ -185,7 +185,7 @@
             this.comboBoxRegType.Location = new System.Drawing.Point(98, 23);
             this.comboBoxRegType.Name = "comboBoxRegType";
             this.comboBoxRegType.Size = new System.Drawing.Size(164, 20);
-            this.comboBoxRegType.TabIndex = 6;
+            this.comboBoxRegType.TabIndex = 3;
             // 
             // label1
             // 
@@ -232,8 +232,8 @@
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(308, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(549, 149);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.Size = new System.Drawing.Size(606, 149);
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "RFID";
             // 
@@ -245,7 +245,7 @@
             this.buttonRFIDInit.Location = new System.Drawing.Point(25, 73);
             this.buttonRFIDInit.Name = "buttonRFIDInit";
             this.buttonRFIDInit.Size = new System.Drawing.Size(163, 23);
-            this.buttonRFIDInit.TabIndex = 27;
+            this.buttonRFIDInit.TabIndex = 3;
             this.buttonRFIDInit.Text = "Init";
             this.buttonRFIDInit.UseVisualStyleBackColor = false;
             this.buttonRFIDInit.Click += new System.EventHandler(this.buttonRFIDInit_Click);
@@ -253,7 +253,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(272, 79);
+            this.label10.Location = new System.Drawing.Point(319, 79);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(59, 12);
             this.label10.TabIndex = 24;
@@ -262,7 +262,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(290, 50);
+            this.label9.Location = new System.Drawing.Point(337, 50);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 12);
             this.label9.TabIndex = 23;
@@ -271,7 +271,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(290, 21);
+            this.label8.Location = new System.Drawing.Point(337, 21);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 12);
             this.label8.TabIndex = 22;
@@ -293,10 +293,10 @@
             this.comboBoxAssemble.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBoxAssemble.ForeColor = System.Drawing.Color.Transparent;
             this.comboBoxAssemble.FormattingEnabled = true;
-            this.comboBoxAssemble.Location = new System.Drawing.Point(337, 76);
+            this.comboBoxAssemble.Location = new System.Drawing.Point(384, 76);
             this.comboBoxAssemble.Name = "comboBoxAssemble";
             this.comboBoxAssemble.Size = new System.Drawing.Size(75, 20);
-            this.comboBoxAssemble.TabIndex = 17;
+            this.comboBoxAssemble.TabIndex = 6;
             // 
             // comboBoxGauge
             // 
@@ -305,10 +305,10 @@
             this.comboBoxGauge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBoxGauge.ForeColor = System.Drawing.Color.Transparent;
             this.comboBoxGauge.FormattingEnabled = true;
-            this.comboBoxGauge.Location = new System.Drawing.Point(337, 47);
+            this.comboBoxGauge.Location = new System.Drawing.Point(384, 47);
             this.comboBoxGauge.Name = "comboBoxGauge";
             this.comboBoxGauge.Size = new System.Drawing.Size(75, 20);
-            this.comboBoxGauge.TabIndex = 16;
+            this.comboBoxGauge.TabIndex = 5;
             // 
             // comboBoxClean
             // 
@@ -317,10 +317,10 @@
             this.comboBoxClean.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBoxClean.ForeColor = System.Drawing.Color.Transparent;
             this.comboBoxClean.FormattingEnabled = true;
-            this.comboBoxClean.Location = new System.Drawing.Point(337, 18);
+            this.comboBoxClean.Location = new System.Drawing.Point(384, 18);
             this.comboBoxClean.Name = "comboBoxClean";
             this.comboBoxClean.Size = new System.Drawing.Size(75, 20);
-            this.comboBoxClean.TabIndex = 15;
+            this.comboBoxClean.TabIndex = 4;
             // 
             // comboBoxWorkpiece
             // 
@@ -332,7 +332,7 @@
             this.comboBoxWorkpiece.Location = new System.Drawing.Point(94, 46);
             this.comboBoxWorkpiece.Name = "comboBoxWorkpiece";
             this.comboBoxWorkpiece.Size = new System.Drawing.Size(94, 20);
-            this.comboBoxWorkpiece.TabIndex = 13;
+            this.comboBoxWorkpiece.TabIndex = 2;
             // 
             // textBoxRFIDData
             // 
@@ -340,18 +340,18 @@
             this.textBoxRFIDData.Location = new System.Drawing.Point(25, 107);
             this.textBoxRFIDData.Name = "textBoxRFIDData";
             this.textBoxRFIDData.ReadOnly = true;
-            this.textBoxRFIDData.Size = new System.Drawing.Size(500, 21);
-            this.textBoxRFIDData.TabIndex = 12;
+            this.textBoxRFIDData.Size = new System.Drawing.Size(547, 21);
+            this.textBoxRFIDData.TabIndex = 0;
             // 
             // buttonRFIDRead
             // 
             this.buttonRFIDRead.BackColor = System.Drawing.Color.DodgerBlue;
             this.buttonRFIDRead.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRFIDRead.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonRFIDRead.Location = new System.Drawing.Point(438, 74);
+            this.buttonRFIDRead.Location = new System.Drawing.Point(485, 74);
             this.buttonRFIDRead.Name = "buttonRFIDRead";
             this.buttonRFIDRead.Size = new System.Drawing.Size(87, 23);
-            this.buttonRFIDRead.TabIndex = 11;
+            this.buttonRFIDRead.TabIndex = 8;
             this.buttonRFIDRead.Text = "Read";
             this.buttonRFIDRead.UseVisualStyleBackColor = false;
             this.buttonRFIDRead.Click += new System.EventHandler(this.buttonRFIDRead_Click);
@@ -361,10 +361,10 @@
             this.buttonRFIDWrite.BackColor = System.Drawing.Color.DodgerBlue;
             this.buttonRFIDWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRFIDWrite.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonRFIDWrite.Location = new System.Drawing.Point(438, 16);
+            this.buttonRFIDWrite.Location = new System.Drawing.Point(485, 16);
             this.buttonRFIDWrite.Name = "buttonRFIDWrite";
             this.buttonRFIDWrite.Size = new System.Drawing.Size(87, 52);
-            this.buttonRFIDWrite.TabIndex = 10;
+            this.buttonRFIDWrite.TabIndex = 7;
             this.buttonRFIDWrite.Text = "Write";
             this.buttonRFIDWrite.UseVisualStyleBackColor = false;
             this.buttonRFIDWrite.Click += new System.EventHandler(this.buttonRFIDWrite_Click);
@@ -379,7 +379,7 @@
             this.comboBoxRFIDs.Location = new System.Drawing.Point(94, 17);
             this.comboBoxRFIDs.Name = "comboBoxRFIDs";
             this.comboBoxRFIDs.Size = new System.Drawing.Size(94, 20);
-            this.comboBoxRFIDs.TabIndex = 10;
+            this.comboBoxRFIDs.TabIndex = 1;
             // 
             // label5
             // 
@@ -399,7 +399,7 @@
             this.groupBox3.Location = new System.Drawing.Point(12, 167);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(290, 171);
-            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "WMS";
             // 
@@ -411,7 +411,7 @@
             this.buttonOut.Location = new System.Drawing.Point(106, 20);
             this.buttonOut.Name = "buttonOut";
             this.buttonOut.Size = new System.Drawing.Size(75, 23);
-            this.buttonOut.TabIndex = 14;
+            this.buttonOut.TabIndex = 1;
             this.buttonOut.Text = "Out";
             this.buttonOut.UseVisualStyleBackColor = false;
             this.buttonOut.Click += new System.EventHandler(this.buttonOut_Click);
@@ -424,7 +424,7 @@
             this.buttonSpinOut.Location = new System.Drawing.Point(106, 49);
             this.buttonSpinOut.Name = "buttonSpinOut";
             this.buttonSpinOut.Size = new System.Drawing.Size(75, 23);
-            this.buttonSpinOut.TabIndex = 13;
+            this.buttonSpinOut.TabIndex = 3;
             this.buttonSpinOut.Text = "SpinOut";
             this.buttonSpinOut.UseVisualStyleBackColor = false;
             this.buttonSpinOut.Click += new System.EventHandler(this.buttonSpinOut_Click);
@@ -437,7 +437,7 @@
             this.buttonIn.Location = new System.Drawing.Point(25, 49);
             this.buttonIn.Name = "buttonIn";
             this.buttonIn.Size = new System.Drawing.Size(75, 23);
-            this.buttonIn.TabIndex = 12;
+            this.buttonIn.TabIndex = 2;
             this.buttonIn.Text = "In";
             this.buttonIn.UseVisualStyleBackColor = false;
             this.buttonIn.Click += new System.EventHandler(this.buttonIn_Click);
@@ -450,7 +450,7 @@
             this.buttonSpinIn.Location = new System.Drawing.Point(25, 20);
             this.buttonSpinIn.Name = "buttonSpinIn";
             this.buttonSpinIn.Size = new System.Drawing.Size(75, 23);
-            this.buttonSpinIn.TabIndex = 11;
+            this.buttonSpinIn.TabIndex = 0;
             this.buttonSpinIn.Text = "SpinIn";
             this.buttonSpinIn.UseVisualStyleBackColor = false;
             this.buttonSpinIn.Click += new System.EventHandler(this.buttonSpinIn_Click);
@@ -460,8 +460,8 @@
             this.groupBox4.Controls.Add(this.buttonRS8);
             this.groupBox4.Location = new System.Drawing.Point(308, 167);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(271, 171);
-            this.groupBox4.TabIndex = 6;
+            this.groupBox4.Size = new System.Drawing.Size(300, 171);
+            this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Vision";
             // 
@@ -473,7 +473,7 @@
             this.buttonRS8.Location = new System.Drawing.Point(25, 20);
             this.buttonRS8.Name = "buttonRS8";
             this.buttonRS8.Size = new System.Drawing.Size(75, 23);
-            this.buttonRS8.TabIndex = 13;
+            this.buttonRS8.TabIndex = 0;
             this.buttonRS8.Text = "RS8";
             this.buttonRS8.UseVisualStyleBackColor = false;
             this.buttonRS8.Click += new System.EventHandler(this.buttonRS8_Click);
@@ -482,25 +482,12 @@
             // 
             this.groupBox5.Controls.Add(this.buttonRKX);
             this.groupBox5.Controls.Add(this.buttonCKX);
-            this.groupBox5.Location = new System.Drawing.Point(585, 167);
+            this.groupBox5.Location = new System.Drawing.Point(614, 167);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(272, 171);
-            this.groupBox5.TabIndex = 7;
+            this.groupBox5.Size = new System.Drawing.Size(300, 171);
+            this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Simulation";
-            // 
-            // buttonCKX
-            // 
-            this.buttonCKX.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonCKX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCKX.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonCKX.Location = new System.Drawing.Point(15, 20);
-            this.buttonCKX.Name = "buttonCKX";
-            this.buttonCKX.Size = new System.Drawing.Size(75, 23);
-            this.buttonCKX.TabIndex = 14;
-            this.buttonCKX.Text = "CKX";
-            this.buttonCKX.UseVisualStyleBackColor = false;
-            this.buttonCKX.Click += new System.EventHandler(this.buttonCKX_Click);
             // 
             // buttonRKX
             // 
@@ -510,10 +497,23 @@
             this.buttonRKX.Location = new System.Drawing.Point(96, 20);
             this.buttonRKX.Name = "buttonRKX";
             this.buttonRKX.Size = new System.Drawing.Size(75, 23);
-            this.buttonRKX.TabIndex = 15;
+            this.buttonRKX.TabIndex = 1;
             this.buttonRKX.Text = "RKX";
             this.buttonRKX.UseVisualStyleBackColor = false;
             this.buttonRKX.Click += new System.EventHandler(this.buttonRKX_Click);
+            // 
+            // buttonCKX
+            // 
+            this.buttonCKX.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonCKX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCKX.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonCKX.Location = new System.Drawing.Point(15, 20);
+            this.buttonCKX.Name = "buttonCKX";
+            this.buttonCKX.Size = new System.Drawing.Size(75, 23);
+            this.buttonCKX.TabIndex = 0;
+            this.buttonCKX.Text = "CKX";
+            this.buttonCKX.UseVisualStyleBackColor = false;
+            this.buttonCKX.Click += new System.EventHandler(this.buttonCKX_Click);
             // 
             // Debug
             // 
@@ -527,7 +527,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Debug";
-            this.Text = "Debug";
+            this.Text = "调试";
             this.Load += new System.EventHandler(this.Debug_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

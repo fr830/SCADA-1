@@ -362,6 +362,12 @@ namespace RFID
             }
             return r;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1}", Enum.GetName(typeof(EnumWorkpiece), Workpiece), IsRough ? "毛坯" : "成品");
+        }
+
     }
 
 }

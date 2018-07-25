@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 
 namespace SCADA
 {
@@ -19,15 +20,20 @@ namespace SCADA
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            Process p = GetRunningInstance();
-            if (p != null)
+            bool createdNew;
+            Mutex mutex = new Mutex(true, Application.ProductName, out createdNew);
+            if (createdNew)
             {
-                Win32Api.ShowWindowAsync(p.MainWindowHandle, 1);
-                Win32Api.SetForegroundWindow(p.MainWindowHandle);
+                Application.Run(new _Layout());
             }
             else
             {
-                Application.Run(new _Layout());
+                Process p = GetRunningInstance();
+                if (p != null)
+                {
+                    Win32Api.ShowWindowAsync(p.MainWindowHandle, 1);
+                    Win32Api.SetForegroundWindow(p.MainWindowHandle);
+                }
             }
         }
 

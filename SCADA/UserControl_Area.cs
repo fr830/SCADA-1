@@ -18,12 +18,13 @@ namespace SCADA
         }
 
         public UserControl_Area(string title, IList<Signal> listS, IList<Signal> listJ, IList<Signal> listC)
+            : this()
         {
-            InitializeComponent();
             groupBox.Text = title;
             groupBox.Controls.Add(CreateGroupBox("按钮", listC));
             groupBox.Controls.Add(CreateGroupBox("监控", listJ));
-            groupBox.Controls.Add(CreateGroupBox("监控", listS));
+            //groupBox.Controls.Add(CreateGroupBox("监控", listS));
+            this.Height = 300;
         }
 
         private System.Timers.Timer timer = new System.Timers.Timer(1000);

@@ -53,7 +53,7 @@ namespace SCADA
                             await Task.Delay(1000);
                             foreach (var signal in item.Value)
                             {
-                                if (!signal.IsExpected)
+                                if (signal.IsExpected)
                                 {
                                     if (signal.Text == "自动" || signal.Text == "手动")
                                     {

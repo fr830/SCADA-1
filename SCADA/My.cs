@@ -119,7 +119,7 @@ namespace SCADA
         public static Work_PLC Work_PLC { get; private set; }
 
         /// <summary>
-        /// 产线
+        /// RFID
         /// </summary>
         public static Work_RFID Work_RFID { get; private set; }
 

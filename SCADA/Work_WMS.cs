@@ -146,10 +146,18 @@ namespace SCADA
         private CancellationTokenSource cts;
         private Task task;
 
+        private DateTime lastTime = DateTime.Now;
+
         /// <summary>
         /// 服务运行状态
         /// </summary>
-        public bool IsRunning { get { return task != null; } }
+        public bool IsRunning
+        {
+            get
+            {
+                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
+            }
+        }
 
         /// <summary>
         /// 启动服务
@@ -184,12 +192,12 @@ namespace SCADA
         /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
-            return new Task(() =>
+            return new Task(async () =>
             {
                 while (!token.IsCancellationRequested)
                 {
-                    Thread.Sleep(500);
-
+                    await Task.Delay(500);
+                    lastTime = DateTime.Now;
                 }
             }, token);
         }

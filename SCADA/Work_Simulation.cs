@@ -24,6 +24,17 @@ namespace SCADA
 
         private ConcurrentQueue<byte[]> messages = new ConcurrentQueue<byte[]>();
 
+        /// <summary>
+        /// 等待发送的消息数量
+        /// </summary>
+        public int WaitForSendingCount
+        {
+            get
+            {
+                return messages.Count;
+            }
+        }
+
         private TcpClient tcpClient = new TcpClient();
 
         private Work_Simulation()
@@ -87,10 +98,18 @@ namespace SCADA
         private CancellationTokenSource cts;
         private Task task;
 
+        private DateTime lastTime = DateTime.Now;
+
         /// <summary>
         /// 服务运行状态
         /// </summary>
-        public bool IsRunning { get { return task != null; } }
+        public bool IsRunning
+        {
+            get
+            {
+                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
+            }
+        }
 
         /// <summary>
         /// 启动服务
@@ -125,11 +144,12 @@ namespace SCADA
         /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
-            return new Task(() =>
+            return new Task(async () =>
             {
                 while (!token.IsCancellationRequested)
                 {
-                    Thread.Sleep(500);
+                    await Task.Delay(500);
+                    lastTime = DateTime.Now;
                     if (My.PLC.Exist(12, 4))//分料
                     {
                         Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位到位));

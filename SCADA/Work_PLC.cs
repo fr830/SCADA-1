@@ -16,7 +16,7 @@ namespace SCADA
         {
         }
 
-        private static Dictionary<EnumPSite, int> SiteIndexDict = new Dictionary<EnumPSite, int>
+        public static Dictionary<EnumPSite, int> SiteIndexDict = new Dictionary<EnumPSite, int>
         {
             {EnumPSite.S1,2},{EnumPSite.S2,3},{EnumPSite.S3,4},{EnumPSite.S4,5},{EnumPSite.S5_Assemble,6},{EnumPSite.S6_Alignment,7}
         };
@@ -30,13 +30,21 @@ namespace SCADA
         private CancellationTokenSource cts;
         private Task task;
 
-        /// <summary>
-        /// 核心服务运行状态
-        /// </summary>
-        public bool IsRunning { get { return task != null; } }
+        private DateTime lastTime = DateTime.Now;
 
         /// <summary>
-        /// 启动核心服务
+        /// 服务运行状态
+        /// </summary>
+        public bool IsRunning
+        {
+            get
+            {
+                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
+            }
+        }
+
+        /// <summary>
+        /// 启动服务
         /// </summary>
         public void Start()
         {
@@ -47,7 +55,7 @@ namespace SCADA
         }
 
         /// <summary>
-        /// 停止核心服务
+        /// 停止服务
         /// </summary>
         public void Stop()
         {
@@ -73,6 +81,7 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     await Task.Delay(1000);
+                    lastTime = DateTime.Now;
                     if (My.PLC.Exist(1, 0))//请求相机拍照
                     {
                         My.PLC.Clear(1, 0);
@@ -81,8 +90,7 @@ namespace SCADA
                     if (My.PLC.Exist(1, 10))//请求扫码器扫码
                     {
                         My.PLC.Clear(1, 10);
-                        OnScan(EnumPSite.S8_Down, 1);//None!!!
-                        My.PLC.Set(1, 12);//扫码器扫码完成
+                        OnScan(EnumPSite.S8_Down, 1);//Work_QRCode
                     }
                     foreach (EnumPSite site in Enum.GetValues(typeof(EnumPSite)))
                     {

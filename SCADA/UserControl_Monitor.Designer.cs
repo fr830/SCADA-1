@@ -91,17 +91,17 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(400, 150);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(400, 130);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(317, 30);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(317, 26);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.tableLayoutPanel.SetRowSpan(this.flowLayoutPanel2, 4);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 119);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 103);
             this.flowLayoutPanel2.TabIndex = 7;
             // 
             // label5
@@ -111,7 +111,7 @@
             this.label5.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label5.Location = new System.Drawing.Point(320, 1);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(76, 28);
+            this.label5.Size = new System.Drawing.Size(76, 24);
             this.label5.TabIndex = 4;
             this.label5.Text = "运行";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -123,7 +123,7 @@
             this.label3.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label3.Location = new System.Drawing.Point(162, 1);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 28);
+            this.label3.Size = new System.Drawing.Size(72, 24);
             this.label3.TabIndex = 3;
             this.label3.Text = "自动";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -134,7 +134,7 @@
             this.label4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.Location = new System.Drawing.Point(241, 1);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(72, 28);
+            this.label4.Size = new System.Drawing.Size(72, 24);
             this.label4.TabIndex = 2;
             this.label4.Text = "工作状态：";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -145,7 +145,7 @@
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(83, 1);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 28);
+            this.label2.Size = new System.Drawing.Size(72, 24);
             this.label2.TabIndex = 1;
             this.label2.Text = "手/自动：";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -157,7 +157,7 @@
             this.label1.ForeColor = System.Drawing.Color.MediumBlue;
             this.label1.Location = new System.Drawing.Point(4, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 28);
+            this.label1.Size = new System.Drawing.Size(72, 24);
             this.label1.TabIndex = 0;
             this.label1.Text = "Title";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -166,11 +166,11 @@
             // 
             this.tableLayoutPanel.SetColumnSpan(this.flowLayoutPanel1, 4);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(1, 30);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(1, 26);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.tableLayoutPanel.SetRowSpan(this.flowLayoutPanel1, 4);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(315, 119);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(315, 103);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // UserControl_Monitor
@@ -180,7 +180,7 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Controls.Add(this.tableLayoutPanel);
             this.Name = "UserControl_Monitor";
-            this.Size = new System.Drawing.Size(400, 150);
+            this.Size = new System.Drawing.Size(400, 130);
             this.Load += new System.EventHandler(this.UserControl_Monitor_Load);
             this.tableLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);

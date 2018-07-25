@@ -46,19 +46,19 @@ namespace SCADA
 
         void HFReader_AutoReadHandler(object sender, AutoReadEventArgs e)
         {
-            var text = string.Format("自动读取，天线{0}，UID：{1}{2}", ((int)(e.ant + 1)).ToString(), ConvertHelper.BytesToHexString(e.UID), Environment.NewLine);
+            var text = string.Format("AutoRead,Antenna{0},UID:{1}{2}", ((int)(e.ant + 1)).ToString(), ConvertHelper.BytesToHexString(e.UID), Environment.NewLine);
             //WriteLog(text);
         }
 
         void CommEvent_CommSendHandler(object sender, CommEventArgs e)
         {
-            var text = "请求:" + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
+            var text = "Request:" + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
             WriteLog(text);
         }
 
         void CommEvent_CommReceiveHandler(object sender, CommEventArgs e)
         {
-            var text = "响应:" + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
+            var text = "Response:" + ConvertHelper.BytesToHexString(e.CommDatas, e.CommDatasLen);
             WriteLog(text);
         }
 

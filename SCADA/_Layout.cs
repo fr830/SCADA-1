@@ -18,7 +18,7 @@ namespace SCADA
     {
         List<Type> TabPageFormTypes = new List<Type>
         { 
-            typeof(Home), typeof(RFIDPage),typeof(DebugPLC)
+            typeof(Home), typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
         };
 
         public _Layout()
@@ -132,7 +132,7 @@ namespace SCADA
             buttonRun.Focus();
         }
 
-        private void buttonRun_Click(object sender, EventArgs e)
+        private async void buttonRun_Click(object sender, EventArgs e)
         {
             buttonRun.Enabled = false;
             if (My.Work_PLC.IsRunning)
@@ -143,6 +143,7 @@ namespace SCADA
             {
                 My.Work_PLC.Start();
             }
+            await Task.Delay(2000);
             Color c = My.Work_PLC.IsRunning ? Color.Green : Color.Red;
             pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
             var graph = Graphics.FromImage(pictureBoxStatus.Image);
