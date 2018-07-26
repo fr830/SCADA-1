@@ -136,7 +136,7 @@
     <Compile Include="DebugPLC.Designer.cs">
       <DependentUpon>DebugPLC.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessProgram.cs" />
+    <Compile Include="GCodeFile.cs" />
     <Compile Include="Recovery.cs">
       <SubType>Form</SubType>
     </Compile>

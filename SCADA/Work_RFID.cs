@@ -37,44 +37,38 @@ namespace SCADA
             My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
             if (data.GetProcessSite() == e.Site)
             {
+                var dict = GCodeFile.Dict[e.Site];
+                var mt = My.MachineTools[e.Site];
+                var file = GCodeFile.EnumFile.联调试验程序;
+                switch (data.Workpiece)
+                {
+                    case EnumWorkpiece.A:
+                        file = GCodeFile.EnumFile.加工A料程序;
+                        break;
+                    case EnumWorkpiece.B:
+                        file = GCodeFile.EnumFile.加工B料程序;
+                        break;
+                    case EnumWorkpiece.C:
+                        file = GCodeFile.EnumFile.加工A料程序;
+                        break;
+                    default:
+                        break;
+                }
+                if (!mt.HNC_NetFileSend(dict[file], "O999"))
+                {
+                    throw new ArgumentException("G代码下发失败，请检查后重试！");
+                }
+                My.PLC.Set(e.Index, 2);//工件符合当前工位
                 switch (e.Site)
                 {
                     case EnumPSite.S1:
                         My.Work_Simulation.Send(new DSJ01(data, DSJ01.EnumActionType.物料顶升));
-                        switch (data.Workpiece)
-                        {
-                            case EnumWorkpiece.A:
-                                My.MachineTools[e.Site].HNC_NetFileSend(ProcessProgram.dictS1[ProcessProgram.EnumS1File.加工A料程序], "O9901");
-                                break;
-                            case EnumWorkpiece.B:
-                                My.PLC.HNC_NetFileSend(ProcessProgram.dictS1[ProcessProgram.EnumS1File.加工B料程序], "O9902");
-                                break;
-                            case EnumWorkpiece.C:
-                                My.PLC.HNC_NetFileSend(ProcessProgram.dictS1[ProcessProgram.EnumS1File.加工C料程序], "O9903");
-                                break;
-                            default:
-                                break;
-                        }
                         break;
                     case EnumPSite.S2:
                         My.Work_Simulation.Send(new DSJ02(data, DSJ02.EnumActionType.物料顶升));
                         break;
                     case EnumPSite.S3:
                         My.Work_Simulation.Send(new DSJ03(data, DSJ03.EnumActionType.物料顶升));
-                        switch (data.Workpiece)
-                        {
-                            case EnumWorkpiece.A:
-                                My.PLC.HNC_NetFileSend(ProcessProgram.dictS3[ProcessProgram.EnumS3File.加工A料程序], "O9901");
-                                break;
-                            case EnumWorkpiece.B:
-                                My.PLC.HNC_NetFileSend(ProcessProgram.dictS3[ProcessProgram.EnumS3File.加工B料程序], "O9902");
-                                break;
-                            case EnumWorkpiece.C:
-                                My.PLC.HNC_NetFileSend(ProcessProgram.dictS3[ProcessProgram.EnumS3File.加工C料程序], "O9903");
-                                break;
-                            default:
-                                break;
-                        }
                         break;
                     case EnumPSite.S4:
                         My.Work_Simulation.Send(new DSJ04(data, DSJ04.EnumActionType.物料顶升));
@@ -88,10 +82,10 @@ namespace SCADA
                     default:
                         break;
                 }
-                My.PLC.Set(e.Index, 2);//工件符合当前工位
             }
             else
             {
+                My.PLC.Set(e.Index, 3);//工件不符合当前工位
                 switch (e.Site)
                 {
                     case EnumPSite.S1:
@@ -115,7 +109,6 @@ namespace SCADA
                     default:
                         break;
                 }
-                My.PLC.Set(e.Index, 3);//工件不符合当前工位
             }
         }
 
