@@ -203,9 +203,9 @@ namespace HNC
             return false;
         }
 
-        public bool HNC_NetFileSend(string localPath, string destinationPath)
+        public bool HNC_NetFileSend(string localPath, string filename)
         {
-            if (!File.Exists(localPath) || string.IsNullOrWhiteSpace(destinationPath))
+            if (!File.Exists(localPath) || string.IsNullOrWhiteSpace(filename))
             {
                 return false;
             }
@@ -221,8 +221,7 @@ namespace HNC
                     }
                 }
             }
-            var filename = destinationPath.Split('/').LastOrDefault();
-            WriteList("GCodeFileSent:" + destinationPath, list);
+            WriteList("GCodeFileSent:" + Path.Combine("h/lnc8/prog", filename), list);
             var message = new NCMessage
             {
                 Type = "File",

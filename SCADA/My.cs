@@ -86,10 +86,10 @@ namespace SCADA
 
         /// <summary>
         /// 数据系统字典
-        /// Key：编号，从0开始，0表示PLC
+        /// Key：加工位置(None表示PLC)
         /// Value：MachineTool
         /// </summary>
-        public static Dictionary<int, MachineTool> MachineTools { get; private set; }
+        public static Dictionary<EnumPSite, MachineTool> MachineTools { get; private set; }
 
         /// <summary>
         /// PLC
@@ -100,7 +100,7 @@ namespace SCADA
             {
                 if (MachineTools != null && MachineTools.Count > 0)
                 {
-                    return MachineTools[0];
+                    return MachineTools[EnumPSite.None];
                 }
                 throw new ArgumentException("系统未检测到PLC！请联系维护人员。");
             }
@@ -294,25 +294,25 @@ namespace SCADA
                 }
 
                 var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
-                MachineTools = new Dictionary<int, MachineTool>();
-                for (int i = 0; i < macIPs.Length; i++)
+                MachineTools = new Dictionary<EnumPSite, MachineTool>();
+                try
                 {
-                    try
-                    {
-                        MachineTools.Add(i, new MachineTool(macIPs[i]));
-                    }
-                    catch (Exception)
-                    {
-                        if (i == 0)
-                        {
-                            throw new Exception("PLC连接失败，IP：" + macIPs[i]);
-                        }
-                        else
-                        {
-                            OnLoadCompleted("数控系统" + macIPs[i] + "连接失败！", 40);
-                        }
-                        break;
-                    }
+                    MachineTools.Add(EnumPSite.None, new MachineTool(macIPs[0]));
+                }
+                catch (Exception)
+                {
+                    throw new Exception("PLC连接失败，IP：" + macIPs[0]);
+                }
+                try
+                {
+                    MachineTools.Add(EnumPSite.S1, new MachineTool(macIPs[1]));
+                    MachineTools.Add(EnumPSite.S2, new MachineTool(macIPs[2]));
+                    MachineTools.Add(EnumPSite.S3, new MachineTool(macIPs[3]));
+                    MachineTools.Add(EnumPSite.S4, new MachineTool(macIPs[4]));
+                }
+                catch (Exception)
+                {
+                    OnLoadCompleted("数控系统连接失败！", 40);
                 }
                 OnLoadCompleted("数控系统连接成功", 40);
 

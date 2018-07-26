@@ -136,6 +136,7 @@
     <Compile Include="DebugPLC.Designer.cs">
       <DependentUpon>DebugPLC.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcessProgram.cs" />
     <Compile Include="Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -321,6 +322,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(SolutionDir)ExternItems\process $(TargetDir) /E /Y</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

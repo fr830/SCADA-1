@@ -17,6 +17,8 @@ namespace Test
             Console.WriteLine(DateTime.Now);
             Console.WriteLine(DateTime.UtcNow);
 
+            
+
             //var messages = new List<string>
             //{
             //    "&2018-07-05T05:45:09.116Z,1,CKX,1,123|4|A1#",
