@@ -77,6 +77,20 @@ namespace SCADA
             HncRegType = hncRegType;
         }
 
+        public bool Exist()
+        {
+            return My.PLC.Exist(Index, Bit, HncRegType);
+        }
+
+        public bool Set()
+        {
+            return My.PLC.Set(Index, Bit, HncRegType);
+        }
+
+        public bool Clear()
+        {
+            return My.PLC.Clear(Index, Bit, HncRegType);
+        }
 
         #region 01
 

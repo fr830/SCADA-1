@@ -16,20 +16,20 @@ namespace SCADA
 {
     public partial class _Layout : Form
     {
-        List<Type> TabPageFormTypes = new List<Type>
-        { 
-            typeof(Home), typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
-        };
-
         public _Layout()
         {
             InitializeComponent();
         }
 
+        IList<Type> TabPages = new List<Type>
+        { 
+            typeof(Home), typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
+        };
+
         private void _Layout_Load(object sender, EventArgs e)
         {
 #if DEBUG
-            TabPageFormTypes.Add(typeof(Debug));
+            TabPages.Add(typeof(Debug));
             FormClosing -= _Layout_FormClosing;
 #endif
             Visible = false;
@@ -86,25 +86,23 @@ namespace SCADA
         /// <summary>
         /// 初始化TabPage
         /// </summary>
-        /// <param name="tabPage"></param>
         private void InitTabPage()
         {
-            for (int i = 0; i < TabPageFormTypes.Count; i++)
+            for (int i = 0; i < TabPages.Count; i++)
             {
-                TabPage page = new TabPage();
-                Form frm = Activator.CreateInstance(TabPageFormTypes[i]) as Form;
-                if (frm == null)
+                var page = new TabPage();
+                var form = Activator.CreateInstance(TabPages[i]) as Form;
+                if (form != null)
                 {
-                    continue;
+                    page.Text = form.Text;
+                    form.Width = page.Width;
+                    form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                    form.TopLevel = false;
+                    form.Parent = page;
+                    form.Dock = DockStyle.Fill;
+                    form.Show();
+                    tabControl.TabPages.Add(page);
                 }
-                page.Text = frm.Text;
-                frm.Width = page.Width;
-                frm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-                frm.TopLevel = false;
-                frm.Parent = page;
-                frm.Dock = DockStyle.Fill;
-                frm.Show();
-                tabControl.TabPages.Add(page);
             }
         }
 
@@ -154,6 +152,38 @@ namespace SCADA
             labelStatus.Text = My.Work_PLC.IsRunning ? "运行" : "停止";
             buttonRun.Text = My.Work_PLC.IsRunning ? "停止" : "启动";
             buttonRun.Enabled = true;
+        }
+
+        private void checkBoxProtect_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxProtect.Enabled = false;
+            if (checkBoxProtect.Checked)
+            {
+                My.PLC.Set(339, 0, HNC.HncRegType.REG_TYPE_R);
+                checkBoxProtect.Text = "连锁保护";
+            }
+            else
+            {
+                My.PLC.Clear(339, 0, HNC.HncRegType.REG_TYPE_R);
+                checkBoxProtect.Text = "连锁解除";
+            }
+            checkBoxProtect.Enabled = true;
+        }
+
+        private void checkBoxQuiet_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxQuiet.Enabled = false;
+            if (checkBoxQuiet.Checked)
+            {
+                My.PLC.Set(339, 1, HNC.HncRegType.REG_TYPE_R);
+                checkBoxQuiet.Text = "取消静音";
+            }
+            else
+            {
+                My.PLC.Clear(339, 1, HNC.HncRegType.REG_TYPE_R);
+                checkBoxQuiet.Text = "静音";
+            }
+            checkBoxQuiet.Enabled = true;
         }
     }
 }

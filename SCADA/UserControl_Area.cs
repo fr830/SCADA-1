@@ -66,21 +66,21 @@ namespace SCADA
             var btn = new Button();
             btn.AutoSize = true;
             btn.FlatStyle = FlatStyle.Flat;
-            //btn.Font = new Font("微软雅黑", 15, FontStyle.Regular);
+            btn.Font = new Font("微软雅黑", 9f, FontStyle.Regular);
             btn.Tag = c;
             btn.Text = c.Text;
             switch (c.SignalType)
             {
                 case Signal.EnumSignalType.状态监控:
                     btn.Enabled = false;
-                    btn.BackColor = My.PLC.Exist(c.Index, c.Bit) ? Color.Lime : Color.Transparent;
+                    btn.BackColor = c.IsExpected ? Color.Lime : Color.Transparent;
                     break;
                 case Signal.EnumSignalType.手动控制:
                     btn.Enabled = true;
                     btn.BackColor = Color.DodgerBlue;
                     btn.ForeColor = Color.Transparent;
-                    btn.MouseDown += (ds, de) => My.PLC.Set(c.Index, c.Bit);
-                    btn.MouseUp += (us, ue) => My.PLC.Clear(c.Index, c.Bit);
+                    btn.MouseDown += (ds, de) => c.Set();
+                    btn.MouseUp += (us, ue) => c.Clear();
                     break;
                 default:
                     btn.Enabled = false;
@@ -105,7 +105,7 @@ namespace SCADA
                     {
                         btn.InvokeEx(b =>
                         {
-                            b.BackColor = My.PLC.Exist(content.Index, content.Bit) ? Color.Lime : Color.Transparent;
+                            b.BackColor = content.IsExpected ? Color.Lime : Color.Transparent;
                         });
                     }
                 }

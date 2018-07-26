@@ -29,7 +29,7 @@ namespace SCADA
                     new Signal(301,0,"运行"),
                     new Signal(301,1,"手动"),
                     new Signal(301,2,"自动"),
-                    new Signal(301,4,"急停",Color.Gold),
+                    new Signal(301,4,"急停",Color.Red,false),
                     new Signal(343,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.机器人,new List<Signal>{
@@ -57,7 +57,7 @@ namespace SCADA
                     new Signal(302,0,"运行"),
                     new Signal(302,1,"手动"),
                     new Signal(302,2,"自动"),
-                    new Signal(302,4,"急停",Color.Gold),
+                    new Signal(302,4,"急停",Color.Red,false),
                     new Signal(347,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
@@ -83,7 +83,7 @@ namespace SCADA
                     new Signal(303,0,"运行"),
                     new Signal(303,1,"手动"),
                     new Signal(303,2,"自动"),
-                    new Signal(303,4,"急停",Color.Gold),
+                    new Signal(303,4,"急停",Color.Red,false),
                     new Signal(353,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
@@ -105,7 +105,7 @@ namespace SCADA
                     new Signal(304,0,"运行"),
                     new Signal(304,1,"手动"),
                     new Signal(304,2,"自动"),
-                    new Signal(304,4,"急停",Color.Gold),
+                    new Signal(304,4,"急停",Color.Red,false),
                     new Signal(357,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
@@ -131,7 +131,7 @@ namespace SCADA
                     new Signal(305,0,"运行"),
                     new Signal(305,1,"手动"),
                     new Signal(305,2,"自动"),
-                    new Signal(305,4,"急停",Color.Gold),
+                    new Signal(305,4,"急停",Color.Red,false),
                     new Signal(363,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
@@ -154,7 +154,7 @@ namespace SCADA
                     new Signal(306,0,"运行"),
                     new Signal(306,1,"手动"),
                     new Signal(306,2,"自动"),
-                    new Signal(306,4,"急停",Color.Gold),
+                    new Signal(306,4,"急停",Color.Red,false),
                     new Signal(367,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
@@ -183,7 +183,7 @@ namespace SCADA
                     new Signal(307,0,"运行"),
                     new Signal(307,1,"手动"),
                     new Signal(307,2,"自动"),
-                    new Signal(307,4,"急停",Color.Gold),
+                    new Signal(307,4,"急停",Color.Red,false),
                     new Signal(372,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
@@ -208,7 +208,7 @@ namespace SCADA
                     new Signal(308,0,"运行"),
                     new Signal(308,1,"手动"),
                     new Signal(308,2,"自动"),
-                    new Signal(308,4,"急停",Color.Gold),
+                    new Signal(308,4,"急停",Color.Red,false),
                     new Signal(383,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.装配台,new List<Signal>{
@@ -226,7 +226,7 @@ namespace SCADA
                     new Signal(309,0,"运行"),
                     new Signal(309,1,"手动"),
                     new Signal(309,2,"自动"),
-                    new Signal(309,4,"急停",Color.Gold),
+                    new Signal(309,4,"急停",Color.Red,false),
                     new Signal(392,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.翻转机构,new List<Signal>{
@@ -260,7 +260,7 @@ namespace SCADA
                     new Signal(310,0,"运行"),
                     new Signal(310,1,"手动"),
                     new Signal(310,2,"自动"),
-                    new Signal(310,4,"急停",Color.Gold),
+                    new Signal(310,4,"急停",Color.Red,false),
                     new Signal(396,4,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.机器人,new List<Signal>{
@@ -289,7 +289,7 @@ namespace SCADA
                     new Signal(310,0,"运行"),
                     new Signal(310,1,"手动"),
                     new Signal(310,2,"自动"),
-                    new Signal(310,4,"急停",Color.Gold),
+                    new Signal(310,4,"急停",Color.Red,false),
                     new Signal(396,4,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.台1,new List<Signal>{

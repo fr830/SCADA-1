@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace SCADA
 {
@@ -51,29 +52,45 @@ namespace SCADA
                         while (true)
                         {
                             await Task.Delay(1000);
-                            foreach (var signal in item.Value)
-                            {
-                                if (signal.IsExpected)
-                                {
-                                    if (signal.Text == "自动" || signal.Text == "手动")
-                                    {
-                                        label3.InvokeEx(c =>
-                                        {
-                                            c.Text = signal.Text;
-                                            c.ForeColor = signal.Color;
-                                        });
+                            var zd = item.Value.FirstOrDefault(p => p.Text == "自动");
+                            var sd = item.Value.FirstOrDefault(p => p.Text == "手动");
+                            var jt = item.Value.FirstOrDefault(p => p.Text == "急停");
+                            var gz = item.Value.FirstOrDefault(p => p.Text == "故障");
+                            var yx = item.Value.FirstOrDefault(p => p.Text == "运行");
 
-                                    }
-                                    else
-                                    {
-                                        label5.InvokeEx(c =>
-                                        {
-                                            c.Text = signal.Text;
-                                            c.ForeColor = signal.Color;
-                                        });
-                                    }
+                            label3.InvokeEx(c =>
+                            {
+                                c.Text = zd.IsExpected ? zd.Text : sd.Text;
+                                c.ForeColor = zd.IsExpected ? zd.Color : sd.Color;
+                            });
+
+                            label5.InvokeEx(c =>
+                            {
+                                Signal signal = null;
+                                if (jt.IsExpected)
+                                {
+                                    signal = jt;
                                 }
-                            }
+                                else if (gz.IsExpected)
+                                {
+                                    signal = gz;
+                                }
+                                else if (yx.IsExpected)
+                                {
+                                    signal = yx;
+                                }
+                                if (signal == null)
+                                {
+                                    c.Text = "停止";
+                                    c.ForeColor = Color.LightGray;
+                                }
+                                else
+                                {
+                                    c.Text = signal.Text;
+                                    c.ForeColor = signal.Color;
+                                }
+                            });
+
                         }
                     });
                     #endregion

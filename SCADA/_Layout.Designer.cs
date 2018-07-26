@@ -45,6 +45,8 @@
             this.toolStripStatusLabelRunningTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelC = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.checkBoxQuiet = new System.Windows.Forms.CheckBox();
+            this.checkBoxProtect = new System.Windows.Forms.CheckBox();
             this.panelInfo.SuspendLayout();
             this.panelStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
@@ -64,7 +66,7 @@
             this.panelInfo.Location = new System.Drawing.Point(0, 24);
             this.panelInfo.MinimumSize = new System.Drawing.Size(200, 100);
             this.panelInfo.Name = "panelInfo";
-            this.panelInfo.Size = new System.Drawing.Size(200, 516);
+            this.panelInfo.Size = new System.Drawing.Size(200, 704);
             this.panelInfo.TabIndex = 1;
             // 
             // richTextBoxInfo
@@ -78,7 +80,7 @@
             this.richTextBoxInfo.Name = "richTextBoxInfo";
             this.richTextBoxInfo.ReadOnly = true;
             this.richTextBoxInfo.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.richTextBoxInfo.Size = new System.Drawing.Size(200, 122);
+            this.richTextBoxInfo.Size = new System.Drawing.Size(200, 150);
             this.richTextBoxInfo.TabIndex = 0;
             this.richTextBoxInfo.TabStop = false;
             this.richTextBoxInfo.Text = "";
@@ -90,7 +92,7 @@
             this.panelStatus.Controls.Add(this.pictureBoxStatus);
             this.panelStatus.Controls.Add(this.buttonRun);
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelStatus.Location = new System.Drawing.Point(0, 222);
+            this.panelStatus.Location = new System.Drawing.Point(0, 250);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(200, 134);
             this.panelStatus.TabIndex = 3;
@@ -145,12 +147,14 @@
             // 
             this.panelButton.AutoSize = true;
             this.panelButton.BackColor = System.Drawing.Color.Transparent;
+            this.panelButton.Controls.Add(this.checkBoxQuiet);
+            this.panelButton.Controls.Add(this.checkBoxProtect);
             this.panelButton.Controls.Add(this.buttonService);
             this.panelButton.Controls.Add(this.buttonMES);
             this.panelButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButton.Location = new System.Drawing.Point(0, 356);
+            this.panelButton.Location = new System.Drawing.Point(0, 384);
             this.panelButton.Name = "panelButton";
-            this.panelButton.Size = new System.Drawing.Size(200, 160);
+            this.panelButton.Size = new System.Drawing.Size(200, 320);
             this.panelButton.TabIndex = 2;
             // 
             // buttonService
@@ -160,7 +164,7 @@
             this.buttonService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonService.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buttonService.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonService.Location = new System.Drawing.Point(0, 0);
+            this.buttonService.Location = new System.Drawing.Point(0, 160);
             this.buttonService.Name = "buttonService";
             this.buttonService.Size = new System.Drawing.Size(200, 80);
             this.buttonService.TabIndex = 1;
@@ -175,7 +179,7 @@
             this.buttonMES.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonMES.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buttonMES.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonMES.Location = new System.Drawing.Point(0, 80);
+            this.buttonMES.Location = new System.Drawing.Point(0, 240);
             this.buttonMES.Name = "buttonMES";
             this.buttonMES.Size = new System.Drawing.Size(200, 80);
             this.buttonMES.TabIndex = 0;
@@ -188,7 +192,7 @@
             this.menuStrip.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip.Size = new System.Drawing.Size(887, 24);
             this.menuStrip.TabIndex = 2;
             this.menuStrip.Text = "菜单栏";
             // 
@@ -200,9 +204,9 @@
             this.toolStripStatusLabelRunningTime,
             this.toolStripStatusLabelC});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip.Location = new System.Drawing.Point(0, 540);
+            this.statusStrip.Location = new System.Drawing.Point(0, 728);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(784, 22);
+            this.statusStrip.Size = new System.Drawing.Size(887, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "状态栏";
             // 
@@ -231,15 +235,49 @@
             this.tabControl.Location = new System.Drawing.Point(200, 24);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(584, 516);
+            this.tabControl.Size = new System.Drawing.Size(687, 704);
             this.tabControl.TabIndex = 4;
+            // 
+            // checkBoxQuiet
+            // 
+            this.checkBoxQuiet.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxQuiet.BackColor = System.Drawing.Color.DodgerBlue;
+            this.checkBoxQuiet.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.checkBoxQuiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxQuiet.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxQuiet.ForeColor = System.Drawing.Color.Transparent;
+            this.checkBoxQuiet.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxQuiet.Name = "checkBoxQuiet";
+            this.checkBoxQuiet.Size = new System.Drawing.Size(200, 80);
+            this.checkBoxQuiet.TabIndex = 9;
+            this.checkBoxQuiet.Text = "静音";
+            this.checkBoxQuiet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxQuiet.UseVisualStyleBackColor = false;
+            this.checkBoxQuiet.CheckedChanged += new System.EventHandler(this.checkBoxQuiet_CheckedChanged);
+            // 
+            // checkBoxProtect
+            // 
+            this.checkBoxProtect.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxProtect.BackColor = System.Drawing.Color.DodgerBlue;
+            this.checkBoxProtect.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.checkBoxProtect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxProtect.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxProtect.ForeColor = System.Drawing.Color.Transparent;
+            this.checkBoxProtect.Location = new System.Drawing.Point(0, 80);
+            this.checkBoxProtect.Name = "checkBoxProtect";
+            this.checkBoxProtect.Size = new System.Drawing.Size(200, 80);
+            this.checkBoxProtect.TabIndex = 8;
+            this.checkBoxProtect.Text = "连锁解除";
+            this.checkBoxProtect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxProtect.UseVisualStyleBackColor = false;
+            this.checkBoxProtect.CheckedChanged += new System.EventHandler(this.checkBoxProtect_CheckedChanged);
             // 
             // _Layout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(887, 750);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panelInfo);
             this.Controls.Add(this.menuStrip);
@@ -281,6 +319,8 @@
         private System.Windows.Forms.PictureBox pictureBoxStatus;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button buttonRun;
+        private System.Windows.Forms.CheckBox checkBoxQuiet;
+        private System.Windows.Forms.CheckBox checkBoxProtect;
     }
 }
 

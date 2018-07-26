@@ -80,7 +80,7 @@ namespace SCADA
         /// <summary>
         /// 工件ID字典
         /// Key：工件类型
-        /// Value：类型ID
+        /// Value：工件类型ID
         /// </summary>
         public static Dictionary<EnumWorkpiece, string> WorkpieceIDs { get; private set; }
 
@@ -102,7 +102,7 @@ namespace SCADA
                 {
                     return MachineTools[0];
                 }
-                return null;
+                throw new ArgumentException("系统未检测到PLC！请联系维护人员。");
             }
         }
 
@@ -257,7 +257,7 @@ namespace SCADA
         /// <summary>
         /// 初始化
         /// </summary>
-        public static async void InitializeAsync()
+        public static async Task InitializeAsync()
         {
             await Task.Run(async () =>
             {

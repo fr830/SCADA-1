@@ -56,15 +56,18 @@ namespace SCADA
         void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
+            bool flag = false;
             foreach (var item in Signals)
             {
-                if (item.Expect)
+                if (item.IsExpected)
                 {
-                    if (item.IsExpected)
-                    {
-                        SetInfo(item.Text, item.Color);
-                    }
+                    flag = true;
+                    SetInfo(item.Text, item.Color);
                 }
+            }
+            if (!flag)
+            {
+                SetInfo(string.Empty, Color.Black);
             }
             timer.Start();
         }
