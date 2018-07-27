@@ -24,13 +24,20 @@ namespace SCADA
         private Work_QRCode()
         {
             My.Work_PLC.Scan += Scan;
+            My.Work_PLC.PrintQRCode += PrintQRCode;
             tcpClient.ConnectAsync(IP, Port);
+        }
+
+        async void PrintQRCode(object sender, PLCEventArgs e)
+        {
+            Print();
+            await Task.Delay(20000);
+            My.PLC.Set(e.Index, 12);//打印二维码完成
         }
 
         void Scan(object sender, PLCEventArgs e)
         {
-            Print();
-            My.PLC.Set(1, 12);//扫码器扫码完成
+            My.PLC.Set(e.Index, 12);//扫码器扫码完成
         }
 
         public enum EnumCommand : byte

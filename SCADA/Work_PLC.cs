@@ -76,12 +76,12 @@ namespace SCADA
         /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
-            return new Task(async () =>
+            return new Task(() =>
             {
                 while (!token.IsCancellationRequested)
                 {
-                    await Task.Delay(1000);
                     lastTime = DateTime.Now;
+                    Thread.Sleep(1000);
                     if (My.PLC.Exist(1, 0))//请求相机拍照
                     {
                         My.PLC.Clear(1, 0);
@@ -138,7 +138,7 @@ namespace SCADA
                     if (My.PLC.Exist(SiteIndexDict[EnumPSite.S6_Alignment], 10))//请求打印二维码
                     {
                         My.PLC.Clear(SiteIndexDict[EnumPSite.S6_Alignment], 10);
-                        OnPrintQRCode(SiteIndexDict[EnumPSite.S6_Alignment]);//None!!!
+                        OnPrintQRCode(SiteIndexDict[EnumPSite.S6_Alignment]);//Work_QRCode
                     }
                     if (My.PLC.Exist(11, 1))//出库许可
                     {

@@ -44,7 +44,6 @@ namespace SCADA
                         //TODO提示用户连接失败
                         //throw;
                     }
-                    await Task.Delay(2000);
                 }
             });
         }

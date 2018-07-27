@@ -26,6 +26,8 @@ namespace SCADA
             typeof(Home), typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
         };
 
+        System.Timers.Timer timer = new System.Timers.Timer(2000);
+
         private void _Layout_Load(object sender, EventArgs e)
         {
 #if DEBUG
@@ -49,6 +51,24 @@ namespace SCADA
             menuStrip.Visible = false;//暂时不启用菜单栏
             InitStatus();
             InitInfo();
+            timer.Elapsed += timer_Elapsed;
+            timer.Start();
+        }
+
+        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            timer.Stop();
+            var isRunning = My.Work_PLC.IsRunning;
+            Color c = isRunning ? Color.Green : Color.Red;
+            pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
+            var graph = Graphics.FromImage(pictureBoxStatus.Image);
+            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            graph.FillEllipse(new SolidBrush(c), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
+            graph.Save();
+            labelStatus.ForeColor = c;
+            labelStatus.Text = isRunning ? "运行" : "停止";
+            buttonRun.Text = isRunning ? "断开PLC" : "连接PLC";
+            timer.Start();
         }
 
         /// <summary>
@@ -141,17 +161,7 @@ namespace SCADA
             {
                 My.Work_PLC.Start();
             }
-            await Task.Delay(2000);
-            var isRunning = My.Work_PLC.IsRunning;
-            Color c = isRunning ? Color.Green : Color.Red;
-            pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
-            var graph = Graphics.FromImage(pictureBoxStatus.Image);
-            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            graph.FillEllipse(new SolidBrush(c), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
-            graph.Save();
-            labelStatus.ForeColor = c;
-            labelStatus.Text = isRunning ? "运行" : "停止";
-            buttonRun.Text = isRunning ? "断开PLC" : "连接PLC";
+            await Task.Delay(5000);
             buttonRun.Enabled = true;
         }
 

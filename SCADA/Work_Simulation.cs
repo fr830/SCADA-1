@@ -45,16 +45,16 @@ namespace SCADA
 
         private async void AutoSendAsync()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 while (true)
                 {
-                    await Task.Delay(500);
+                    Thread.Sleep(500);
                     try
                     {
                         if (!tcpClient.Connected)
                         {
-                            await tcpClient.ConnectAsync(IP, Port);
+                            tcpClient.Connect(IP, Port);
                         }
                         else
                         {
@@ -144,12 +144,12 @@ namespace SCADA
         /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
-            return new Task(async () =>
+            return new Task(() =>
             {
                 while (!token.IsCancellationRequested)
                 {
-                    await Task.Delay(500);
                     lastTime = DateTime.Now;
+                    Thread.Sleep(500);
                     if (My.PLC.Exist(12, 4))//分料
                     {
                         Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位到位));

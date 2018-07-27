@@ -192,12 +192,12 @@ namespace SCADA
         /// <returns></returns>
         private Task GetServiceTask(CancellationToken token)
         {
-            return new Task(async () =>
+            return new Task(() =>
             {
                 while (!token.IsCancellationRequested)
                 {
-                    await Task.Delay(500);
                     lastTime = DateTime.Now;
+                    Thread.Sleep(1000);
                 }
             }, token);
         }
