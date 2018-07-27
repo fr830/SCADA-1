@@ -74,7 +74,7 @@ namespace HNC
             return result;
         }
 
-        private async void WriteList(string key, IList<string> list)
+        private void WriteList(string key, IList<string> list)
         {
             IBatch bacth = db.CreateBatch();
             if (db.KeyExists(key))
@@ -83,7 +83,7 @@ namespace HNC
             }
             for (int i = 0; i < list.Count; i++)
             {
-                await bacth.ListRightPushAsync(key, list[i]);
+                bacth.ListRightPushAsync(key, list[i]);
             }
             bacth.Execute();
         }
@@ -221,7 +221,7 @@ namespace HNC
                     }
                 }
             }
-            WriteList("GCodeFileSent:" + Path.Combine("h/lnc8/prog", filename), list);
+            WriteList("GCodeFileSent:" + @"h/lnc8/prog/" + filename, list);
             var message = new NCMessage
             {
                 Type = "File",

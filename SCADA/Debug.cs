@@ -134,7 +134,7 @@ namespace SCADA
         {
             buttonRFIDWrite.Enabled = false;
             var item = comboBoxRFIDs.SelectedValue as RFIDReader;
-            if (item != null && Data != null)
+            if (item != null)
             {
                 Data.Clean = (EnumClean)comboBoxClean.SelectedValue;
                 Data.Gauge = (EnumGauge)comboBoxGauge.SelectedValue;
@@ -143,6 +143,23 @@ namespace SCADA
                 buttonRFIDRead.PerformClick();
             }
             buttonRFIDWrite.Enabled = true;
+        }
+
+        private void buttonFake_Click(object sender, EventArgs e)
+        {
+            buttonFake.Enabled = false;
+            var item = comboBoxRFIDs.SelectedValue as RFIDReader;
+            if (item != null)
+            {
+                var data = item.Read();
+                if (data != null)
+                {
+                    data.SetFake(true);
+                    item.Write(data);
+                }
+                buttonRFIDRead.PerformClick();
+            }
+            buttonFake.Enabled = true;
         }
 
         private void buttonRFIDInit_Click(object sender, EventArgs e)
@@ -208,6 +225,20 @@ namespace SCADA
             await My.Work_Simulation.SendAsync(new RKX(data, RKX.EnumActionType.定位台2转移物料至入库检测位));
             await My.Work_Simulation.SendAsync(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             buttonRKX.Enabled = true;
+        }
+
+        private void buttonGSend_Click(object sender, EventArgs e)
+        {
+            buttonGSend.Enabled = false;
+            My.MachineTools[EnumPSite.S1].HNC_NetFileSend(GCodeFile.Dict[EnumPSite.S1][GCodeFile.EnumFile.加工A料程序], "Otest");
+            buttonGSend.Enabled = true;
+        }
+
+        private void buttonPrintQRCode_Click(object sender, EventArgs e)
+        {
+            buttonPrintQRCode.Enabled = false;
+            My.Work_QRCode.Print();
+            buttonPrintQRCode.Enabled = true;
         }
     }
 }

@@ -207,6 +207,9 @@ namespace SCADA
             }
             try
             {
+                #region 半成品修改为演示模式
+                data.SetFake();
+                #endregion
                 #region 根据订单内容，修改标签数据，是否装配
                 var order = GetExecOrder();
                 if (order == null)
@@ -220,14 +223,7 @@ namespace SCADA
                         if (data.Assemble == EnumAssemble.Unwanted)
                         {
                             data.Assemble = EnumAssemble.Wanted;
-                            if (My.RFIDs[EnumPSite.S8_Down].Write(data))
-                            {
-                                return SvResult.OK;
-                            }
-                            else
-                            {
-                                return SvResult.RFIDWriteFail;
-                            }
+                            break;
                         }
                     }
                     else
@@ -235,16 +231,19 @@ namespace SCADA
                         if (data.Assemble == EnumAssemble.Wanted)
                         {
                             data.Assemble = EnumAssemble.Unwanted;
-                            if (My.RFIDs[EnumPSite.S8_Down].Write(data))
-                            {
-                                return SvResult.OK;
-                            }
-                            else
-                            {
-                                return SvResult.RFIDWriteFail;
-                            }
+                            break;
                         }
                     }
+                }
+                #endregion
+                #region 写入信息
+                if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                {
+                    return SvResult.OK;
+                }
+                else
+                {
+                    return SvResult.RFIDWriteFail;
                 }
                 #endregion
             }

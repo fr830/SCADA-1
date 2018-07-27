@@ -180,7 +180,11 @@ namespace RFID
         /// <summary>
         /// 失败
         /// </summary>
-        Failed = 8
+        Failed = 8,
+        /// <summary>
+        /// 演示
+        /// </summary>
+        Fake = 16,
     }
     #endregion
 
@@ -232,6 +236,32 @@ namespace RFID
             ProcessDataList = new List<ProcessData>();
         }
 
+        public bool IsFake
+        {
+            get
+            {
+                for (int i = 0; i < ProcessDataList.Count; i++)
+                {
+                    if (ProcessDataList[i].Result == EnumPResult.Fake)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        public void SetFake(bool force = false)
+        {
+            if (!IsRough || force)
+            {
+                for (int i = 0; i < ProcessDataList.Count; i++)
+                {
+                    ProcessDataList[i].Result = EnumPResult.Fake;
+                }
+            }
+        }
+
         public EnumPSite GetProcessSite()
         {
             if (ProcessDataList == null || ProcessDataList.Count == 0)
@@ -240,7 +270,8 @@ namespace RFID
             }
             for (int i = 0; i < ProcessDataList.Count; i++)
             {
-                if (ProcessDataList[i].Result == EnumPResult.Waiting)
+                if (ProcessDataList[i].Result == EnumPResult.Waiting
+                    || ProcessDataList[i].Result == EnumPResult.Fake)
                 {
                     return ProcessDataList[i].Site;
                 }
@@ -256,7 +287,8 @@ namespace RFID
             }
             for (int i = 0; i < ProcessDataList.Count; i++)
             {
-                if (ProcessDataList[i].Result == EnumPResult.Waiting)
+                if (ProcessDataList[i].Result == EnumPResult.Waiting
+                    || ProcessDataList[i].Result == EnumPResult.Fake)
                 {
                     ProcessDataList[i].Result = result;
                     return true;

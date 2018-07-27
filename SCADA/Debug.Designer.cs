@@ -41,6 +41,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonFake = new System.Windows.Forms.Button();
             this.buttonRFIDInit = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -65,11 +66,17 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.buttonRKX = new System.Windows.Forms.Button();
             this.buttonCKX = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonGSend = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.buttonPrintQRCode = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonWrite
@@ -216,6 +223,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonFake);
             this.groupBox2.Controls.Add(this.buttonRFIDInit);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label9);
@@ -236,6 +244,19 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "RFID";
+            // 
+            // buttonFake
+            // 
+            this.buttonFake.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonFake.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonFake.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonFake.Location = new System.Drawing.Point(213, 73);
+            this.buttonFake.Name = "buttonFake";
+            this.buttonFake.Size = new System.Drawing.Size(87, 23);
+            this.buttonFake.TabIndex = 25;
+            this.buttonFake.Text = "Fake";
+            this.buttonFake.UseVisualStyleBackColor = false;
+            this.buttonFake.Click += new System.EventHandler(this.buttonFake_Click);
             // 
             // buttonRFIDInit
             // 
@@ -515,12 +536,60 @@
             this.buttonCKX.UseVisualStyleBackColor = false;
             this.buttonCKX.Click += new System.EventHandler(this.buttonCKX_Click);
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.buttonGSend);
+            this.groupBox6.Location = new System.Drawing.Point(12, 344);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(290, 171);
+            this.groupBox6.TabIndex = 5;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "GCode";
+            // 
+            // buttonGSend
+            // 
+            this.buttonGSend.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonGSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonGSend.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonGSend.Location = new System.Drawing.Point(25, 20);
+            this.buttonGSend.Name = "buttonGSend";
+            this.buttonGSend.Size = new System.Drawing.Size(75, 23);
+            this.buttonGSend.TabIndex = 4;
+            this.buttonGSend.Text = "Send";
+            this.buttonGSend.UseVisualStyleBackColor = false;
+            this.buttonGSend.Click += new System.EventHandler(this.buttonGSend_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.buttonPrintQRCode);
+            this.groupBox7.Location = new System.Drawing.Point(308, 344);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(290, 171);
+            this.groupBox7.TabIndex = 6;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "QRCode";
+            // 
+            // buttonPrintQRCode
+            // 
+            this.buttonPrintQRCode.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonPrintQRCode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPrintQRCode.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonPrintQRCode.Location = new System.Drawing.Point(25, 20);
+            this.buttonPrintQRCode.Name = "buttonPrintQRCode";
+            this.buttonPrintQRCode.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrintQRCode.TabIndex = 4;
+            this.buttonPrintQRCode.Text = "Print";
+            this.buttonPrintQRCode.UseVisualStyleBackColor = false;
+            this.buttonPrintQRCode.Click += new System.EventHandler(this.buttonPrintQRCode_Click);
+            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(970, 397);
+            this.ClientSize = new System.Drawing.Size(970, 514);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -536,6 +605,8 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -579,5 +650,10 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button buttonCKX;
         private System.Windows.Forms.Button buttonRKX;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button buttonGSend;
+        private System.Windows.Forms.Button buttonFake;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Button buttonPrintQRCode;
     }
 }

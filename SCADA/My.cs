@@ -301,7 +301,10 @@ namespace SCADA
                 }
                 catch (Exception)
                 {
+                    OnLoadCompleted("PLC连接失败！", 35);
+#if DEBUG
                     throw new Exception("PLC连接失败，IP：" + macIPs[0]);
+#endif
                 }
                 try
                 {

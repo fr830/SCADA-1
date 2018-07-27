@@ -40,19 +40,22 @@ namespace SCADA
                 var dict = GCodeFile.Dict[e.Site];
                 var mt = My.MachineTools[e.Site];
                 var file = GCodeFile.EnumFile.联调试验程序;
-                switch (data.Workpiece)
+                if (!data.IsFake)
                 {
-                    case EnumWorkpiece.A:
-                        file = GCodeFile.EnumFile.加工A料程序;
-                        break;
-                    case EnumWorkpiece.B:
-                        file = GCodeFile.EnumFile.加工B料程序;
-                        break;
-                    case EnumWorkpiece.C:
-                        file = GCodeFile.EnumFile.加工A料程序;
-                        break;
-                    default:
-                        break;
+                    switch (data.Workpiece)
+                    {
+                        case EnumWorkpiece.A:
+                            file = GCodeFile.EnumFile.加工A料程序;
+                            break;
+                        case EnumWorkpiece.B:
+                            file = GCodeFile.EnumFile.加工B料程序;
+                            break;
+                        case EnumWorkpiece.C:
+                            file = GCodeFile.EnumFile.加工C料程序;
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 if (!mt.HNC_NetFileSend(dict[file], "O999"))
                 {
