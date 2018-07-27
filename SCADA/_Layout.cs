@@ -142,15 +142,16 @@ namespace SCADA
                 My.Work_PLC.Start();
             }
             await Task.Delay(2000);
-            Color c = My.Work_PLC.IsRunning ? Color.Green : Color.Red;
+            var isRunning = My.Work_PLC.IsRunning;
+            Color c = isRunning ? Color.Green : Color.Red;
             pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
             var graph = Graphics.FromImage(pictureBoxStatus.Image);
             graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             graph.FillEllipse(new SolidBrush(c), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
             graph.Save();
             labelStatus.ForeColor = c;
-            labelStatus.Text = My.Work_PLC.IsRunning ? "运行" : "停止";
-            buttonRun.Text = My.Work_PLC.IsRunning ? "停止" : "启动";
+            labelStatus.Text = isRunning ? "运行" : "停止";
+            buttonRun.Text = isRunning ? "断开PLC" : "连接PLC";
             buttonRun.Enabled = true;
         }
 
@@ -176,12 +177,12 @@ namespace SCADA
             if (checkBoxQuiet.Checked)
             {
                 My.PLC.Set(339, 1, HNC.HncRegType.REG_TYPE_R);
-                checkBoxQuiet.Text = "取消静音";
+                checkBoxQuiet.Text = "取消警报静音";
             }
             else
             {
                 My.PLC.Clear(339, 1, HNC.HncRegType.REG_TYPE_R);
-                checkBoxQuiet.Text = "静音";
+                checkBoxQuiet.Text = "警报静音";
             }
             checkBoxQuiet.Enabled = true;
         }

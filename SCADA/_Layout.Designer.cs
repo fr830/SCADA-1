@@ -37,6 +37,8 @@
             this.buttonRun = new System.Windows.Forms.Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panelButton = new System.Windows.Forms.Panel();
+            this.checkBoxQuiet = new System.Windows.Forms.CheckBox();
+            this.checkBoxProtect = new System.Windows.Forms.CheckBox();
             this.buttonService = new System.Windows.Forms.Button();
             this.buttonMES = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -45,8 +47,6 @@
             this.toolStripStatusLabelRunningTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelC = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.checkBoxQuiet = new System.Windows.Forms.CheckBox();
-            this.checkBoxProtect = new System.Windows.Forms.CheckBox();
             this.panelInfo.SuspendLayout();
             this.panelStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
@@ -127,7 +127,7 @@
             this.buttonRun.Name = "buttonRun";
             this.buttonRun.Size = new System.Drawing.Size(200, 80);
             this.buttonRun.TabIndex = 5;
-            this.buttonRun.Text = "启动";
+            this.buttonRun.Text = "连接PLC";
             this.buttonRun.UseVisualStyleBackColor = false;
             this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
             // 
@@ -157,6 +157,40 @@
             this.panelButton.Size = new System.Drawing.Size(200, 320);
             this.panelButton.TabIndex = 2;
             // 
+            // checkBoxQuiet
+            // 
+            this.checkBoxQuiet.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxQuiet.BackColor = System.Drawing.Color.DodgerBlue;
+            this.checkBoxQuiet.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.checkBoxQuiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxQuiet.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxQuiet.ForeColor = System.Drawing.Color.Transparent;
+            this.checkBoxQuiet.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxQuiet.Name = "checkBoxQuiet";
+            this.checkBoxQuiet.Size = new System.Drawing.Size(200, 80);
+            this.checkBoxQuiet.TabIndex = 9;
+            this.checkBoxQuiet.Text = "警报静音";
+            this.checkBoxQuiet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxQuiet.UseVisualStyleBackColor = false;
+            this.checkBoxQuiet.CheckedChanged += new System.EventHandler(this.checkBoxQuiet_CheckedChanged);
+            // 
+            // checkBoxProtect
+            // 
+            this.checkBoxProtect.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxProtect.BackColor = System.Drawing.Color.DodgerBlue;
+            this.checkBoxProtect.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.checkBoxProtect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxProtect.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.checkBoxProtect.ForeColor = System.Drawing.Color.Transparent;
+            this.checkBoxProtect.Location = new System.Drawing.Point(0, 80);
+            this.checkBoxProtect.Name = "checkBoxProtect";
+            this.checkBoxProtect.Size = new System.Drawing.Size(200, 80);
+            this.checkBoxProtect.TabIndex = 8;
+            this.checkBoxProtect.Text = "连锁解除";
+            this.checkBoxProtect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxProtect.UseVisualStyleBackColor = false;
+            this.checkBoxProtect.CheckedChanged += new System.EventHandler(this.checkBoxProtect_CheckedChanged);
+            // 
             // buttonService
             // 
             this.buttonService.BackColor = System.Drawing.Color.DodgerBlue;
@@ -168,7 +202,7 @@
             this.buttonService.Name = "buttonService";
             this.buttonService.Size = new System.Drawing.Size(200, 80);
             this.buttonService.TabIndex = 1;
-            this.buttonService.Text = "测试服务";
+            this.buttonService.Text = "WMS服务测试";
             this.buttonService.UseVisualStyleBackColor = false;
             this.buttonService.Click += new System.EventHandler(this.buttonService_Click);
             // 
@@ -237,40 +271,6 @@
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(687, 704);
             this.tabControl.TabIndex = 4;
-            // 
-            // checkBoxQuiet
-            // 
-            this.checkBoxQuiet.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxQuiet.BackColor = System.Drawing.Color.DodgerBlue;
-            this.checkBoxQuiet.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.checkBoxQuiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxQuiet.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxQuiet.ForeColor = System.Drawing.Color.Transparent;
-            this.checkBoxQuiet.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxQuiet.Name = "checkBoxQuiet";
-            this.checkBoxQuiet.Size = new System.Drawing.Size(200, 80);
-            this.checkBoxQuiet.TabIndex = 9;
-            this.checkBoxQuiet.Text = "静音";
-            this.checkBoxQuiet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxQuiet.UseVisualStyleBackColor = false;
-            this.checkBoxQuiet.CheckedChanged += new System.EventHandler(this.checkBoxQuiet_CheckedChanged);
-            // 
-            // checkBoxProtect
-            // 
-            this.checkBoxProtect.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxProtect.BackColor = System.Drawing.Color.DodgerBlue;
-            this.checkBoxProtect.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.checkBoxProtect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxProtect.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.checkBoxProtect.ForeColor = System.Drawing.Color.Transparent;
-            this.checkBoxProtect.Location = new System.Drawing.Point(0, 80);
-            this.checkBoxProtect.Name = "checkBoxProtect";
-            this.checkBoxProtect.Size = new System.Drawing.Size(200, 80);
-            this.checkBoxProtect.TabIndex = 8;
-            this.checkBoxProtect.Text = "连锁解除";
-            this.checkBoxProtect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxProtect.UseVisualStyleBackColor = false;
-            this.checkBoxProtect.CheckedChanged += new System.EventHandler(this.checkBoxProtect_CheckedChanged);
             // 
             // _Layout
             // 

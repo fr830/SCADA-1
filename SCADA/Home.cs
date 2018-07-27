@@ -62,7 +62,7 @@ namespace SCADA
                 }},
                 {EnumMonitorItems.顶升机构,new List<Signal>{
                     new Signal(120,7,"就绪"),
-                    new Signal(147,1,"运行"),
+                    new Signal(347,1,"运行"),
                     new Signal(347,2,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.取料状态,new List<Signal>{
@@ -215,9 +215,19 @@ namespace SCADA
                     new Signal(383,1,"就绪"),
                     new Signal(383,2,"故障",Color.Red),
                 }},
-                {EnumMonitorItems.清洗机,new List<Signal>{
+                {EnumMonitorItems.刻标机,new List<Signal>{
                     new Signal(383,3,"就绪"),
                     new Signal(383,4,"故障",Color.Red),
+                }},
+                {EnumMonitorItems.装配机器人,new List<Signal>{
+                    new Signal(383,5,"就绪"),
+                    new Signal(383,6,"运行"),
+                    new Signal(383,7,"故障",Color.Red),
+                }},
+                {EnumMonitorItems.刻标机器人,new List<Signal>{
+                    new Signal(382,5,"就绪"),
+                    new Signal(382,6,"运行"),
+                    new Signal(382,7,"故障",Color.Red),
                 }},
             }),
             new UserControl_Monitor("09单元",new Dictionary<EnumMonitorItems,IList<Signal>>
@@ -293,24 +303,24 @@ namespace SCADA
                     new Signal(396,4,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.台1,new List<Signal>{
-                    new Signal(340,0,"就绪"),
-                    new Signal(340,1,"运行"),
-                    new Signal(340,2,"故障",Color.Red),
+                    new Signal(336,0,"就绪"),
+                    new Signal(336,1,"运行"),
+                    new Signal(336,2,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.台2,new List<Signal>{
-                    new Signal(340,3,"就绪"),
-                    new Signal(340,4,"运行"),
-                    new Signal(340,5,"故障",Color.Red),
+                    new Signal(336,3,"就绪"),
+                    new Signal(336,4,"运行"),
+                    new Signal(336,5,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.台3,new List<Signal>{
-                    new Signal(340,6,"就绪"),
-                    new Signal(340,7,"运行"),
-                    new Signal(341,0,"故障",Color.Red),
+                    new Signal(336,6,"就绪"),
+                    new Signal(336,7,"运行"),
+                    new Signal(337,0,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.台4,new List<Signal>{
-                    new Signal(341,1,"就绪"),
-                    new Signal(341,2,"运行"),
-                    new Signal(341,3,"故障",Color.Red),
+                    new Signal(337,1,"就绪"),
+                    new Signal(337,2,"运行"),
+                    new Signal(337,3,"故障",Color.Red),
                 }},
             }),
         };

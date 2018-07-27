@@ -13,7 +13,7 @@ namespace SCADA
 {
     public enum EnumMonitorItems
     {
-        提升机皮带, 区域, 机器人, 分料机构, 提升机, 顶升机构, 取料状态, 装配台, 清洗机, 翻转机构, 三轴, 五轴, 车床, 钻攻中心, 台1, 台2, 台3, 台4
+        提升机皮带, 区域, 机器人, 分料机构, 提升机, 顶升机构, 取料状态, 装配台, 刻标机, 装配机器人, 刻标机器人, 翻转机构, 三轴, 五轴, 车床, 钻攻中心, 台1, 台2, 台3, 台4
     }
 
     public partial class UserControl_Monitor : UserControl
