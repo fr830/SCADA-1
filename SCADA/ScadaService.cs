@@ -253,6 +253,7 @@ namespace SCADA
                 //throw;
             }
             My.PLC.Set(11, 0);
+            My.PLC.Set(30, 0);
             My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库线转移物料至出库检测位));
             My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
             My.Work_Simulation.Send(new DWT01(data, DWT01.EnumActionType.定位台1转移物料至AGV));

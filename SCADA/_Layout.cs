@@ -52,7 +52,7 @@ namespace SCADA
                     {
                         c.Visible = true;
                     });
-                    GetPLCStateAsync();
+                    GetSignalStateAsync();
                 }
             };
             My.InitializeAsync();
@@ -148,16 +148,17 @@ namespace SCADA
             {
                 My.Work_PLC.Start();
             }
-            await Task.Delay(5000);
+            await Task.Delay(3000);
             buttonRun.Enabled = true;
         }
 
-        private async Task GetPLCStateAsync(CancellationToken token = default(CancellationToken))
+        private async Task GetSignalStateAsync(CancellationToken token = default(CancellationToken))
         {
             await Task.Run(() =>
             {
                 while (!token.IsCancellationRequested)
                 {
+                    #region buttonRun
                     var isRunning = My.Work_PLC.IsRunning;
                     Color color = isRunning ? Color.Green : Color.Red;
                     pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
@@ -167,41 +168,64 @@ namespace SCADA
                     graph.Save();
                     labelStatus.InvokeEx(c => { c.ForeColor = color; c.Text = isRunning ? "运行" : "停止"; });
                     buttonRun.InvokeEx(c => c.Text = isRunning ? "断开PLC" : "连接PLC");
-                    Thread.Sleep(2000);
+                    #endregion
+                    #region checkBoxProtect
+                    if (signalProtect.Exist())
+                    {
+                        buttonProtect.InvokeEx(c => { c.Text = "连锁保护"; });
+                    }
+                    else
+                    {
+                        buttonProtect.InvokeEx(c => { c.Text = "连锁解除"; });
+                    }
+                    #endregion
+                    #region checkBoxQuiet
+                    if (signalQuiet.Exist())
+                    {
+                        buttonQuiet.InvokeEx(c => { c.Text = "取消警报静音"; });
+                    }
+                    else
+                    {
+                        buttonQuiet.InvokeEx(c => { c.Text = "警报静音"; });
+                    }
+                    #endregion
+                    Thread.Sleep(1500);
                 }
             }, token);
         }
 
-        private void checkBoxProtect_CheckedChanged(object sender, EventArgs e)
+        private Signal signalProtect = new Signal(339, 0, "连锁保护", Signal.EnumSignalType.手动控制, HNC.HncRegType.REG_TYPE_R, false);
+
+        private async void buttonProtect_Click(object sender, EventArgs e)
         {
-            checkBoxProtect.Enabled = false;
-            if (checkBoxProtect.Checked)
+            buttonProtect.Enabled = false;
+            if (signalProtect.Exist())
             {
-                My.PLC.Set(339, 0, HNC.HncRegType.REG_TYPE_R);
-                checkBoxProtect.Text = "连锁保护";
+                signalProtect.Clear();
             }
             else
             {
-                My.PLC.Clear(339, 0, HNC.HncRegType.REG_TYPE_R);
-                checkBoxProtect.Text = "连锁解除";
+                signalProtect.Set();
             }
-            checkBoxProtect.Enabled = true;
+            await Task.Delay(3000);
+            buttonProtect.Enabled = true;
         }
 
-        private void checkBoxQuiet_CheckedChanged(object sender, EventArgs e)
+        private Signal signalQuiet = new Signal(339, 1, "警报静音", Signal.EnumSignalType.手动控制, HNC.HncRegType.REG_TYPE_R, false);
+
+        private async void buttonQuiet_Click(object sender, EventArgs e)
         {
-            checkBoxQuiet.Enabled = false;
-            if (checkBoxQuiet.Checked)
+            buttonQuiet.Enabled = false;
+            if (signalQuiet.Exist())
             {
-                My.PLC.Set(339, 1, HNC.HncRegType.REG_TYPE_R);
-                checkBoxQuiet.Text = "取消警报静音";
+                signalQuiet.Clear();
             }
             else
             {
-                My.PLC.Clear(339, 1, HNC.HncRegType.REG_TYPE_R);
-                checkBoxQuiet.Text = "警报静音";
+                signalQuiet.Set();
             }
-            checkBoxQuiet.Enabled = true;
+            await Task.Delay(3000);
+            buttonQuiet.Enabled = true;
         }
     }
 }
