@@ -24,6 +24,10 @@ namespace SCADA
         private void Recovery_Load(object sender, EventArgs e)
         {
             SetComboboxDataSource(comboBoxRFIDs, My.RFIDs);
+        }
+
+        private void Recovery_Shown(object sender, EventArgs e)
+        {
             button4.PerformClick();
             button5.PerformClick();
             button7.PerformClick();

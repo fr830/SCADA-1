@@ -27,7 +27,7 @@ namespace SCADA
             this.Height = 300;
         }
 
-        private System.Timers.Timer timer = new System.Timers.Timer(1000);
+        private System.Timers.Timer timer = new System.Timers.Timer(2000);
 
         private void UserControl_Area_Load(object sender, EventArgs e)
         {

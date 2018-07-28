@@ -6,6 +6,7 @@ using RFID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SCADA
@@ -259,7 +260,7 @@ namespace SCADA
         /// </summary>
         public static async Task InitializeAsync()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 BLL = BLLCustom.Instance;
                 AdminID = BLL.GetUserIDByUsername("admin");
@@ -339,7 +340,7 @@ namespace SCADA
                 Initialized = true;
                 OnLoadCompleted("系统加载完成", 98);
 
-                await Task.Delay(1000);
+                Thread.Sleep(1000);
                 OnLoadCompleted("即将进入总控界面", 100);
             });
         }

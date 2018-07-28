@@ -28,5 +28,10 @@ namespace SCADA
             }
         }
 
+        private void DebugPLC_Shown(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

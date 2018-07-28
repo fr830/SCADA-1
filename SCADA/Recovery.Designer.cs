@@ -40,6 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button9 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button7 = new System.Windows.Forms.Button();
@@ -47,7 +48,6 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.comboBoxRFIDs = new System.Windows.Forms.ComboBox();
             this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -202,6 +202,20 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MES";
             // 
+            // button9
+            // 
+            this.button9.AutoSize = true;
+            this.button9.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button9.ForeColor = System.Drawing.Color.Transparent;
+            this.button9.Location = new System.Drawing.Point(160, 85);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(89, 24);
+            this.button9.TabIndex = 2;
+            this.button9.Text = "重置数据库";
+            this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // button6
             // 
             this.button6.AutoSize = true;
@@ -289,20 +303,6 @@
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
-            // button9
-            // 
-            this.button9.AutoSize = true;
-            this.button9.BackColor = System.Drawing.Color.DodgerBlue;
-            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button9.ForeColor = System.Drawing.Color.Transparent;
-            this.button9.Location = new System.Drawing.Point(160, 85);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(89, 24);
-            this.button9.TabIndex = 2;
-            this.button9.Text = "重置数据库";
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
             // Recovery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -319,6 +319,7 @@
             this.Name = "Recovery";
             this.Text = "故障恢复";
             this.Load += new System.EventHandler(this.Recovery_Load);
+            this.Shown += new System.EventHandler(this.Recovery_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

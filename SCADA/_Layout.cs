@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HNC.MES.Model;
 using HNC.MES.Common;
+using System.Threading;
 
 namespace SCADA
 {
@@ -23,10 +24,8 @@ namespace SCADA
 
         IList<Type> TabPages = new List<Type>
         { 
-            typeof(Home), typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
+            typeof(Home),typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
         };
-
-        System.Timers.Timer timer = new System.Timers.Timer(2000);
 
         private void _Layout_Load(object sender, EventArgs e)
         {
@@ -34,41 +33,40 @@ namespace SCADA
             TabPages.Add(typeof(Debug));
             FormClosing -= _Layout_FormClosing;
 #endif
-            Visible = false;
+            menuStrip.Visible = false;//暂时不启用菜单栏
+            this.Visible = false;
+            InitInfo();
             var splash = new Splash();
             splash.Show();
-            My.LoadCompleted += async (ms, me) =>
+            My.LoadCompleted += (ms, me) =>
             {
                 if (me.Value >= 100)
                 {
-                    this.InvokeEx(c => c.InitTabPage());
-                    await Task.Delay(1000);
+                    this.InvokeEx(c =>
+                    {
+                        c.InitTabPage();
+                        c.InitStatus();
+                    });
                     splash.InvokeEx(c => c.Close());
-                    this.InvokeEx(c => c.Visible = true);
+                    this.InvokeEx(c =>
+                    {
+                        c.Visible = true;
+                    });
+                    GetPLCStateAsync();
                 }
             };
             My.InitializeAsync();
-            menuStrip.Visible = false;//暂时不启用菜单栏
-            InitStatus();
-            InitInfo();
-            timer.Elapsed += timer_Elapsed;
-            timer.Start();
         }
 
-        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        /// <summary>
+        /// 初始化信息
+        /// </summary>
+        private void InitInfo()
         {
-            timer.Stop();
-            var isRunning = My.Work_PLC.IsRunning;
-            Color c = isRunning ? Color.Green : Color.Red;
-            pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
-            var graph = Graphics.FromImage(pictureBoxStatus.Image);
-            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            graph.FillEllipse(new SolidBrush(c), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
-            graph.Save();
-            labelStatus.ForeColor = c;
-            labelStatus.Text = isRunning ? "运行" : "停止";
-            buttonRun.Text = isRunning ? "断开PLC" : "连接PLC";
-            timer.Start();
+            richTextBoxInfo.SelectionColor = Color.Black;
+            richTextBoxInfo.AppendText("名称：" + Environment.NewLine);
+            richTextBoxInfo.SelectionColor = Color.Red;
+            richTextBoxInfo.AppendText(My.LocationName + Environment.NewLine);
         }
 
         /// <summary>
@@ -93,17 +91,6 @@ namespace SCADA
         }
 
         /// <summary>
-        /// 初始化信息
-        /// </summary>
-        private void InitInfo()
-        {
-            richTextBoxInfo.SelectionColor = Color.Black;
-            richTextBoxInfo.AppendText("名称：" + Environment.NewLine);
-            richTextBoxInfo.SelectionColor = Color.Red;
-            richTextBoxInfo.AppendText(My.LocationName + Environment.NewLine);
-        }
-
-        /// <summary>
         /// 初始化TabPage
         /// </summary>
         private void InitTabPage()
@@ -116,7 +103,7 @@ namespace SCADA
                 {
                     page.Text = form.Text;
                     form.Width = page.Width;
-                    form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                    form.FormBorderStyle = FormBorderStyle.None;
                     form.TopLevel = false;
                     form.Parent = page;
                     form.Dock = DockStyle.Fill;
@@ -163,6 +150,26 @@ namespace SCADA
             }
             await Task.Delay(5000);
             buttonRun.Enabled = true;
+        }
+
+        private async Task GetPLCStateAsync(CancellationToken token = default(CancellationToken))
+        {
+            await Task.Run(() =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    var isRunning = My.Work_PLC.IsRunning;
+                    Color color = isRunning ? Color.Green : Color.Red;
+                    pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
+                    var graph = Graphics.FromImage(pictureBoxStatus.Image);
+                    graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    graph.FillEllipse(new SolidBrush(color), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
+                    graph.Save();
+                    labelStatus.InvokeEx(c => { c.ForeColor = color; c.Text = isRunning ? "运行" : "停止"; });
+                    buttonRun.InvokeEx(c => c.Text = isRunning ? "断开PLC" : "连接PLC");
+                    Thread.Sleep(2000);
+                }
+            }, token);
         }
 
         private void checkBoxProtect_CheckedChanged(object sender, EventArgs e)

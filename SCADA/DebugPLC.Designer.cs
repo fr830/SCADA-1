@@ -51,6 +51,7 @@
             this.Name = "DebugPLC";
             this.Text = "PLC手动";
             this.Load += new System.EventHandler(this.DebugPLC_Load);
+            this.Shown += new System.EventHandler(this.DebugPLC_Shown);
             this.ResumeLayout(false);
 
         }

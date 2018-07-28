@@ -41,7 +41,7 @@
             this.flowLayoutPanel.Size = new System.Drawing.Size(870, 468);
             this.flowLayoutPanel.TabIndex = 0;
             // 
-            // RFID
+            // RFIDPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -51,9 +51,10 @@
             this.Controls.Add(this.flowLayoutPanel);
             this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.Name = "RFID";
+            this.Name = "RFIDPage";
             this.Text = "RFID";
             this.Load += new System.EventHandler(this.RFID_Load);
+            this.Shown += new System.EventHandler(this.RFIDPage_Shown);
             this.ResumeLayout(false);
 
         }

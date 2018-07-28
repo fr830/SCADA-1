@@ -17,15 +17,17 @@ namespace SCADA
             InitializeComponent();
         }
 
-        private async void RFID_Load(object sender, EventArgs e)
+        private void RFID_Load(object sender, EventArgs e)
         {
-            await Task.Run(() =>
+            foreach (var item in My.RFIDs.Values)
             {
-                foreach (var item in My.RFIDs.Values)
-                {
-                    flowLayoutPanel.InvokeEx(c => c.Controls.Add(new UserControl_RFID(item)));
-                }
-            });
+                flowLayoutPanel.Controls.Add(new UserControl_RFID(item));
+            }
+        }
+
+        private void RFIDPage_Shown(object sender, EventArgs e)
+        {
+
         }
     }
 }
