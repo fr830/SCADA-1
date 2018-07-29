@@ -292,6 +292,9 @@ namespace SCADA
                 else
                 {
                     OnLoadCompleted("数据库初始化失败！", 30);
+#if !DEBUG
+                    throw new Exception("数据库初始化失败！");
+#endif
                 }
 
                 var macIPs = BLL.SettingGet(AdminID, "MacIP").ToString().Split(';');
@@ -303,7 +306,7 @@ namespace SCADA
                 catch (Exception)
                 {
                     OnLoadCompleted("PLC连接失败！", 35);
-#if DEBUG
+#if !DEBUG
                     throw new Exception("PLC连接失败，IP：" + macIPs[0]);
 #endif
                 }
@@ -316,7 +319,9 @@ namespace SCADA
                 }
                 catch (Exception)
                 {
+#if !DEBUG
                     OnLoadCompleted("数控系统连接失败！", 40);
+#endif
                 }
                 OnLoadCompleted("数控系统连接成功", 40);
 

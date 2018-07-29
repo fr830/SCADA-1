@@ -67,12 +67,21 @@ namespace SCADA
             var data = My.Work_Vision.RFIDData;
             if (data == null)
             {
+                var d = My.RFIDs[EnumPSite.S8_Down].Read();
+                if (d != null)
+                {
+                    My.Work_Vision.RFIDData = d;
+                }
+            }
+            if (data == null)
+            {
                 labelRFID.Text = "无";
             }
             else
             {
                 labelRFID.Text = data.ToString();
             }
+            My.PLC.Set(11, 0);
             button4.Enabled = true;
         }
 

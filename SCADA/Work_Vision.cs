@@ -25,8 +25,9 @@ namespace SCADA
 
         private Work_Vision()
         {
+#if !OFFLINE
             ClientConnectAsync();
-            My.Work_PLC.Photograph += Photograph;
+#endif
         }
 
         private async void ClientConnectAsync()
@@ -41,33 +42,28 @@ namespace SCADA
                     }
                     catch (Exception)
                     {
-                        //TODO提示用户连接失败
-                        //throw;
+                        throw new Exception("出库视觉相机连接失败，请检查后重启软件！");
                     }
                 }
+                My.Work_PLC.Photograph += Photograph;
             });
         }
 
-        public async void Photograph(object sender, PLCEventArgs e)
+        public void Photograph(object sender, PLCEventArgs e)
         {
             if (!tcpClient.Connected)
             {
-                await tcpClient.ConnectAsync(IP, Port);
-                if (!tcpClient.Connected)
-                {
-                    //TODO提示连接失败
-                    return;
-                }
+                throw new Exception("出库视觉相机连接失败，请检查后重启软件！");
             }
             if (RFIDData == null)
             {
-                //TODO提示RFID读取失败
-                return;
+                throw new Exception("出库口RFID信息获取失败，无法进行比对！");
             }
             byte[] buffer = new byte[16];
             try
             {
                 tcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
+                tcpClient.ReceiveTimeout = 5000;
                 tcpClient.Client.Receive(buffer);
             }
             catch (Exception)

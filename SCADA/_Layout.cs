@@ -156,18 +156,31 @@ namespace SCADA
         {
             await Task.Run(() =>
             {
+                var lastState = true;
                 while (!token.IsCancellationRequested)
                 {
                     #region buttonRun
-                    var isRunning = My.Work_PLC.IsRunning;
-                    Color color = isRunning ? Color.Green : Color.Red;
-                    pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
-                    var graph = Graphics.FromImage(pictureBoxStatus.Image);
-                    graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    graph.FillEllipse(new SolidBrush(color), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
-                    graph.Save();
-                    labelStatus.InvokeEx(c => { c.ForeColor = color; c.Text = isRunning ? "运行" : "停止"; });
-                    buttonRun.InvokeEx(c => c.Text = isRunning ? "断开PLC" : "连接PLC");
+                    try
+                    {
+                        var isRunning = My.Work_PLC.IsRunning;
+                        if (isRunning != lastState)
+                        {
+                            lastState = isRunning;
+                            Color color = isRunning ? Color.Green : Color.Red;
+                            pictureBoxStatus.Image = new Bitmap(pictureBoxStatus.Width, pictureBoxStatus.Height);
+                            var graph = Graphics.FromImage(pictureBoxStatus.Image);
+                            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                            graph.FillEllipse(new SolidBrush(color), 10, 10, pictureBoxStatus.Width - 20, pictureBoxStatus.Height - 20);
+                            graph.Save();
+                            labelStatus.InvokeEx(c => { c.ForeColor = color; c.Text = isRunning ? "运行" : "停止"; });
+                            buttonRun.InvokeEx(c => c.Text = isRunning ? "断开PLC" : "连接PLC");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //TODO
+                        //throw;
+                    }
                     #endregion
                     #region checkBoxProtect
                     if (signalProtect.Exist())

@@ -39,7 +39,7 @@ namespace SCADA
         {
             get
             {
-                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
+                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(20);
             }
         }
 
