@@ -260,7 +260,7 @@ namespace SCADA
         /// </summary>
         public static async Task InitializeAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 BLL = BLLCustom.Instance;
                 AdminID = BLL.GetUserIDByUsername("admin");
@@ -345,7 +345,7 @@ namespace SCADA
                 Initialized = true;
                 OnLoadCompleted("系统加载完成", 98);
 
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 OnLoadCompleted("即将进入总控界面", 100);
             });
         }

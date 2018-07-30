@@ -36,22 +36,17 @@ namespace SCADA
             menuStrip.Visible = false;//暂时不启用菜单栏
             this.Visible = false;
             InitInfo();
+            InitStatus();
             var splash = new Splash();
             splash.Show();
-            My.LoadCompleted += (ms, me) =>
+            My.LoadCompleted += async (ms, me) =>
             {
                 if (me.Value >= 100)
                 {
-                    this.InvokeEx(c =>
-                    {
-                        c.InitTabPage();
-                        c.InitStatus();
-                    });
+                    this.InvokeEx(c => c.InitTabPage());
+                    await Task.Delay(1000);
                     splash.InvokeEx(c => c.Close());
-                    this.InvokeEx(c =>
-                    {
-                        c.Visible = true;
-                    });
+                    this.InvokeEx(c => c.Visible = true);
                     GetSignalStateAsync();
                 }
             };
