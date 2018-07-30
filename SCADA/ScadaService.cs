@@ -164,6 +164,7 @@ namespace SCADA
                 if (allFinish)
                 {
                     order.State = EnumHelper.GetName(TOrder.EnumState.完成);
+                    order.EndTime = DateTime.Now;
                     My.BLL.TOrder.Update(order, My.AdminID);
                 }
                 #endregion

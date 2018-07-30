@@ -101,6 +101,7 @@ namespace SCADA
                 else
                 {
                     order.State = EnumHelper.GetName(TOrder.EnumState.执行);
+                    order.StartTime = DateTime.Now;
                     My.BLL.TOrder.Update(order, My.AdminID);
                     var orderDetails = My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID));
                     if (orderDetails != null && orderDetails.Count > 0)

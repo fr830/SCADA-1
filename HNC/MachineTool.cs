@@ -205,9 +205,13 @@ namespace HNC
 
         public bool HNC_NetFileSend(string localPath, string filename)
         {
-            if (!File.Exists(localPath) || string.IsNullOrWhiteSpace(filename))
+            if (!File.Exists(localPath))
             {
-                return false;
+                throw new FileNotFoundException("G代码文件未找到！", localPath);
+            }
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                throw new ArgumentException("文件名不能为空！");
             }
             var list = new List<string>();
             using (var sr = new StreamReader(localPath, Encoding.Default))
