@@ -74,7 +74,7 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     lastTime = DateTime.Now;
-                    Thread.Sleep(3000);
+                    Thread.Sleep(1500);
                     OrderToWMS();
                 }
             }, token);

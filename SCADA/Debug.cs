@@ -174,63 +174,63 @@ namespace SCADA
             buttonRFIDInit.Enabled = true;
         }
 
-        private async void buttonSpinIn_Click(object sender, EventArgs e)
+        private void buttonSpinIn_Click(object sender, EventArgs e)
         {
             buttonSpinIn.Enabled = false;
-            await Task.Run(() => My.Work_WMS.SpinIn());
+            My.Work_WMS.SpinIn();
             buttonSpinIn.Enabled = true;
         }
 
-        private async void buttonSpinOut_Click(object sender, EventArgs e)
+        private void buttonSpinOut_Click(object sender, EventArgs e)
         {
             buttonSpinOut.Enabled = false;
-            await Task.Run(() => My.Work_WMS.SpinOut());
+            My.Work_WMS.SpinOut();
             buttonSpinOut.Enabled = true;
         }
 
-        private async void buttonIn_Click(object sender, EventArgs e)
+        private void buttonIn_Click(object sender, EventArgs e)
         {
             buttonIn.Enabled = false;
-            await Task.Run(() => My.Work_WMS.In(new WMSData("A", 1)));
+            My.Work_WMS.In(new WMSData("A", 1));
             buttonIn.Enabled = true;
         }
 
-        private async void buttonOut_Click(object sender, EventArgs e)
+        private void buttonOut_Click(object sender, EventArgs e)
         {
             buttonOut.Enabled = false;
-            await Task.Run(() => My.Work_WMS.Out(new List<WMSData> { new WMSData("A", 1) }));
+            My.Work_WMS.Out(new List<WMSData> { new WMSData("A", 1) });
             buttonOut.Enabled = true;
         }
 
-        private async void buttonRS8_Click(object sender, EventArgs e)
+        private void buttonRS8_Click(object sender, EventArgs e)
         {
             buttonRS8.Enabled = false;
-            await Task.Run(() => My.Work_Vision.Photograph(null, new PLCEventArgs(EnumPSite.S8_Down, 1)));
+            My.Work_Vision.Photograph(null, new PLCEventArgs(EnumPSite.S8_Down, 1));
             buttonRS8.Enabled = true;
         }
 
-        private async void buttonCKX_Click(object sender, EventArgs e)
+        private void buttonCKX_Click(object sender, EventArgs e)
         {
             buttonCKX.Enabled = false;
             var data = RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A);
-            await My.Work_Simulation.SendAsync(new CKX(data, CKX.EnumActionType.出库线转移物料至出库检测位));
-            await My.Work_Simulation.SendAsync(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
+            My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库线转移物料至出库检测位));
+            My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
             buttonCKX.Enabled = true;
         }
 
-        private async void buttonRKX_Click(object sender, EventArgs e)
+        private void buttonRKX_Click(object sender, EventArgs e)
         {
             buttonRKX.Enabled = false;
             var data = RFIDData.GetDefaut(Guid.NewGuid(), EnumWorkpiece.A);
-            await My.Work_Simulation.SendAsync(new RKX(data, RKX.EnumActionType.定位台2转移物料至入库检测位));
-            await My.Work_Simulation.SendAsync(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
+            My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.定位台2转移物料至入库检测位));
+            My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             buttonRKX.Enabled = true;
         }
 
         private void buttonGSend_Click(object sender, EventArgs e)
         {
             buttonGSend.Enabled = false;
-            My.MachineTools[EnumPSite.S1].HNC_NetFileSend(GCodeFile.Dict[EnumPSite.S1][GCodeFile.EnumFile.加工A料程序], "Otest");
+            My.PLC.HNC_NetFileSend(GCodeFile.Dict[EnumPSite.S1][GCodeFile.EnumFile.加工A料程序], "Otest");
             buttonGSend.Enabled = true;
         }
 

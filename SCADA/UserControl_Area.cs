@@ -66,7 +66,7 @@ namespace SCADA
             var btn = new Button();
             btn.AutoSize = true;
             btn.FlatStyle = FlatStyle.Flat;
-            btn.Font = new Font("微软雅黑", 9f, FontStyle.Regular);
+            btn.Font = new Font("宋体", 9f);
             btn.Tag = c;
             btn.Text = c.Text;
             switch (c.SignalType)

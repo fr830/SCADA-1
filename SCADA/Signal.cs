@@ -133,7 +133,7 @@ namespace SCADA
             new Signal(340,4,"提升机伸",  Signal.EnumSignalType.手动控制),
             new Signal(340,5,"提升机缩",  Signal.EnumSignalType.手动控制),
             new Signal(341,0,"复位",  Signal.EnumSignalType.手动控制),
-            new Signal(341,1,"故障复位",  Signal.EnumSignalType.手动控制),
+            //new Signal(341,1,"故障复位",  Signal.EnumSignalType.手动控制),
         };
 
         #endregion
@@ -161,20 +161,20 @@ namespace SCADA
 
         public static IList<Signal> listJ2 = new List<Signal>
         {
-            new Signal(21,2 ,"定位阻挡伸到位"),
-            new Signal(21,3,"定位阻挡缩到位"),
-            new Signal(21,4,"分料阻挡伸到位"),
-            new Signal(21,5,"分料阻挡缩到位"),
-            new Signal(21,6,"托举气缸伸到位"),
-            new Signal(21,7,"托举气缸缩到位"),
-            new Signal(22,0,"左夹紧气缸伸到位"),
-            new Signal(22,1,"左夹紧气缸缩到位"),
-            new Signal(22,2,"右夹紧气缸伸到位"),
-            new Signal(22,3,"右夹紧气缸缩到位"),
-            new Signal(22,4,"左顶升气缸伸到位"),
-            new Signal(22,5,"左顶升气缸缩到位"),
-            new Signal(22,6,"右顶升气缸伸到位"),
-            new Signal(22,7,"右顶升气缸缩到位"),
+            new Signal(21,2 ,"定位阻挡伸"),
+            new Signal(21,3,"定位阻挡缩"),
+            new Signal(21,4,"分料阻挡伸"),
+            new Signal(21,5,"分料阻挡缩"),
+            new Signal(21,6,"托举气缸伸"),
+            new Signal(21,7,"托举气缸缩"),
+            new Signal(22,0,"左夹紧气缸伸"),
+            new Signal(22,1,"左夹紧气缸缩"),
+            new Signal(22,2,"右夹紧气缸伸"),
+            new Signal(22,3,"右夹紧气缸缩"),
+            new Signal(22,4,"左顶升气缸伸"),
+            new Signal(22,5,"左顶升气缸缩"),
+            new Signal(22,6,"右顶升气缸伸"),
+            new Signal(22,7,"右顶升气缸缩"),
         };
 
         public static IList<Signal> listC2 = new List<Signal>
@@ -194,7 +194,7 @@ namespace SCADA
             new Signal(345,4,"右顶升气缸伸", Signal.EnumSignalType.手动控制),
             new Signal(345,5,"右顶升气缸缩", Signal.EnumSignalType.手动控制),
             new Signal(346,0,"复位", Signal.EnumSignalType.手动控制),
-            new Signal(346,1,"故障复位", Signal.EnumSignalType.手动控制),
+            //new Signal(346,1,"故障复位", Signal.EnumSignalType.手动控制),
             new Signal(346,2,"加工失败", Signal.EnumSignalType.手动控制),
         };
 
@@ -219,20 +219,20 @@ namespace SCADA
 
         public static IList<Signal> listJ3 = new List<Signal>
         {
-            new Signal(31,2,"定位阻挡伸到位"),
-            new Signal(31,3,"定位阻挡缩到位"),
-            new Signal(31,4,"分料阻挡伸到位"),
-            new Signal(31,5,"分料阻挡缩到位"),
-            new Signal(31,6,"托举气缸伸到位"),
-            new Signal(31,7,"托举气缸缩到位"),
-            new Signal(32,0,"左夹紧气缸伸到位"),
-            new Signal(32,1,"左夹紧气缸缩到位"),
-            new Signal(32,2,"右夹紧气缸伸到位"),
-            new Signal(32,3,"右夹紧气缸缩到位"),
-            new Signal(32,4,"左顶升气缸伸到位"),
-            new Signal(32,5,"左顶升气缸缩到位"),
-            new Signal(32,6,"右顶升气缸伸到位"),
-            new Signal(32,7,"右顶升气缸缩到位"),
+            new Signal(31,2,"定位阻挡伸"),
+            new Signal(31,3,"定位阻挡缩"),
+            new Signal(31,4,"分料阻挡伸"),
+            new Signal(31,5,"分料阻挡缩"),
+            new Signal(31,6,"托举气缸伸"),
+            new Signal(31,7,"托举气缸缩"),
+            new Signal(32,0,"左夹紧气缸伸"),
+            new Signal(32,1,"左夹紧气缸缩"),
+            new Signal(32,2,"右夹紧气缸伸"),
+            new Signal(32,3,"右夹紧气缸缩"),
+            new Signal(32,4,"左顶升气缸伸"),
+            new Signal(32,5,"左顶升气缸缩"),
+            new Signal(32,6,"右顶升气缸伸"),
+            new Signal(32,7,"右顶升气缸缩"),
         };
 
         public static IList<Signal> listC3 = new List<Signal>
@@ -252,7 +252,7 @@ namespace SCADA
             new Signal(351,4,"右顶升气缸伸", EnumSignalType.手动控制),
             new Signal(351,5,"右顶升气缸缩", EnumSignalType.手动控制),
             new Signal(352,0,"复位", EnumSignalType.手动控制),
-            new Signal(352,1,"故障复位", EnumSignalType.手动控制),
+            //new Signal(352,1,"故障复位", EnumSignalType.手动控制),
             new Signal(352,2,"加工失败", EnumSignalType.手动控制),
         };
 
@@ -281,20 +281,20 @@ namespace SCADA
 
         public static IList<Signal> listJ4 = new List<Signal>
         {
-            new Signal(41,2,"定位阻挡伸到位"),
-            new Signal(41,3,"定位阻挡缩到位"),
-            new Signal(41,4,"分料阻挡伸到位"),
-            new Signal(41,5,"分料阻挡缩到位"),
-            new Signal(41,6,"托举气缸伸到位"),
-            new Signal(41,7,"托举气缸缩到位"),
-            new Signal(42,0,"左夹紧气缸伸到位"),
-            new Signal(42,1,"左夹紧气缸缩到位"),
-            new Signal(42,2,"右夹紧气缸伸到位"),
-            new Signal(42,3,"右夹紧气缸缩到位"),
-            new Signal(42,4,"左顶升气缸伸到位"),
-            new Signal(42,5,"左顶升气缸缩到位"),
-            new Signal(42,6,"右顶升气缸伸到位"),
-            new Signal(42,7,"右顶升气缸缩到位"),
+            new Signal(41,2,"定位阻挡伸"),
+            new Signal(41,3,"定位阻挡缩"),
+            new Signal(41,4,"分料阻挡伸"),
+            new Signal(41,5,"分料阻挡缩"),
+            new Signal(41,6,"托举气缸伸"),
+            new Signal(41,7,"托举气缸缩"),
+            new Signal(42,0,"左夹紧气缸伸"),
+            new Signal(42,1,"左夹紧气缸缩"),
+            new Signal(42,2,"右夹紧气缸伸"),
+            new Signal(42,3,"右夹紧气缸缩"),
+            new Signal(42,4,"左顶升气缸伸"),
+            new Signal(42,5,"左顶升气缸缩"),
+            new Signal(42,6,"右顶升气缸伸"),
+            new Signal(42,7,"右顶升气缸缩"),
         };
 
         public static IList<Signal> listC4 = new List<Signal>
@@ -314,7 +314,7 @@ namespace SCADA
             new Signal(355,4,"右顶升气缸伸", EnumSignalType.手动控制),
             new Signal(355,5,"右顶升气缸缩", EnumSignalType.手动控制),
             new Signal(356,0,"复位", EnumSignalType.手动控制),
-            new Signal(356,1,"故障复位", EnumSignalType.手动控制),
+            //new Signal(356,1,"故障复位", EnumSignalType.手动控制),
             new Signal(356,2,"加工失败", EnumSignalType.手动控制),
         };
 
@@ -338,20 +338,20 @@ namespace SCADA
 
         public static IList<Signal> listJ5 = new List<Signal>
         {
-            new Signal(51,2,"定位阻挡伸到位"),
-            new Signal(51,3,"定位阻挡缩到位"),
-            new Signal(51,4,"分料阻挡伸到位"),
-            new Signal(51,5,"分料阻挡缩到位"),
-            new Signal(51,6,"托举气缸伸到位"),
-            new Signal(51,7,"托举气缸缩到位"),
-            new Signal(52,0,"左夹紧气缸伸到位"),
-            new Signal(52,1,"左夹紧气缸缩到位"),
-            new Signal(52,2,"右夹紧气缸伸到位"),
-            new Signal(52,3,"右夹紧气缸缩到位"),
-            new Signal(52,4,"左顶升气缸伸到位"),
-            new Signal(52,5,"左顶升气缸缩到位"),
-            new Signal(52,6,"右顶升气缸伸到位"),
-            new Signal(52,7,"右顶升气缸缩到位"),
+            new Signal(51,2,"定位阻挡伸"),
+            new Signal(51,3,"定位阻挡缩"),
+            new Signal(51,4,"分料阻挡伸"),
+            new Signal(51,5,"分料阻挡缩"),
+            new Signal(51,6,"托举气缸伸"),
+            new Signal(51,7,"托举气缸缩"),
+            new Signal(52,0,"左夹紧气缸伸"),
+            new Signal(52,1,"左夹紧气缸缩"),
+            new Signal(52,2,"右夹紧气缸伸"),
+            new Signal(52,3,"右夹紧气缸缩"),
+            new Signal(52,4,"左顶升气缸伸"),
+            new Signal(52,5,"左顶升气缸缩"),
+            new Signal(52,6,"右顶升气缸伸"),
+            new Signal(52,7,"右顶升气缸缩"),
         };
 
         public static IList<Signal> listC5 = new List<Signal>
@@ -371,7 +371,7 @@ namespace SCADA
             new Signal(361,4,"右顶升气缸伸", EnumSignalType.手动控制),
             new Signal(361,5,"右顶升气缸缩", EnumSignalType.手动控制),
             new Signal(361,7,"复位", EnumSignalType.手动控制),
-            new Signal(362,0,"故障复位", EnumSignalType.手动控制),
+            //new Signal(362,0,"故障复位", EnumSignalType.手动控制),
             new Signal(362,1,"加工失败", EnumSignalType.手动控制),
         };
 
@@ -403,20 +403,20 @@ namespace SCADA
 
         public static IList<Signal> listJ6 = new List<Signal>
         {
-            new Signal(61,2,"定位阻挡伸到位"),
-            new Signal(61,3,"定位阻挡缩到位"),
-            new Signal(61,4,"分料阻挡伸到位"),
-            new Signal(61,5,"分料阻挡缩到位"),
-            new Signal(61,6,"托举气缸伸到位"),
-            new Signal(61,7,"托举气缸缩到位"),
-            new Signal(62,0,"左夹紧气缸伸到位"),
-            new Signal(62,1,"左夹紧气缸缩到位"),
-            new Signal(62,2,"右夹紧气缸伸到位"),
-            new Signal(62,3,"右夹紧气缸缩到位"),
-            new Signal(62,4,"左顶升气缸伸到位"),
-            new Signal(62,5,"左顶升气缸缩到位"),
-            new Signal(62,6,"右顶升气缸伸到位"),
-            new Signal(62,7,"右顶升气缸缩到位"),
+            new Signal(61,2,"定位阻挡伸"),
+            new Signal(61,3,"定位阻挡缩"),
+            new Signal(61,4,"分料阻挡伸"),
+            new Signal(61,5,"分料阻挡缩"),
+            new Signal(61,6,"托举气缸伸"),
+            new Signal(61,7,"托举气缸缩"),
+            new Signal(62,0,"左夹紧气缸伸"),
+            new Signal(62,1,"左夹紧气缸缩"),
+            new Signal(62,2,"右夹紧气缸伸"),
+            new Signal(62,3,"右夹紧气缸缩"),
+            new Signal(62,4,"左顶升气缸伸"),
+            new Signal(62,5,"左顶升气缸缩"),
+            new Signal(62,6,"右顶升气缸伸"),
+            new Signal(62,7,"右顶升气缸缩"),
         };
 
         public static IList<Signal> listC6 = new List<Signal>
@@ -436,7 +436,7 @@ namespace SCADA
             new Signal(365,4,"右顶升气缸伸", EnumSignalType.手动控制),
             new Signal(365,5,"右顶升气缸缩", EnumSignalType.手动控制),
             new Signal(366,0,"复位", EnumSignalType.手动控制),
-            new Signal(366,1,"故障复位", EnumSignalType.手动控制),
+            //new Signal(366,1,"故障复位", EnumSignalType.手动控制),
             new Signal(366,2,"加工失败", EnumSignalType.手动控制),
         };
 
@@ -466,14 +466,14 @@ namespace SCADA
 
         public static IList<Signal> listJ7 = new List<Signal>
         {
-            new Signal(72,2,"分料阻挡伸到位"),
-            new Signal(72,3,"分料阻挡缩到位"),
-            new Signal(72,4,"定位阻挡伸到位"),
-            new Signal(72,5,"定位阻挡缩到位"),
-            new Signal(72,6,"托举气缸伸到位"),
-            new Signal(72,7,"托举气缸缩到位"),
-            new Signal(73,0,"提升机伸到位"),
-            new Signal(73,1,"提升机缩到位"),
+            new Signal(72,2,"分料阻挡伸"),
+            new Signal(72,3,"分料阻挡缩"),
+            new Signal(72,4,"定位阻挡伸"),
+            new Signal(72,5,"定位阻挡缩"),
+            new Signal(72,6,"托举气缸伸"),
+            new Signal(72,7,"托举气缸缩"),
+            new Signal(73,0,"提升机伸"),
+            new Signal(73,1,"提升机缩"),
         };
 
         public static IList<Signal> listC7 = new List<Signal>
@@ -487,7 +487,7 @@ namespace SCADA
             new Signal(370,6,"提升机伸", EnumSignalType.手动控制),
             new Signal(370,7,"提升机缩", EnumSignalType.手动控制),
             new Signal(371,0,"复位", EnumSignalType.手动控制),
-            new Signal(371,1,"故障复位", EnumSignalType.手动控制),
+            //new Signal(371,1,"故障复位", EnumSignalType.手动控制),
         };
 
         #endregion
@@ -515,18 +515,18 @@ namespace SCADA
 
         public static IList<Signal> listJ8 = new List<Signal>
         {
-            new Signal(83,0,"A工件定位气缸伸到位"),
-            new Signal(83,1,"A工件定位气缸缩到位"),
-            new Signal(83,2,"B工件定位气缸伸到位"),
-            new Signal(83,3,"B工件定位气缸缩到位"),
-            new Signal(83,4,"C工件定位气缸伸到位"),
-            new Signal(83,5,"C工件定位气缸缩到位"),
-            new Signal(83,6,"D工件定位气缸伸到位"),
-            new Signal(83,7,"D工件定位气缸缩到位"),
-            new Signal(84,0,"移料气缸伸到位"),
-            new Signal(84,1,"移料气缸缩到位"),
-            new Signal(250,6,"移料定位气缸伸到位"),
-            new Signal(250,7,"移料定位气缸缩到位"),
+            new Signal(83,0,"A工件定位气缸伸"),
+            new Signal(83,1,"A工件定位气缸缩"),
+            new Signal(83,2,"B工件定位气缸伸"),
+            new Signal(83,3,"B工件定位气缸缩"),
+            new Signal(83,4,"C工件定位气缸伸"),
+            new Signal(83,5,"C工件定位气缸缩"),
+            new Signal(83,6,"D工件定位气缸伸"),
+            new Signal(83,7,"D工件定位气缸缩"),
+            new Signal(84,0,"移料气缸伸"),
+            new Signal(84,1,"移料气缸缩"),
+            new Signal(250,6,"移料定位气缸伸"),
+            new Signal(250,7,"移料定位气缸缩"),
         };
 
         public static IList<Signal> listC8 = new List<Signal>
@@ -543,9 +543,9 @@ namespace SCADA
             new Signal(381,1,"移料气缸缩",  Signal.EnumSignalType.手动控制),
             new Signal(381,2,"移料定位气缸伸",  Signal.EnumSignalType.手动控制),
             new Signal(381,3,"移料定位气缸缩",  Signal.EnumSignalType.手动控制),
-            new Signal(381,5,"清洗机复位",  Signal.EnumSignalType.手动控制),
+            //new Signal(381,5,"清洗机复位",  Signal.EnumSignalType.手动控制),
             new Signal(381,6,"装配台复位",  Signal.EnumSignalType.手动控制),
-            new Signal(381,7,"故障复位",  Signal.EnumSignalType.手动控制),
+            //new Signal(381,7,"故障复位",  Signal.EnumSignalType.手动控制),
             new Signal(382,0,"工件A复位",  Signal.EnumSignalType.手动控制),
             new Signal(382,1,"工件B复位",  Signal.EnumSignalType.手动控制),
             new Signal(382,2,"工件C复位",  Signal.EnumSignalType.手动控制),
@@ -583,12 +583,12 @@ namespace SCADA
 
         public static IList<Signal> listJ9 = new List<Signal>
         {
-            new Signal(93,0,"翻转气缸伸到位"),
-            new Signal(93,1,"翻转气缸缩到位"),
-            new Signal(93,2,"放料夹紧气缸伸到位"),
-            new Signal(93,3,"放料夹紧气缸缩到位"),
-            new Signal(93,4,"取料气缸伸到位"),
-            new Signal(93,5,"取料气缸伸到位"),
+            new Signal(93,0,"翻转气缸伸"),
+            new Signal(93,1,"翻转气缸缩"),
+            new Signal(93,2,"放料夹紧气缸伸"),
+            new Signal(93,3,"放料夹紧气缸缩"),
+            new Signal(93,4,"取料气缸伸"),
+            new Signal(93,5,"取料气缸伸"),
         };
 
         public static IList<Signal> listC9 = new List<Signal>
@@ -600,7 +600,7 @@ namespace SCADA
             new Signal(390,4,"取料气缸伸",  Signal.EnumSignalType.手动控制),
             new Signal(390,5,"取料气缸伸",  Signal.EnumSignalType.手动控制),
             new Signal(391,0,"复位",  Signal.EnumSignalType.手动控制),
-            new Signal(391,1,"故障复位",  Signal.EnumSignalType.手动控制),
+            //new Signal(391,1,"故障复位",  Signal.EnumSignalType.手动控制),
         };
 
         #endregion
@@ -645,8 +645,8 @@ namespace SCADA
         {
             new Signal(260,0,"台1定位气缸伸"),
             new Signal(260,1,"台1定位气缸缩"),
-            new Signal(1,6,"台1阻挡气缸伸到位"),
-            new Signal(1,7,"台1阻挡气缸缩到位"),
+            new Signal(1,6,"台1阻挡气缸伸"),
+            new Signal(1,7,"台1阻挡气缸缩"),
             new Signal(264,2,"台2定位气缸伸"),
             new Signal(264,3,"台2定位气缸缩"),
             new Signal(2,6,"台2阻挡气缸伸"),
@@ -675,7 +675,7 @@ namespace SCADA
             new Signal(395,6,"台2复位",  Signal.EnumSignalType.手动控制),
             new Signal(395,7,"台3复位",  Signal.EnumSignalType.手动控制),
             new Signal(396,0,"台4复位",  Signal.EnumSignalType.手动控制),
-            new Signal(396,1,"区域10故障复位",  Signal.EnumSignalType.手动控制),
+            new Signal(396,1,"复位",  Signal.EnumSignalType.手动控制),
             new Signal(373,0,"台1滚筒正转",  Signal.EnumSignalType.手动控制),
             new Signal(373,1,"台1滚筒反转",  Signal.EnumSignalType.手动控制),
             new Signal(373,2,"台2滚筒正转",  Signal.EnumSignalType.手动控制),
