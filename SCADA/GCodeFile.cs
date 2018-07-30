@@ -14,7 +14,7 @@ namespace SCADA
 
         private static string GetFilePath(string folder, string filename)
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folder, filename);
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "加工程序", folder, filename);
         }
 
         private static string GetFilePath(EnumPSite site, string filename)

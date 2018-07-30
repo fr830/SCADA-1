@@ -112,7 +112,24 @@ namespace SCADA
                             detail.StartTime = DateTime.Now;
                             My.BLL.TOrderDetail.Update(detail, My.AdminID);
                             var name = My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID);
-                            list.Add(new WMSData(name, detail.QuantityDemanded));
+                            if (name == EnumHelper.GetName(RFID.EnumWorkpiece.E))
+                            {
+                                for (int i = 0; i < detail.QuantityDemanded; i++)
+                                {
+                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.A), 1));
+                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.B), 1));
+                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.C), 1));
+                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.D), 1));
+                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.E), 0));
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < detail.QuantityDemanded; i++)
+                                {
+                                    list.Add(new WMSData(name, 1));
+                                }
+                            }
                         }
                         My.Work_WMS.Out(list);
                     }
