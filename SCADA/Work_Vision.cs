@@ -144,41 +144,41 @@ namespace SCADA
         /// <summary>
         /// 毛坯小圆
         /// </summary>
-        public const string Rough_A = "0,0,0,0,1,0,0,0,";
+        public string Rough_A { get { return ConfigurationManager.AppSettings["VisionAR"]; } }
         /// <summary>
         /// 毛坯中圆
         /// </summary>
-        public const string Rough_B = "0,0,1,0,0,0,0,0,";
+        public string Rough_B { get { return ConfigurationManager.AppSettings["VisionBR"]; } }
 
         /// <summary>
         /// 毛坯大圆
         /// </summary>
-        public const string Rough_C = "1,0,0,0,0,0,0,0,";
+        public string Rough_C { get { return ConfigurationManager.AppSettings["VisionCR"]; } }
 
         /// <summary>
         /// 毛坯底座
         /// </summary>
-        public const string Rough_D = "0,0,0,0,0,0,1,0,";
+        public string Rough_D { get { return ConfigurationManager.AppSettings["VisionDR"]; } }
 
         /// <summary>
         /// 半成品小圆
         /// </summary>
-        public const string Semi_A = "0,0,0,0,0,1,0,0,";
+        public string Semi_A { get { return ConfigurationManager.AppSettings["VisionAS"]; } }
 
         /// <summary>
         /// 半成品中圆
         /// </summary>
-        public const string Semi_B = "0,0,0,1,0,0,0,0,";
+        public string Semi_B { get { return ConfigurationManager.AppSettings["VisionBS"]; } }
 
         /// <summary>
         /// 半成品大圆
         /// </summary>
-        public const string Semi_C = "1,1,0,0,0,0,0,0,";
+        public string Semi_C { get { return ConfigurationManager.AppSettings["VisionCS"]; } }
 
         /// <summary>
         /// 半成品底座
         /// </summary>
-        public const string Semi_D = "0,0,0,0,0,0,0,1,";
+        public string Semi_D { get { return ConfigurationManager.AppSettings["VisionDS"]; } }
 
     }
 }
