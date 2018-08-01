@@ -31,12 +31,13 @@ namespace SCADA
         async void PrintQRCode(object sender, PLCEventArgs e)
         {
             Print();
-            await Task.Delay(20000);
+            await Task.Delay(60 * 1000);
             My.PLC.Set(e.Index, 12);//打印二维码完成
         }
 
-        void Scan(object sender, PLCEventArgs e)
+        async void Scan(object sender, PLCEventArgs e)
         {
+            await Task.Delay(2 * 1000);
             My.PLC.Set(e.Index, 12);//扫码器扫码完成
         }
 
