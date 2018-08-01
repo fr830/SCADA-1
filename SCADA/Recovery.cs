@@ -61,25 +61,20 @@ namespace SCADA
             button3.Enabled = true;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private async void button4_Click(object sender, EventArgs e)
         {
             button4.Enabled = false;
-            var data = My.Work_Vision.RFIDData;
+            var data = My.RFIDs[EnumPSite.S8_Down].Read();
             if (data == null)
             {
-                var d = My.RFIDs[EnumPSite.S8_Down].Read();
-                if (d != null)
-                {
-                    My.Work_Vision.RFIDData = d;
-                }
-            }
-            if (data == null)
-            {
-                labelRFID.Text = "无";
+                labelRFID.Text = string.Empty;
             }
             else
             {
+                My.Work_Vision.RFIDData = data;
                 labelRFID.Text = data.ToString();
+                await Task.Delay(1000);
+                labelRFID.Text = string.Empty;
             }
             My.PLC.Set(11, 0);
             button4.Enabled = true;

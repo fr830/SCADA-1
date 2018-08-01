@@ -77,11 +77,11 @@ namespace SCADA
             switch (RFIDData.Workpiece)
             {
                 case RFID.EnumWorkpiece.A:
-                    if (RFIDData.IsRough && text == Rough_A)
+                    if (RFIDData.IsRough && text == AR)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
-                    else if (!RFIDData.IsRough && text == Semi_A)
+                    else if (!RFIDData.IsRough && text == AS)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
@@ -91,11 +91,11 @@ namespace SCADA
                     }
                     break;
                 case RFID.EnumWorkpiece.B:
-                    if (RFIDData.IsRough && text == Rough_A)
+                    if (RFIDData.IsRough && text == BR)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
-                    else if (!RFIDData.IsRough && text == Semi_A)
+                    else if (!RFIDData.IsRough && text == BS)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
@@ -105,11 +105,11 @@ namespace SCADA
                     }
                     break;
                 case RFID.EnumWorkpiece.C:
-                    if (RFIDData.IsRough && text == Rough_A)
+                    if (RFIDData.IsRough && text == CR)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
-                    else if (!RFIDData.IsRough && text == Semi_A)
+                    else if (!RFIDData.IsRough && text == CS)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
@@ -119,11 +119,11 @@ namespace SCADA
                     }
                     break;
                 case RFID.EnumWorkpiece.D:
-                    if (RFIDData.IsRough && text == Rough_A)
+                    if (RFIDData.IsRough && text == DR)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
-                    else if (!RFIDData.IsRough && text == Semi_A)
+                    else if (!RFIDData.IsRough && text == DS)
                     {
                         My.PLC.Set(e.Index, 2);//工件匹配
                     }
@@ -139,46 +139,47 @@ namespace SCADA
                     My.PLC.Set(e.Index, 3);//工件不匹配
                     break;
             }
+            RFIDData = null;
         }
 
         /// <summary>
         /// 毛坯小圆
         /// </summary>
-        public string Rough_A { get { return ConfigurationManager.AppSettings["VisionAR"]; } }
+        public string AR { get { return ConfigurationManager.AppSettings["VisionAR"]; } }
         /// <summary>
         /// 毛坯中圆
         /// </summary>
-        public string Rough_B { get { return ConfigurationManager.AppSettings["VisionBR"]; } }
+        public string BR { get { return ConfigurationManager.AppSettings["VisionBR"]; } }
 
         /// <summary>
         /// 毛坯大圆
         /// </summary>
-        public string Rough_C { get { return ConfigurationManager.AppSettings["VisionCR"]; } }
+        public string CR { get { return ConfigurationManager.AppSettings["VisionCR"]; } }
 
         /// <summary>
         /// 毛坯底座
         /// </summary>
-        public string Rough_D { get { return ConfigurationManager.AppSettings["VisionDR"]; } }
+        public string DR { get { return ConfigurationManager.AppSettings["VisionDR"]; } }
 
         /// <summary>
         /// 半成品小圆
         /// </summary>
-        public string Semi_A { get { return ConfigurationManager.AppSettings["VisionAS"]; } }
+        public string AS { get { return ConfigurationManager.AppSettings["VisionAS"]; } }
 
         /// <summary>
         /// 半成品中圆
         /// </summary>
-        public string Semi_B { get { return ConfigurationManager.AppSettings["VisionBS"]; } }
+        public string BS { get { return ConfigurationManager.AppSettings["VisionBS"]; } }
 
         /// <summary>
         /// 半成品大圆
         /// </summary>
-        public string Semi_C { get { return ConfigurationManager.AppSettings["VisionCS"]; } }
+        public string CS { get { return ConfigurationManager.AppSettings["VisionCS"]; } }
 
         /// <summary>
         /// 半成品底座
         /// </summary>
-        public string Semi_D { get { return ConfigurationManager.AppSettings["VisionDS"]; } }
+        public string DS { get { return ConfigurationManager.AppSettings["VisionDS"]; } }
 
     }
 }
