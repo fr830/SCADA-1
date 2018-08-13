@@ -89,29 +89,6 @@ namespace SCADA
             else
             {
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
-                switch (e.Site)
-                {
-                    case EnumPSite.S1:
-                        My.Work_Simulation.Send(new DSJ01(data, DSJ01.EnumActionType.正阻挡位转移物料至顶升机2前阻挡位));
-                        break;
-                    case EnumPSite.S2:
-                        My.Work_Simulation.Send(new DSJ02(data, DSJ02.EnumActionType.正阻挡位转移物料至顶升机3前阻挡位));
-                        break;
-                    case EnumPSite.S3:
-                        My.Work_Simulation.Send(new DSJ03(data, DSJ03.EnumActionType.正阻挡位转移物料至顶升机4前阻挡位));
-                        break;
-                    case EnumPSite.S4:
-                        My.Work_Simulation.Send(new DSJ04(data, DSJ04.EnumActionType.正阻挡位转移物料至顶升机5前阻挡位));
-                        break;
-                    case EnumPSite.S5_Assemble:
-                        My.Work_Simulation.Send(new DSJ05(data, DSJ05.EnumActionType.正阻挡位转移物料至下料位前阻挡位));
-                        break;
-                    case EnumPSite.S6_Alignment:
-                        My.Work_Simulation.Send(new XLW(data, XLW.EnumActionType.正阻挡位转移物料至升降机2));
-                        break;
-                    default:
-                        break;
-                }
             }
         }
 
@@ -122,29 +99,29 @@ namespace SCADA
             data.SetProcessResult(EnumPResult.Successed);
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//写入完成
-            switch (e.Site)
-            {
-                case EnumPSite.S1:
-                    My.Work_Simulation.Send(new DSJ01(data, DSJ01.EnumActionType.物料下降));
-                    break;
-                case EnumPSite.S2:
-                    My.Work_Simulation.Send(new DSJ02(data, DSJ02.EnumActionType.物料下降));
-                    break;
-                case EnumPSite.S3:
-                    My.Work_Simulation.Send(new DSJ03(data, DSJ03.EnumActionType.物料下降));
-                    break;
-                case EnumPSite.S4:
-                    My.Work_Simulation.Send(new DSJ04(data, DSJ04.EnumActionType.物料下降));
-                    break;
-                case EnumPSite.S5_Assemble:
-                    My.Work_Simulation.Send(new DSJ05(data, DSJ05.EnumActionType.物料下降));
-                    break;
-                case EnumPSite.S6_Alignment:
-                    My.Work_Simulation.Send(new XLW(data, XLW.EnumActionType.物料下降));
-                    break;
-                default:
-                    break;
-            }
+            //switch (e.Site)
+            //{
+            //    case EnumPSite.S1:
+            //        My.Work_Simulation.Send(new DSJ01(data, DSJ01.EnumActionType.物料下降));
+            //        break;
+            //    case EnumPSite.S2:
+            //        My.Work_Simulation.Send(new DSJ02(data, DSJ02.EnumActionType.物料下降));
+            //        break;
+            //    case EnumPSite.S3:
+            //        My.Work_Simulation.Send(new DSJ03(data, DSJ03.EnumActionType.物料下降));
+            //        break;
+            //    case EnumPSite.S4:
+            //        My.Work_Simulation.Send(new DSJ04(data, DSJ04.EnumActionType.物料下降));
+            //        break;
+            //    case EnumPSite.S5_Assemble:
+            //        My.Work_Simulation.Send(new DSJ05(data, DSJ05.EnumActionType.物料下降));
+            //        break;
+            //    case EnumPSite.S6_Alignment:
+            //        My.Work_Simulation.Send(new XLW(data, XLW.EnumActionType.物料下降));
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         void ProcessWriteFailure(object sender, PLCEventArgs e)
@@ -244,8 +221,8 @@ namespace SCADA
             else
             {
                 My.PLC.Set(e.Index, data.Workpiece == EnumWorkpiece.E ? 3 : 2);//入库料盘
-                My.Work_Simulation.Send(new DWT04(data));
-                My.Work_Simulation.Send(new AGV(data, AGV.EnumActionType.AGV从定位台4运动至定位台2));
+                //My.Work_Simulation.Send(new DWT04(data));
+                //My.Work_Simulation.Send(new AGV(data, AGV.EnumActionType.AGV从定位台4运动至定位台2));
             }
         }
 

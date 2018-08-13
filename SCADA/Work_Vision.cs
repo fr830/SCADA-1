@@ -32,13 +32,13 @@ namespace SCADA
 
         private async void ClientConnectAsync()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 while (!tcpClient.Connected)
                 {
                     try
                     {
-                        await tcpClient.ConnectAsync(IP, Port);
+                        tcpClient.Connect(IP, Port);
                     }
                     catch (Exception)
                     {

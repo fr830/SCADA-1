@@ -146,86 +146,179 @@ namespace SCADA
         {
             return new Task(() =>
             {
+                var flag_DSJ01_3 = false;
+                var flag_DSJ02_3 = false;
+                var flag_DSJ03_3 = false;
+                var flag_DSJ04_3 = false;
+                var flag_DSJ05_3 = false;
+                var flag_XLW_3 = false;
+                var flag_SJJ01_2 = false;
                 while (!token.IsCancellationRequested)
                 {
                     lastTime = DateTime.Now;
                     Thread.Sleep(500);
-                    if (My.PLC.Exist(12, 4))//分料
-                    {
-                        Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位到位));
-                    }
-                    if (My.PLC.Exist(12, 6))//定位
-                    {
-                        Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位转移物料至升降台));
-                    }
-                    if (My.PLC.Exist(12, 2))//提升机伸
-                    {
-                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机上升));
-                    }
-                    if (My.PLC.Exist(12, 3))//提升机缩
-                    {
-                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机下降));
-                    }
-                    if (My.PLC.Exist(21, 4))//分料
-                    {
-                        Send(new DSJ01(null, DSJ01.EnumActionType.前阻挡位到位));
-                    }
-                    if (My.PLC.Exist(21, 2))//定位
+                    #region DSJ01
+                    if (My.PLC.Exist(24, 1, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(21, 5, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new DSJ01(null, DSJ01.EnumActionType.前阻挡位转移物料至正阻挡位));
                     }
-                    if (My.PLC.Exist(31, 4))//分料
+                    if (!flag_DSJ01_3 && My.PLC.Exist(24, 2, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(21, 3, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(21, 7, HNC.HncRegType.REG_TYPE_X))
                     {
+                        flag_DSJ01_3 = true;
+                        Send(new DSJ01(null, DSJ01.EnumActionType.正阻挡位转移物料至顶升机2前阻挡位));
                         Send(new DSJ02(null, DSJ02.EnumActionType.前阻挡位到位));
                     }
-                    if (My.PLC.Exist(31, 2))//定位
+                    else
+                    {
+                        flag_DSJ01_3 = false;
+                    }
+                    if (My.PLC.Exist(22, 5, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(22, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new DSJ01(null, DSJ01.EnumActionType.物料下降));
+                    }
+                    #endregion
+                    #region DSJ02
+                    if (My.PLC.Exist(34, 1, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(31, 5, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new DSJ02(null, DSJ02.EnumActionType.前阻挡位转移物料至正阻挡位));
                     }
-                    if (My.PLC.Exist(41, 4))//分料
+                    if (!flag_DSJ02_3 && My.PLC.Exist(34, 2, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(31, 3, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(31, 7, HNC.HncRegType.REG_TYPE_X))
                     {
+                        flag_DSJ02_3 = true;
+                        Send(new DSJ02(null, DSJ02.EnumActionType.正阻挡位转移物料至顶升机3前阻挡位));
                         Send(new DSJ03(null, DSJ03.EnumActionType.前阻挡位到位));
                     }
-                    if (My.PLC.Exist(41, 2))//定位
+                    else
+                    {
+                        flag_DSJ02_3 = false;
+                    }
+                    if (My.PLC.Exist(32, 5, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(32, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new DSJ02(null, DSJ02.EnumActionType.物料下降));
+                    }
+                    #endregion
+                    #region DSJ03
+                    if (My.PLC.Exist(44, 1, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(41, 5, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new DSJ03(null, DSJ03.EnumActionType.前阻挡位转移物料至正阻挡位));
                     }
-                    if (My.PLC.Exist(51, 4))//分料
+                    if (!flag_DSJ03_3 && My.PLC.Exist(44, 2, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(41, 3, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(41, 7, HNC.HncRegType.REG_TYPE_X))
                     {
+                        flag_DSJ03_3 = true;
+                        Send(new DSJ03(null, DSJ03.EnumActionType.正阻挡位转移物料至顶升机4前阻挡位));
                         Send(new DSJ04(null, DSJ04.EnumActionType.前阻挡位到位));
                     }
-                    if (My.PLC.Exist(51, 2))//定位
+                    else
+                    {
+                        flag_DSJ03_3 = false;
+                    }
+                    if (My.PLC.Exist(42, 5, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(42, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new DSJ03(null, DSJ03.EnumActionType.物料下降));
+                    }
+                    #endregion
+                    #region DSJ04
+                    if (My.PLC.Exist(54, 1, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(51, 5, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new DSJ04(null, DSJ04.EnumActionType.前阻挡位转移物料至正阻挡位));
                     }
-                    if (My.PLC.Exist(61, 4))//分料
+                    if (!flag_DSJ04_3 && My.PLC.Exist(54, 2, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(51, 3, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(51, 7, HNC.HncRegType.REG_TYPE_X))
                     {
+                        flag_DSJ04_3 = true;
+                        Send(new DSJ04(null, DSJ04.EnumActionType.正阻挡位转移物料至顶升机5前阻挡位));
                         Send(new DSJ05(null, DSJ05.EnumActionType.前阻挡位到位));
                     }
-                    if (My.PLC.Exist(61, 2))//定位
+                    else
+                    {
+                        flag_DSJ04_3 = false;
+                    }
+                    if (My.PLC.Exist(52, 5, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(52, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new DSJ04(null, DSJ04.EnumActionType.物料下降));
+                    }
+                    #endregion
+                    #region DSJ05
+                    if (My.PLC.Exist(64, 1, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(61, 5, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new DSJ05(null, DSJ05.EnumActionType.前阻挡位转移物料至正阻挡位));
                     }
-                    if (My.PLC.Exist(72, 2))//分料
+                    if (!flag_DSJ05_3 && My.PLC.Exist(64, 2, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(61, 3, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(61, 7, HNC.HncRegType.REG_TYPE_X))
                     {
+                        flag_DSJ05_3 = true;
+                        Send(new DSJ05(null, DSJ05.EnumActionType.正阻挡位转移物料至下料位前阻挡位));
                         Send(new XLW(null, XLW.EnumActionType.前阻挡位到位));
                     }
-                    if (My.PLC.Exist(72, 4))//定位
+                    else
+                    {
+                        flag_DSJ05_3 = false;
+                    }
+                    if (My.PLC.Exist(62, 5, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(62, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new DSJ05(null, DSJ05.EnumActionType.物料下降));
+                    }
+                    #endregion
+                    #region XLW
+                    if (My.PLC.Exist(72, 3))
                     {
                         Send(new XLW(null, XLW.EnumActionType.前阻挡位转移物料至正阻挡位));
                     }
-                    if (My.PLC.Exist(72, 5))
+                    if (!flag_XLW_3 && My.PLC.Exist(72, 5, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(72, 7))
                     {
-                        Send(new SJJ02(null, SJJ02.EnumActionType.前阻挡位转移物料至升降台));
+                        flag_XLW_3 = true;
+                        Send(new XLW(null, XLW.EnumActionType.正阻挡位转移物料至升降机2));
                     }
-                    if (My.PLC.Exist(73, 0))
+                    else
+                    {
+                        flag_XLW_3 = false;
+                    }
+                    if (My.PLC.Exist(72, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new XLW(null, XLW.EnumActionType.物料下降));
+                    }
+                    #endregion
+                    #region SJJ01
+                    if (My.PLC.Exist(12, 5, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡转移物料至正阻挡位));
+                    }
+                    if (!flag_SJJ01_2 && My.PLC.Exist(14, 4, HNC.HncRegType.REG_TYPE_X) && My.PLC.Exist(12, 7, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        flag_SJJ01_2 = true;
+                        Send(new SJJ01(null, SJJ01.EnumActionType.正阻挡位转移物料至升降台));
+                    }
+                    else
+                    {
+                        flag_SJJ01_2 = false;
+                    }
+                    if (My.PLC.Exist(14, 4, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机上升));
+                    }
+                    else
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机1转移物料至顶升机1前阻挡位));
+                        Send(new SJJ01(null, SJJ01.EnumActionType.前阻挡位到位));
+                    }
+                    if (!My.PLC.Exist(14, 3, HNC.HncRegType.REG_TYPE_X))
+                    {
+                        Send(new SJJ01(null, SJJ01.EnumActionType.升降机下降));
+                    }
+                    #endregion
+                    #region SJJ02
+                    if (!My.PLC.Exist(74, 3, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new SJJ02(null, SJJ02.EnumActionType.升降机上升));
                     }
-                    if (My.PLC.Exist(73, 1))
+                    if (My.PLC.Exist(74, 4, HNC.HncRegType.REG_TYPE_X))
                     {
                         Send(new SJJ02(null, SJJ02.EnumActionType.升降机下降));
                     }
+                    else
+                    {
+                        Send(new SJJ02(null, SJJ02.EnumActionType.升降台2转移物料值升降机1前阻挡位));
+                        Send(new SJJ02(null, SJJ02.EnumActionType.前阻挡位转移物料至升降台));
+                    }
+                    #endregion
                 }
             }, token);
         }
@@ -664,9 +757,11 @@ namespace SCADA
         public enum EnumActionType
         {
             前阻挡位到位 = 1,
-            前阻挡位转移物料至升降台,
+            正阻挡位转移物料至升降台,
             升降机上升,
-            升降机下降
+            升降机下降,
+            前阻挡转移物料至正阻挡位,
+            升降机1转移物料至顶升机1前阻挡位
         }
     }
 
@@ -686,7 +781,8 @@ namespace SCADA
         {
             前阻挡位转移物料至升降台 = 1,
             升降机上升,
-            升降机下降
+            升降机下降,
+            升降台2转移物料值升降机1前阻挡位
         }
     }
 
