@@ -182,11 +182,7 @@ namespace SCADA
                     wmsData.quantity = data.Assemble == EnumAssemble.Successed ? 1 : 0;
                 }
                 My.Work_WMS.In(wmsData);
-                //My.Work_Simulation.Send(new JQR03(data, JQR03.EnumActionType.抓取下料位物料至定位台4));
-                //My.Work_Simulation.Send(new DWT04(data, DWT04.EnumActionType.定位台4转移物料至AGV));
-                //My.Work_Simulation.Send(new AGV(data, AGV.EnumActionType.AGV从定位台4运动至定位台2));
-                //My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.定位台2转移物料至入库检测位));
-                //My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
+                My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             });
             return SvResult.OK;
         }
@@ -250,11 +246,7 @@ namespace SCADA
                 //throw;
             }
             My.PLC.Set(11, 0);
-            My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库线转移物料至出库检测位));
-            //My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
-            //My.Work_Simulation.Send(new DWT01(data, DWT01.EnumActionType.定位台1转移物料至AGV));
-            //My.Work_Simulation.Send(new AGV(data, AGV.EnumActionType.AGV从定位台1运动至定位台3));
-            //My.Work_Simulation.Send(new JQR01(data, JQR01.EnumActionType.抓取定位台物料至流水线上料位));
+            My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
             return SvResult.OK;
         }
     }
