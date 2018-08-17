@@ -157,6 +157,13 @@ namespace HNC
             return Publish(type, index, bit, NCMessageFunction.REG_CLR);
         }
 
+        /// <summary>
+        /// 查询信号是否存在
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="bit">Bit</param>
+        /// <param name="type">寄存器类型</param>
+        /// <returns>信号值为1则返回TRUE</returns>
         public bool Exist(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
         {
             try

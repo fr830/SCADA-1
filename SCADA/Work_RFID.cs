@@ -37,30 +37,32 @@ namespace SCADA
             My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
             if (data.GetProcessSite() == e.Site)
             {
-                var dict = GCodeFile.Dict[e.Site];
-                var mt = My.MachineTools[e.Site];
-                var file = GCodeFile.EnumFile.联调试验程序;
-                if (!data.IsFake)
-                {
-                    switch (data.Workpiece)
-                    {
-                        case EnumWorkpiece.A:
-                            file = GCodeFile.EnumFile.加工A料程序;
-                            break;
-                        case EnumWorkpiece.B:
-                            file = GCodeFile.EnumFile.加工B料程序;
-                            break;
-                        case EnumWorkpiece.C:
-                            file = GCodeFile.EnumFile.加工C料程序;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                if (!mt.HNC_NetFileSend(dict[file], "O999"))
-                {
-                    throw new ArgumentException("G代码下发失败，请检查后重试！");
-                }
+                #region GCode
+                //var dict = GCodeFile.Dict[e.Site];
+                //var mt = My.MachineTools[e.Site];
+                //var file = GCodeFile.EnumFile.联调试验程序;
+                //if (!data.IsFake)
+                //{
+                //    switch (data.Workpiece)
+                //    {
+                //        case EnumWorkpiece.A:
+                //            file = GCodeFile.EnumFile.加工A料程序;
+                //            break;
+                //        case EnumWorkpiece.B:
+                //            file = GCodeFile.EnumFile.加工B料程序;
+                //            break;
+                //        case EnumWorkpiece.C:
+                //            file = GCodeFile.EnumFile.加工C料程序;
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //}
+                //if (!mt.HNC_NetFileSend(dict[file], "O999"))
+                //{
+                //    throw new ArgumentException("G代码下发失败，请检查后重试！");
+                //}
+                #endregion
                 My.PLC.Set(e.Index, 2);//工件符合当前工位
                 switch (e.Site)
                 {
