@@ -10,6 +10,8 @@ namespace SCADA
 {
     class Work_RFID
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly Lazy<Work_RFID> lazy = new Lazy<Work_RFID>(() => new Work_RFID());
 
         public static Work_RFID Instance { get { return lazy.Value; } }
@@ -30,11 +32,13 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.Set(e.Index, 1);//读取成功
+            logger.Info("B{0}.1:RFID读取成功（加工）", e.Index);
             for (int i = 4; i < 9; i++)
             {
                 My.PLC.Clear(e.Index, i);
             }
             My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
+            logger.Info("B{0}.{1}:设置工件类型（加工）", e.Index, Work_PLC.WpBitDict[data.Workpiece]);
             if (data.GetProcessSite() == e.Site)
             {
                 #region GCode
@@ -67,11 +71,13 @@ namespace SCADA
                 }
                 #endregion
                 My.PLC.Set(e.Index, 2);//工件符合当前工位
+                logger.Info("B{0}.2:工件符合当前工位（加工）", e.Index);
                 SimulationDS(data, e.Site);
             }
             else
             {
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
+                logger.Info("B{0}.3:工件不符合当前工位（加工）", e.Index);
                 SimulationZD(data, e.Site);
             }
         }
@@ -151,7 +157,8 @@ namespace SCADA
             if (data == null) return;
             data.SetProcessResult(EnumPResult.Successed);
             My.RFIDs[e.Site].Write(data);
-            My.PLC.Set(e.Index, 12);//写入完成
+            My.PLC.Set(e.Index, 12);//RFID写入完成
+            logger.Info("B{0}.12:RFID写入完成（加工成功）", e.Index);
         }
 
         void ProcessWriteFailure(object sender, PLCEventArgs e)
@@ -160,7 +167,8 @@ namespace SCADA
             if (data == null) return;
             data.SetProcessResult(EnumPResult.Failed);
             My.RFIDs[e.Site].Write(data);
-            My.PLC.Set(e.Index, 12);//写入完成
+            My.PLC.Set(e.Index, 12);//RFID写入完成
+            logger.Info("B{0}.12:RFID写入完成（加工失败）", e.Index);
         }
 
         void AssembleRead(object sender, PLCEventArgs e)
@@ -168,38 +176,45 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.Set(e.Index, 1);//读取成功
+            logger.Info("B{0}.1:RFID读取成功（装配台）", e.Index);
             for (int i = 4; i < 9; i++)
             {
                 My.PLC.Clear(e.Index, i);
             }
             My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
+            logger.Info("B{0}.{1}:设置工件类型（装配台）", e.Index, Work_PLC.WpBitDict[data.Workpiece]);
             if (data.IsRough)
             {
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
+                logger.Info("B{0}.3:工件不符合当前工位（装配台）", e.Index);
             }
             else if (data.Assemble == EnumAssemble.Wanted && data.Clean == EnumClean.Wanted)
             {
                 My.PLC.Set(10, 0);//装配
                 My.PLC.Set(10, 1);//清洗
                 My.PLC.Set(e.Index, 2);//工件符合当前工位
+                logger.Info("B{0}.2:装配、清洗，工件符合当前工位（装配台）", e.Index);
             }
             else if (data.Assemble == EnumAssemble.Unwanted && data.Clean == EnumClean.Wanted)
             {
                 My.PLC.Clear(10, 0);//不装配
                 My.PLC.Set(10, 1);//清洗
                 My.PLC.Set(e.Index, 2);//工件符合当前工位
+                logger.Info("B{0}.2:不装配、清洗，工件符合当前工位（装配台）", e.Index);
             }
             else if (data.Assemble == EnumAssemble.Wanted && data.Clean == EnumClean.Unwanted)
             {
                 My.PLC.Set(10, 0);//装配
                 My.PLC.Clear(10, 1);//不清洗
                 My.PLC.Set(e.Index, 2);//工件符合当前工位
+                logger.Info("B{0}.2:装配、不清洗，工件符合当前工位（装配台）", e.Index);
             }
             else
             {
                 My.PLC.Clear(10, 0);//不装配
                 My.PLC.Clear(10, 1);//不清洗
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
+                logger.Info("B{0}.3:不装配、不清洗，工件不符合当前工位（装配台）", e.Index);
             }
         }
 
@@ -217,6 +232,7 @@ namespace SCADA
             }
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//写入完成
+            logger.Info("B{0}.12:RFID写入完成（装配、清洗成功）", e.Index);
         }
 
         void AssembleWriteFailure(object sender, PLCEventArgs e)
@@ -233,6 +249,7 @@ namespace SCADA
             }
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//写入完成
+            logger.Info("B{0}.12:RFID写入完成（装配、清洗失败）", e.Index);
         }
 
         void AlignmentRead(object sender, PLCEventArgs e)
@@ -240,17 +257,21 @@ namespace SCADA
             var data = My.RFIDs[e.Site].Read();
             if (data == null) return;
             My.PLC.Set(e.Index, 1);//读取成功
+            logger.Info("B{0}.1:RFID读取成功（定位台）", e.Index);
             if (data.IsRough)
             {
                 My.PLC.Set(e.Index, 4);//非入库料盘
+                logger.Info("B{0}.4:非入库料盘（定位台）", e.Index);
             }
             else if (data.Assemble == EnumAssemble.Wanted)
             {
                 My.PLC.Set(e.Index, 4);//非入库料盘
+                logger.Info("B{0}.4:非入库料盘（定位台）", e.Index);
             }
             else
             {
                 My.PLC.Set(e.Index, data.Workpiece == EnumWorkpiece.E ? 3 : 2);//入库料盘
+                logger.Info("B{0}.{1}:入库料盘（定位台）", e.Index, data.Workpiece == EnumWorkpiece.E ? 3 : 2);
             }
         }
 

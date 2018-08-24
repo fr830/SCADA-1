@@ -17,6 +17,8 @@ namespace SCADA
 {
     class Work_WMS
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly Lazy<Work_WMS> lazy = new Lazy<Work_WMS>(() => new Work_WMS());
 
         public static Work_WMS Instance { get { return lazy.Value; } }
@@ -39,11 +41,12 @@ namespace SCADA
         {
             if (!SpinIn().IsOK)
             {
-                //TODO：提示用户，重新发起 请求入库B11.2
+                logger.Warn("入库皮带线调用失败，请重新发起 请求入库B11.2");
             }
             else
             {
                 My.PLC.Set(11, 3);
+                logger.Info("B11.3:允许入库");
             }
         }
 
@@ -51,7 +54,7 @@ namespace SCADA
         {
             if (!SpinOut().IsOK)
             {
-                //TODO：提示用户，重新发起 出库许可B11.1
+                logger.Warn("出库皮带线调用失败，重新发起 出库许可B11.1");
             }
         }
 
@@ -64,6 +67,7 @@ namespace SCADA
             WebServiceHost host = new WebServiceHost(service, new Uri(@"http://localhost:41150/ScadaService"));
 #if !OFFLINE
             host.Open();
+            logger.Info("启动ScadaService服务");
 #endif
         }
 
@@ -89,10 +93,10 @@ namespace SCADA
                     return JsonConvert.DeserializeObject<WMSResult>(str);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.Error(ex);
                 return WMSResult.Error;
-                //throw;
             }
         }
 
@@ -103,6 +107,8 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Out(IEnumerable<WMSData> list)
         {
+            logger.Info("请求出库");
+            logger.Info(list);
             return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list));
         }
 
@@ -113,6 +119,8 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult In(WMSData data)
         {
+            logger.Info("请求入库");
+            logger.Info(data);
             return WMSPost(WMSUpUri, JsonConvert.SerializeObject(data));
         }
 
@@ -120,7 +128,7 @@ namespace SCADA
         /// 皮带线运行
         /// </summary>
         /// <returns></returns>
-        public WMSResult Spin(SpinData data)
+        private WMSResult Spin(SpinData data)
         {
             return WMSPost(WMSSpinUri, JsonConvert.SerializeObject(data));
         }
@@ -131,6 +139,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult SpinIn()
         {
+            logger.Info("调用入库皮带线");
             return Spin(new SpinData { site = "1" });
         }
 
@@ -140,6 +149,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult SpinOut()
         {
+            logger.Info("调用出库皮带线");
             return Spin(new SpinData { site = "2" });
         }
 
@@ -186,10 +196,9 @@ namespace SCADA
                 }
                 task.Wait();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                //throw;
+                logger.Error(ex);
             }
             finally
             {
@@ -254,6 +263,11 @@ namespace SCADA
             code = name;
             quantity = count;
             trayId = guid;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("ID:{0}\t类型:{1}-{2}", trayId, code, quantity == 0 ? "空盘" : "有料");
         }
     }
 

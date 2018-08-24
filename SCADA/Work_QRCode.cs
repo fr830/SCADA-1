@@ -11,6 +11,8 @@ namespace SCADA
 {
     class Work_QRCode
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly Lazy<Work_QRCode> lazy = new Lazy<Work_QRCode>(() => new Work_QRCode());
 
         public static Work_QRCode Instance { get { return lazy.Value; } }
@@ -24,8 +26,29 @@ namespace SCADA
         private Work_QRCode()
         {
             My.Work_PLC.Scan += Scan;
-            My.Work_PLC.PrintQRCode += PrintQRCode;
-            tcpClient.ConnectAsync(IP, Port);
+#if !OFFLINE
+            ClientConnectAsync();
+#endif
+        }
+
+        private async void ClientConnectAsync()
+        {
+            await Task.Run(() =>
+            {
+                while (!tcpClient.Connected)
+                {
+                    try
+                    {
+                        tcpClient.Connect(IP, Port);
+                    }
+                    catch (Exception)
+                    {
+                        var message = "打印二维码设备连接失败";
+                        logger.Error(message);
+                    }
+                }
+                My.Work_PLC.PrintQRCode += PrintQRCode;
+            });
         }
 
         async void PrintQRCode(object sender, PLCEventArgs e)
@@ -33,12 +56,27 @@ namespace SCADA
             Print();
             await Task.Delay(60 * 1000);
             My.PLC.Set(e.Index, 12);//打印二维码完成
+            logger.Info("B{0}.12:打印二维码完成", e.Index);
         }
 
         async void Scan(object sender, PLCEventArgs e)
         {
             await Task.Delay(2 * 1000);
             My.PLC.Set(e.Index, 12);//扫码器扫码完成
+            logger.Info("B{0}.12:扫码器扫码完成", e.Index);
+        }
+
+        public void Print()
+        {
+            try
+            {
+                var data = GetData(EnumCommand.Print);
+                tcpClient.Client.Send(data);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
         }
 
         public enum EnumCommand : byte
@@ -94,25 +132,6 @@ namespace SCADA
             catch (Exception)
             {
                 return EnumState.Stop;
-                //throw;
-            }
-        }
-
-        public void Print()
-        {
-            try
-            {
-                var data = GetData(EnumCommand.Print);
-                if (!tcpClient.Connected)
-                {
-                    tcpClient.Connect(IP, Port);
-                }
-                tcpClient.Client.Send(data);
-            }
-            catch (Exception)
-            {
-
-                //throw;
             }
         }
     }

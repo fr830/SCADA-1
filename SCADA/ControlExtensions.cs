@@ -5,16 +5,18 @@ namespace SCADA
 {
     public static class ControlExtensions
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static TResult InvokeEx<TControl, TResult>(this TControl control, Func<TControl, TResult> func) where TControl : Control
         {
             try
             {
                 return control.InvokeRequired ? (TResult)control.Invoke(func, control) : func(control);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.Error(ex);
                 return default(TResult);
-                //throw;
             }
         }
 

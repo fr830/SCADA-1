@@ -19,6 +19,8 @@ namespace SCADA
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class ScadaService : IScadaService
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 测试服务状态
         /// </summary>
@@ -45,6 +47,7 @@ namespace SCADA
         /// <returns></returns>
         public string InitRFID(Stream stream)
         {
+            logger.Info("请求初始化RFID信息");
             var dict = ParseQueryString(stream);
             if (!dict.ContainsKey("type"))
             {
@@ -84,6 +87,7 @@ namespace SCADA
         /// <returns></returns>
         public string Read(Stream stream)
         {
+            logger.Info("请求读取RFID信息");
             var dict = ParseQueryString(stream);
             if (!dict.ContainsKey("site"))
             {
@@ -123,6 +127,7 @@ namespace SCADA
         /// <returns></returns>
         public string RFID_In()
         {
+            logger.Info("入库处RFID读取");
             var data = My.RFIDs[EnumPSite.S7_Up].Read();
             if (data == null)
             {
@@ -169,10 +174,9 @@ namespace SCADA
                 }
                 #endregion
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO
-                //throw;
+                logger.Error(ex);
             }
             Task.Run(() =>
             {
@@ -193,6 +197,7 @@ namespace SCADA
         /// <returns></returns>
         public string RFID_Out()
         {
+            logger.Info("出库处RFID读取");
             var data = My.RFIDs[EnumPSite.S8_Down].Read();
             if (data == null)
             {
@@ -240,12 +245,12 @@ namespace SCADA
                 }
                 #endregion
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO
-                //throw;
+                logger.Error(ex);
             }
             My.PLC.Set(11, 0);
+            logger.Info("B11.0:向PLC请求出库");
             My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
             return SvResult.OK;
         }

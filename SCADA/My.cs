@@ -34,6 +34,8 @@ namespace SCADA
 
     static class My
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static bool Initialized { get; private set; }
 
         public static event EventHandler<MyInitializeEventArgs> LoadCompleted;
@@ -99,11 +101,16 @@ namespace SCADA
         {
             get
             {
-                if (MachineTools != null && MachineTools.Count > 0)
+                try
                 {
                     return MachineTools[EnumPSite.None];
                 }
-                throw new ArgumentException("系统未检测到PLC！请联系维护人员。");
+                catch (Exception)
+                {
+                    var message = "系统未检测到PLC！请联系维护人员。";
+                    logger.Fatal(message);
+                    throw new ArgumentException(message);
+                }
             }
         }
 

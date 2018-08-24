@@ -14,6 +14,8 @@ namespace SCADA
 {
     class Work_Simulation
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly Lazy<Work_Simulation> lazy = new Lazy<Work_Simulation>(() => new Work_Simulation());
 
         public static Work_Simulation Instance { get { return lazy.Value; } }
@@ -64,13 +66,13 @@ namespace SCADA
                             if (messages.TryDequeue(out data))
                             {
                                 tcpClient.Client.Send(data);
+                                logger.Info("三维：{0}", Encoding.UTF8.GetString(data));
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        //TODO
-                        //throw;
+                        logger.Error(ex);
                     }
                 }
             });
@@ -138,10 +140,9 @@ namespace SCADA
                 }
                 task.Wait();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                //throw;
+                logger.Error(ex);
             }
             finally
             {

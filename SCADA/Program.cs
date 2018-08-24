@@ -10,9 +10,8 @@ namespace SCADA
 {
     static class Program
     {
-        /// <summary>
-        /// 应用程序的主入口点。
-        /// </summary>
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         [STAThread]
         static void Main()
         {
@@ -24,6 +23,7 @@ namespace SCADA
             Mutex mutex = new Mutex(true, Application.ProductName, out createdNew);
             if (createdNew)
             {
+                logger.Info("系统启动");
                 Application.Run(new _Layout());
             }
             else
@@ -39,6 +39,7 @@ namespace SCADA
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
+            logger.Fatal(e.Exception);
             MessageBox.Show(e.Exception.ToString(), "线程异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #if !DEBUG
             Environment.Exit(2);
@@ -47,6 +48,7 @@ namespace SCADA
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            logger.Fatal(e.ExceptionObject);
             MessageBox.Show((e.ExceptionObject as Exception).ToString(), "未处理的异常", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #if !DEBUG
             Environment.Exit(1);

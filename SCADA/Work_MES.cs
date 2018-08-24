@@ -11,6 +11,8 @@ namespace SCADA
 {
     class Work_MES
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly Lazy<Work_MES> lazy = new Lazy<Work_MES>(() => new Work_MES());
 
         public static Work_MES Instance { get { return lazy.Value; } }
@@ -61,10 +63,9 @@ namespace SCADA
                 }
                 task.Wait();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                //throw;
+                logger.Error(ex);
             }
             finally
             {
@@ -100,7 +101,7 @@ namespace SCADA
         {
             if (GetOrder(TOrder.EnumState.执行) != null)
             {
-                return;//TODO
+                return;
             }
             else
             {

@@ -22,7 +22,7 @@ namespace SCADA
             InitializeComponent();
         }
 
-        IList<Type> TabPages = new List<Type>
+        private IList<Type> TabPages = new List<Type>
         { 
             typeof(Home),typeof(RFIDPage),typeof(DebugPLC),typeof(Recovery)
         };
