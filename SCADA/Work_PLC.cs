@@ -18,7 +18,7 @@ namespace SCADA
 
         public static Dictionary<EnumPSite, int> SiteIndexDict = new Dictionary<EnumPSite, int>
         {
-            {EnumPSite.S1,2},{EnumPSite.S2,3},{EnumPSite.S3,4},{EnumPSite.S4,5},{EnumPSite.S5_Assemble,6},{EnumPSite.S6_Alignment,7}
+            {EnumPSite.S1,2},{EnumPSite.S2,3},{EnumPSite.S3,4},{EnumPSite.S4,5},{EnumPSite.S5_Assemble,6},{EnumPSite.S6_Alignment,7},{EnumPSite.S7_Up,0},{EnumPSite.S8_Down,0},{EnumPSite.S9_Manual,0}
         };
 
         public static Dictionary<EnumWorkpiece, int> WpBitDict = new Dictionary<EnumWorkpiece, int>
@@ -60,13 +60,24 @@ namespace SCADA
         public void Stop()
         {
             if (task == null) return;
-            if (cts != null && !cts.IsCancellationRequested)
+            try
             {
-                cts.Cancel();
+                if (cts != null && !cts.IsCancellationRequested)
+                {
+                    cts.Cancel();
+                }
+                task.Wait();
             }
-            task.Wait();
-            cts = null;
-            task = null;
+            catch (Exception)
+            {
+
+                //throw;
+            }
+            finally
+            {
+                cts = null;
+                task = null;
+            }
         }
 
         /// <summary>
@@ -82,14 +93,12 @@ namespace SCADA
                 {
                     lastTime = DateTime.Now;
                     Thread.Sleep(1000);
-                    if (My.PLC.Exist(1, 0))//请求相机拍照
+                    if (My.PLC.Trigger(1, 0))//请求相机拍照
                     {
-                        My.PLC.Clear(1, 0);
                         OnPhotograph(EnumPSite.S8_Down, 1);//Work_Vision
                     }
-                    if (My.PLC.Exist(1, 10))//请求扫码器扫码
+                    if (My.PLC.Trigger(1, 10))//请求扫码器扫码
                     {
-                        My.PLC.Clear(1, 10);
                         OnScan(EnumPSite.S8_Down, 1);//Work_QRCode
                     }
                     foreach (EnumPSite site in Enum.GetValues(typeof(EnumPSite)))
@@ -99,55 +108,45 @@ namespace SCADA
                             continue;
                         }
                         var i = SiteIndexDict[site];
-                        if (My.PLC.Exist(i, 0))//加工请求读
+                        if (My.PLC.Trigger(i, 0))//加工请求读
                         {
-                            My.PLC.Clear(i, 0);
                             OnProcessRead(site, i);//Work_RFID
                         }
-                        if (My.PLC.Exist(i, 10))//加工请求写成功
+                        if (My.PLC.Trigger(i, 10))//加工请求写成功
                         {
-                            My.PLC.Clear(i, 10);
                             OnProcessWriteSuccess(site, i);//Work_RFID
                         }
-                        if (My.PLC.Exist(i, 11))//加工请求写失败
+                        if (My.PLC.Trigger(i, 11))//加工请求写失败
                         {
-                            My.PLC.Clear(i, 11);
                             OnProcessWriteFailure(site, i);//Work_RFID
                         }
                     }
-                    if (My.PLC.Exist(SiteIndexDict[EnumPSite.S5_Assemble], 0))//装配台请求读
+                    if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S5_Assemble], 0))//装配台请求读
                     {
-                        My.PLC.Clear(SiteIndexDict[EnumPSite.S5_Assemble], 0);
                         OnAssembleRead(SiteIndexDict[EnumPSite.S5_Assemble]);//Work_RFID
                     }
-                    if (My.PLC.Exist(SiteIndexDict[EnumPSite.S5_Assemble], 10))//装配台请求写成功
+                    if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S5_Assemble], 10))//装配台请求写成功
                     {
-                        My.PLC.Clear(SiteIndexDict[EnumPSite.S5_Assemble], 10);
                         OnAssembleWriteSuccess(SiteIndexDict[EnumPSite.S5_Assemble]);//Work_RFID
                     }
-                    if (My.PLC.Exist(SiteIndexDict[EnumPSite.S5_Assemble], 11))//装配台请求写失败
+                    if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S5_Assemble], 11))//装配台请求写失败
                     {
-                        My.PLC.Clear(SiteIndexDict[EnumPSite.S5_Assemble], 11);
                         OnAssembleWriteFailure(SiteIndexDict[EnumPSite.S5_Assemble]);//Work_RFID
                     }
-                    if (My.PLC.Exist(SiteIndexDict[EnumPSite.S6_Alignment], 0))//定位台请求读
+                    if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S6_Alignment], 0))//定位台请求读
                     {
-                        My.PLC.Clear(SiteIndexDict[EnumPSite.S6_Alignment], 0);
                         OnAlignmentRead(SiteIndexDict[EnumPSite.S6_Alignment]);//Work_RFID
                     }
-                    if (My.PLC.Exist(SiteIndexDict[EnumPSite.S6_Alignment], 10))//请求打印二维码
+                    if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S6_Alignment], 10))//请求打印二维码
                     {
-                        My.PLC.Clear(SiteIndexDict[EnumPSite.S6_Alignment], 10);
                         OnPrintQRCode(SiteIndexDict[EnumPSite.S6_Alignment]);//Work_QRCode
                     }
-                    if (My.PLC.Exist(11, 1))//出库许可
+                    if (My.PLC.Trigger(11, 1))//出库许可
                     {
-                        My.PLC.Clear(11, 1);
                         OnPermitOut(EnumPSite.S8_Down, 11);//Work_WMS
                     }
-                    if (My.PLC.Exist(11, 2))//请求入库
+                    if (My.PLC.Trigger(11, 2))//请求入库
                     {
-                        My.PLC.Clear(11, 2);
                         OnRequestIn(EnumPSite.S7_Up, 11);//Work_WMS
                     }
                 }

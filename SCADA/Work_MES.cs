@@ -53,13 +53,24 @@ namespace SCADA
         public void Stop()
         {
             if (task == null) return;
-            if (cts != null && !cts.IsCancellationRequested)
+            try
             {
-                cts.Cancel();
+                if (cts != null && !cts.IsCancellationRequested)
+                {
+                    cts.Cancel();
+                }
+                task.Wait();
             }
-            task.Wait();
-            cts = null;
-            task = null;
+            catch (Exception)
+            {
+
+                //throw;
+            }
+            finally
+            {
+                cts = null;
+                task = null;
+            }
         }
 
         /// <summary>

@@ -210,6 +210,20 @@ namespace HNC
             return false;
         }
 
+        public bool Trigger(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
+        {
+            try
+            {
+                return Exist(index, bit, type) && Clear(index, bit, type);
+            }
+            catch (Exception)
+            {
+                //TODO
+                //throw;
+            }
+            return false;
+        }
+
         public bool HNC_NetFileSend(string localPath, string filename)
         {
             if (!File.Exists(localPath))
