@@ -119,18 +119,23 @@ namespace SCADA
             {
                 case EnumPSite.S1:
                     My.Work_Simulation.Send(new DSJ01(data, DSJ01.EnumActionType.正阻挡位转移物料至顶升机2前阻挡位));
+                    My.Work_Simulation.Send(new DSJ02(data, DSJ02.EnumActionType.前阻挡位到位));
                     break;
                 case EnumPSite.S2:
                     My.Work_Simulation.Send(new DSJ02(data, DSJ02.EnumActionType.正阻挡位转移物料至顶升机3前阻挡位));
+                    My.Work_Simulation.Send(new DSJ03(data, DSJ03.EnumActionType.前阻挡位到位));
                     break;
                 case EnumPSite.S3:
                     My.Work_Simulation.Send(new DSJ03(data, DSJ03.EnumActionType.正阻挡位转移物料至顶升机4前阻挡位));
+                    My.Work_Simulation.Send(new DSJ04(data, DSJ04.EnumActionType.前阻挡位到位));
                     break;
                 case EnumPSite.S4:
                     My.Work_Simulation.Send(new DSJ04(data, DSJ04.EnumActionType.正阻挡位转移物料至顶升机5前阻挡位));
+                    My.Work_Simulation.Send(new DSJ05(data, DSJ05.EnumActionType.前阻挡位到位));
                     break;
                 case EnumPSite.S5_Assemble:
                     My.Work_Simulation.Send(new DSJ05(data, DSJ05.EnumActionType.正阻挡位转移物料至下料位前阻挡位));
+                    My.Work_Simulation.Send(new XLW(data, XLW.EnumActionType.前阻挡位到位));
                     break;
                 case EnumPSite.S6_Alignment:
                     My.Work_Simulation.Send(new XLW(data, XLW.EnumActionType.正阻挡位转移物料至升降机2));

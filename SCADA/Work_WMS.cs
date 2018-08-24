@@ -62,7 +62,9 @@ namespace SCADA
         {
             IScadaService service = new ScadaService();
             WebServiceHost host = new WebServiceHost(service, new Uri(@"http://localhost:41150/ScadaService"));
+#if !OFFLINE
             host.Open();
+#endif
         }
 
         private WMSResult WMSPost(string uri, string json)
@@ -99,7 +101,7 @@ namespace SCADA
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public WMSResult Out(IList<WMSData> list)
+        public WMSResult Out(IEnumerable<WMSData> list)
         {
             return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list));
         }

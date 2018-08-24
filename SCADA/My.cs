@@ -316,14 +316,12 @@ namespace SCADA
                     MachineTools.Add(EnumPSite.S2, new MachineTool(macIPs[2]));
                     MachineTools.Add(EnumPSite.S3, new MachineTool(macIPs[3]));
                     MachineTools.Add(EnumPSite.S4, new MachineTool(macIPs[4]));
+                    OnLoadCompleted("数控系统连接成功", 40);
                 }
                 catch (Exception)
                 {
-#if !DEBUG
                     OnLoadCompleted("数控系统连接失败！", 40);
-#endif
                 }
-                OnLoadCompleted("数控系统连接成功", 40);
 
                 var rfidIPs = BLL.SettingGet(AdminID, "RFIDIP").ToString().Split(';');
                 RFIDs = new Dictionary<EnumPSite, RFIDReader>();

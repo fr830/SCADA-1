@@ -53,10 +53,12 @@ namespace SCADA
         {
             if (!tcpClient.Connected)
             {
+                return;
                 throw new Exception("出库视觉相机连接失败，请检查后重启软件！");
             }
             if (RFIDData == null)
             {
+                return;
                 throw new Exception("出库口RFID信息获取失败，无法进行比对！");
             }
             byte[] buffer = new byte[16];

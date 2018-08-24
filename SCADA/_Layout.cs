@@ -72,16 +72,19 @@ namespace SCADA
             toolStripStatusLabelDateTime.Alignment = ToolStripItemAlignment.Right;
             toolStripStatusLabelRunningTime.Alignment = ToolStripItemAlignment.Right;
             var timer = new System.Timers.Timer(1000);
-            timer.Elapsed += (s, e) =>
+            timer.Elapsed += timer_Elapsed;
+            timer.Start();
+        }
+
+        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var timer = sender as System.Timers.Timer;
+            timer.Stop();
+            statusStrip.InvokeEx(c =>
             {
-                timer.Stop();
-                statusStrip.InvokeEx(c =>
-                {
-                    toolStripStatusLabelDateTime.Text = "当前时间：" + DateTime.Now.ToString();
-                    toolStripStatusLabelRunningTime.Text = "系统运行时间：" + (DateTime.Now - My.StartTime).ToString(@"d\天hh\:mm\:ss");
-                });
-                timer.Start();
-            };
+                toolStripStatusLabelDateTime.Text = "当前时间：" + DateTime.Now.ToString();
+                toolStripStatusLabelRunningTime.Text = "系统运行时间：" + (DateTime.Now - My.StartTime).ToString(@"d\天hh\:mm\:ss");
+            });
             timer.Start();
         }
 

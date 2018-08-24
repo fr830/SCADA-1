@@ -121,9 +121,7 @@ namespace SCADA
             var dr = MessageBox.Show("重置后当前所有的数据将清空并且不可恢复，确认进行重置？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (dr == System.Windows.Forms.DialogResult.Yes)
             {
-#if !DEBUG
                 My.BLL.TLocation.EmptyData();
-#endif
                 MessageBox.Show("软件即将关闭，请重新启动此软件应用新的数据库", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Application.Exit();
             }

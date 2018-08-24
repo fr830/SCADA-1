@@ -39,7 +39,9 @@ namespace SCADA
 
         private Work_Simulation()
         {
-            AutoSendAsync();
+#if !OFFLINE
+            //AutoSendAsync();
+#endif
             //Start();
         }
 

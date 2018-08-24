@@ -198,7 +198,7 @@ namespace SCADA
         private void buttonOut_Click(object sender, EventArgs e)
         {
             buttonOut.Enabled = false;
-            My.Work_WMS.Out(new List<WMSData> { new WMSData("A", 1) });
+            My.Work_WMS.Out(new List<WMSData> { new WMSData("A", 1), new WMSData("B", 1), new WMSData("C", 1), new WMSData("D", 1), new WMSData("E", 0) });
             buttonOut.Enabled = true;
         }
 
