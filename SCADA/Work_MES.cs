@@ -131,7 +131,8 @@ namespace SCADA
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.A), 1));
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.B), 1));
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.C), 1));
-                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.D), 1));
+                                    //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.D), 1));
+                                    list.Add(new WMSData("D1", 1));
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.E), 0));
                                 }
                             }

@@ -70,6 +70,7 @@ namespace SCADA
                 var guid = new Guid(pc.ID);
                 if (My.RFIDs[EnumPSite.S9_Manual].Init(guid, workpiece))
                 {
+                    logger.Info("初始化RFID信息完成");
                     return SvResult.OK;
                 }
                 else
@@ -277,7 +278,7 @@ namespace SCADA
         {
             get
             {
-                return new SvResult("", true).ToString();
+                return new SvResult("成功", true).ToString();
             }
         }
 
@@ -285,7 +286,7 @@ namespace SCADA
         {
             get
             {
-                return new SvResult("", false).ToString();
+                return new SvResult("失败", false).ToString();
             }
         }
 

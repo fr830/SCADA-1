@@ -50,7 +50,7 @@ namespace SCADA
         private void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
-            My.PLC.Set(11, 1);//出库许可
+            My.PLC.Set(11, 0);//请求出库
             button2.Enabled = true;
         }
 

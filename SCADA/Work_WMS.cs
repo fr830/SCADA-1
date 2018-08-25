@@ -107,8 +107,13 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Out(IEnumerable<WMSData> list)
         {
-            logger.Info("请求出库");
-            logger.Info(list);
+            var sb = new StringBuilder();
+            sb.AppendLine("请求出库");
+            foreach (var item in list)
+            {
+                sb.AppendLine(item.ToString());
+            }
+            logger.Info(sb.ToString());
             return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list));
         }
 
@@ -119,8 +124,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult In(WMSData data)
         {
-            logger.Info("请求入库");
-            logger.Info(data);
+            logger.Info("请求入库" + data.ToString());
             return WMSPost(WMSUpUri, JsonConvert.SerializeObject(data));
         }
 
@@ -267,7 +271,7 @@ namespace SCADA
 
         public override string ToString()
         {
-            return string.Format("ID:{0}\t类型:{1}-{2}", trayId, code, quantity == 0 ? "空盘" : "有料");
+            return string.Format("ID:{0} 类型:{1}-{2}", trayId, code, quantity == 0 ? "空盘" : "有料");
         }
     }
 
