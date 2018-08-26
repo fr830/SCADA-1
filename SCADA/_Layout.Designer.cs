@@ -36,6 +36,9 @@
             this.pictureBoxStatus = new System.Windows.Forms.PictureBox();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panelButton = new System.Windows.Forms.Panel();
+            this.buttonRun = new System.Windows.Forms.Button();
+            this.buttonQuiet = new System.Windows.Forms.Button();
+            this.buttonProtect = new System.Windows.Forms.Button();
             this.buttonService = new System.Windows.Forms.Button();
             this.buttonMES = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -44,15 +47,16 @@
             this.toolStripStatusLabelRunningTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelC = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.buttonQuiet = new System.Windows.Forms.Button();
-            this.buttonProtect = new System.Windows.Forms.Button();
-            this.buttonRun = new System.Windows.Forms.Button();
+            this.panelLog = new System.Windows.Forms.Panel();
+            this.buttonLog = new System.Windows.Forms.Button();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.panelInfo.SuspendLayout();
             this.panelStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.panelButton.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.panelLog.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelInfo
@@ -80,7 +84,7 @@
             this.richTextBoxInfo.Name = "richTextBoxInfo";
             this.richTextBoxInfo.ReadOnly = true;
             this.richTextBoxInfo.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.richTextBoxInfo.Size = new System.Drawing.Size(200, 150);
+            this.richTextBoxInfo.Size = new System.Drawing.Size(200, 70);
             this.richTextBoxInfo.TabIndex = 0;
             this.richTextBoxInfo.TabStop = false;
             this.richTextBoxInfo.Text = "";
@@ -91,7 +95,7 @@
             this.panelStatus.Controls.Add(this.labelStatus);
             this.panelStatus.Controls.Add(this.pictureBoxStatus);
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelStatus.Location = new System.Drawing.Point(0, 250);
+            this.panelStatus.Location = new System.Drawing.Point(0, 170);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(200, 54);
             this.panelStatus.TabIndex = 3;
@@ -136,11 +140,57 @@
             this.panelButton.Controls.Add(this.buttonProtect);
             this.panelButton.Controls.Add(this.buttonService);
             this.panelButton.Controls.Add(this.buttonMES);
+            this.panelButton.Controls.Add(this.buttonLog);
             this.panelButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButton.Location = new System.Drawing.Point(0, 304);
+            this.panelButton.Location = new System.Drawing.Point(0, 224);
             this.panelButton.Name = "panelButton";
-            this.panelButton.Size = new System.Drawing.Size(200, 400);
+            this.panelButton.Size = new System.Drawing.Size(200, 480);
             this.panelButton.TabIndex = 2;
+            // 
+            // buttonRun
+            // 
+            this.buttonRun.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonRun.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRun.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonRun.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonRun.Location = new System.Drawing.Point(0, 0);
+            this.buttonRun.Name = "buttonRun";
+            this.buttonRun.Size = new System.Drawing.Size(200, 80);
+            this.buttonRun.TabIndex = 12;
+            this.buttonRun.Text = "连接PLC";
+            this.buttonRun.UseVisualStyleBackColor = false;
+            this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
+            // 
+            // buttonQuiet
+            // 
+            this.buttonQuiet.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonQuiet.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonQuiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonQuiet.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonQuiet.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonQuiet.Location = new System.Drawing.Point(0, 80);
+            this.buttonQuiet.Name = "buttonQuiet";
+            this.buttonQuiet.Size = new System.Drawing.Size(200, 80);
+            this.buttonQuiet.TabIndex = 10;
+            this.buttonQuiet.Text = "警报静音";
+            this.buttonQuiet.UseVisualStyleBackColor = false;
+            this.buttonQuiet.Click += new System.EventHandler(this.buttonQuiet_Click);
+            // 
+            // buttonProtect
+            // 
+            this.buttonProtect.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonProtect.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonProtect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonProtect.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonProtect.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonProtect.Location = new System.Drawing.Point(0, 160);
+            this.buttonProtect.Name = "buttonProtect";
+            this.buttonProtect.Size = new System.Drawing.Size(200, 80);
+            this.buttonProtect.TabIndex = 11;
+            this.buttonProtect.Text = "连锁解除";
+            this.buttonProtect.UseVisualStyleBackColor = false;
+            this.buttonProtect.Click += new System.EventHandler(this.buttonProtect_Click);
             // 
             // buttonService
             // 
@@ -177,7 +227,7 @@
             this.menuStrip.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(887, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1203, 24);
             this.menuStrip.TabIndex = 2;
             this.menuStrip.Text = "菜单栏";
             // 
@@ -191,7 +241,7 @@
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.statusStrip.Location = new System.Drawing.Point(0, 728);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(887, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1203, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "状态栏";
             // 
@@ -220,61 +270,53 @@
             this.tabControl.Location = new System.Drawing.Point(200, 24);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(687, 704);
+            this.tabControl.Size = new System.Drawing.Size(1003, 464);
             this.tabControl.TabIndex = 4;
             // 
-            // buttonQuiet
+            // panelLog
             // 
-            this.buttonQuiet.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonQuiet.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.buttonQuiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonQuiet.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonQuiet.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonQuiet.Location = new System.Drawing.Point(0, 80);
-            this.buttonQuiet.Name = "buttonQuiet";
-            this.buttonQuiet.Size = new System.Drawing.Size(200, 80);
-            this.buttonQuiet.TabIndex = 10;
-            this.buttonQuiet.Text = "警报静音";
-            this.buttonQuiet.UseVisualStyleBackColor = false;
-            this.buttonQuiet.Click += new System.EventHandler(this.buttonQuiet_Click);
+            this.panelLog.BackColor = System.Drawing.Color.Transparent;
+            this.panelLog.Controls.Add(this.richTextBoxLog);
+            this.panelLog.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelLog.Location = new System.Drawing.Point(200, 488);
+            this.panelLog.Name = "panelLog";
+            this.panelLog.Size = new System.Drawing.Size(1003, 240);
+            this.panelLog.TabIndex = 5;
             // 
-            // buttonProtect
+            // buttonLog
             // 
-            this.buttonProtect.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonProtect.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.buttonProtect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonProtect.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonProtect.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonProtect.Location = new System.Drawing.Point(0, 160);
-            this.buttonProtect.Name = "buttonProtect";
-            this.buttonProtect.Size = new System.Drawing.Size(200, 80);
-            this.buttonProtect.TabIndex = 11;
-            this.buttonProtect.Text = "连锁解除";
-            this.buttonProtect.UseVisualStyleBackColor = false;
-            this.buttonProtect.Click += new System.EventHandler(this.buttonProtect_Click);
+            this.buttonLog.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonLog.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLog.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonLog.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonLog.Location = new System.Drawing.Point(0, 400);
+            this.buttonLog.Name = "buttonLog";
+            this.buttonLog.Size = new System.Drawing.Size(200, 80);
+            this.buttonLog.TabIndex = 13;
+            this.buttonLog.Text = "日志";
+            this.buttonLog.UseVisualStyleBackColor = false;
+            this.buttonLog.Click += new System.EventHandler(this.buttonLog_Click);
             // 
-            // buttonRun
+            // richTextBoxLog
             // 
-            this.buttonRun.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonRun.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.buttonRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRun.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonRun.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonRun.Location = new System.Drawing.Point(0, 0);
-            this.buttonRun.Name = "buttonRun";
-            this.buttonRun.Size = new System.Drawing.Size(200, 80);
-            this.buttonRun.TabIndex = 12;
-            this.buttonRun.Text = "连接PLC";
-            this.buttonRun.UseVisualStyleBackColor = false;
-            this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
+            this.richTextBoxLog.BackColor = System.Drawing.Color.White;
+            this.richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxLog.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBoxLog.Location = new System.Drawing.Point(0, 0);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(1003, 240);
+            this.richTextBoxLog.TabIndex = 0;
+            this.richTextBoxLog.Text = "";
             // 
             // _Layout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(887, 750);
+            this.ClientSize = new System.Drawing.Size(1203, 750);
             this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.panelLog);
             this.Controls.Add(this.panelInfo);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.statusStrip);
@@ -292,6 +334,7 @@
             this.panelButton.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.panelLog.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -317,6 +360,9 @@
         private System.Windows.Forms.Button buttonQuiet;
         private System.Windows.Forms.Button buttonProtect;
         private System.Windows.Forms.Button buttonRun;
+        private System.Windows.Forms.Panel panelLog;
+        private System.Windows.Forms.Button buttonLog;
+        private System.Windows.Forms.RichTextBox richTextBoxLog;
     }
 }
 

@@ -111,6 +111,10 @@
       <HintPath>..\packages\NLog.4.5.8\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Windows.Forms.4.2.3\lib\net35\NLog.Windows.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Sygole.HFReader">
       <HintPath>..\ExternItems\Sygole.HFReader.dll</HintPath>
     </Reference>

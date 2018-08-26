@@ -250,6 +250,7 @@ namespace SCADA
             {
                 logger.Error(ex);
             }
+            My.PLC.Clear(11, 0);
             My.PLC.Set(11, 0);
             logger.Info("B11.0:向PLC请求出库");
             My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));

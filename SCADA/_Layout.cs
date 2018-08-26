@@ -7,16 +7,23 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HNC.MES.Model;
 using HNC.MES.Common;
-using System.Threading;
+using HNC.MES.Model;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+using NLog.Targets.Wrappers;
+using NLog.Windows.Forms;
 
 namespace SCADA
 {
     public partial class _Layout : Form
     {
+        private static Logger logger;
+
         public _Layout()
         {
             InitializeComponent();
@@ -29,6 +36,9 @@ namespace SCADA
 
         private void _Layout_Load(object sender, EventArgs e)
         {
+            panelLog.Visible = false;//默认不显示日志
+            InitLog();
+            logger.Info("系统启动");
 #if DEBUG
             TabPages.Add(typeof(Debug));
             FormClosing -= _Layout_FormClosing;
@@ -51,6 +61,48 @@ namespace SCADA
                 }
             };
             My.InitializeAsync();
+        }
+
+        private void InitLog()
+        {
+            var config = new LoggingConfiguration();
+            var logfile = new FileTarget("logfile") { FileName = "${basedir}/logs/${shortdate}.log" };
+            var logconsole = new ConsoleTarget("logconsole");
+            var logrichtextbox = new RichTextBoxTarget();
+
+            logrichtextbox.Name = "RichTextBox";
+            //target.Layout = "${longdate} ${level:uppercase=true} ${logger} ${message}";
+            logrichtextbox.Layout = "${longdate} ${uppercase:${level}} ${message}";
+            logrichtextbox.ControlName = "richTextBoxLog";
+            logrichtextbox.FormName = "_Layout";
+            logrichtextbox.AutoScroll = true;
+            logrichtextbox.MaxLines = 10000;
+            logrichtextbox.UseDefaultRowColoringRules = false;
+            var getRule = new Func<string, string, RichTextBoxRowColoringRule>((condition, fontColor) =>
+            {
+                return new RichTextBoxRowColoringRule(condition, fontColor, "Transparent", FontStyle.Bold);
+            });
+            logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Trace", "DarkGray"));
+            logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Debug", "Gray"));
+            logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Info", "Black"));
+            logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Warn", "Orange"));
+            logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Error", "Red"));
+            logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Fatal", "Maroon"));
+
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
+            config.AddRuleForAllLevels(logconsole);
+            config.AddRuleForAllLevels(logfile);
+            config.AddRuleForAllLevels(logrichtextbox);
+            LogManager.Configuration = config;
+
+            logger = LogManager.GetCurrentClassLogger();
+            //logger.Trace("This is a Trace message");
+            //logger.Debug("This is a Debug message");
+            //logger.Info("This is an Info message");
+            //logger.Warn("This is a Warn message");
+            //logger.Error("This is an Error message");
+            //logger.Fatal("This is a Fatal error message");
         }
 
         /// <summary>
@@ -237,6 +289,11 @@ namespace SCADA
             }
             await Task.Delay(3000);
             buttonQuiet.Enabled = true;
+        }
+
+        private void buttonLog_Click(object sender, EventArgs e)
+        {
+            panelLog.Visible = !panelLog.Visible;
         }
     }
 }

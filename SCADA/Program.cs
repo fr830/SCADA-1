@@ -23,7 +23,6 @@ namespace SCADA
             Mutex mutex = new Mutex(true, Application.ProductName, out createdNew);
             if (createdNew)
             {
-                logger.Info("系统启动");
                 Application.Run(new _Layout());
             }
             else
