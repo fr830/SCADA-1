@@ -39,22 +39,29 @@ namespace SCADA
 
         void RequestIn(object sender, PLCEventArgs e)
         {
+            logger.Info("调用入库皮带线");
             if (!SpinIn().IsOK)
             {
                 logger.Warn("入库皮带线调用失败，请重新发起 请求入库B11.2");
             }
             else
             {
+                logger.Info("调用入库皮带线成功");
                 My.PLC.Set(11, 3);
-                logger.Info("B11.3:允许入库");
+                logger.Info("设置B11.3:允许入库");
             }
         }
 
         void PermitOut(object sender, PLCEventArgs e)
         {
+            logger.Info("调用出库皮带线");
             if (!SpinOut().IsOK)
             {
-                logger.Warn("出库皮带线调用失败，重新发起 出库许可B11.1");
+                logger.Warn("出库皮带线调用失败，重新发起 请求出库B11.0");
+            }
+            else
+            {
+                logger.Info("调用出库皮带线成功");
             }
         }
 
@@ -107,13 +114,6 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Out(IEnumerable<WMSData> list)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine("请求出库");
-            foreach (var item in list)
-            {
-                sb.AppendLine(item.ToString());
-            }
-            logger.Info(sb.ToString());
             return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list));
         }
 
@@ -124,7 +124,6 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult In(WMSData data)
         {
-            logger.Info("请求入库" + data.ToString());
             return WMSPost(WMSUpUri, JsonConvert.SerializeObject(data));
         }
 
@@ -143,7 +142,6 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult SpinIn()
         {
-            logger.Info("调用入库皮带线");
             return Spin(new SpinData { site = "1" });
         }
 
@@ -153,7 +151,6 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult SpinOut()
         {
-            logger.Info("调用出库皮带线");
             return Spin(new SpinData { site = "2" });
         }
 
@@ -271,7 +268,7 @@ namespace SCADA
 
         public override string ToString()
         {
-            return string.Format("ID:{0} 类型:{1}-{2}", trayId, code, quantity == 0 ? "空盘" : "有料");
+            return string.Format("|ID:{0} 类型:{1}-{2}|", trayId, code, quantity == 0 ? "空盘" : "有料");
         }
     }
 
@@ -307,7 +304,7 @@ namespace SCADA
                 return new WMSResult
                 {
                     code = 0,
-                    msg = "操作成功！"
+                    msg = "操作成功"
                 };
             }
         }

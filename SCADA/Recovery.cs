@@ -43,6 +43,7 @@ namespace SCADA
         private void button1_Click(object sender, EventArgs e)
         {
             button1.Enabled = false;
+            My.PLC.Clear(11, 2);
             My.PLC.Set(11, 2);//请求入库
             button1.Enabled = true;
         }
@@ -50,6 +51,7 @@ namespace SCADA
         private void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
+            My.PLC.Clear(11, 0);
             My.PLC.Set(11, 0);//请求出库
             button2.Enabled = true;
         }

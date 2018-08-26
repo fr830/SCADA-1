@@ -86,7 +86,7 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     lastTime = DateTime.Now;
-                    Thread.Sleep(1500);
+                    Thread.Sleep(2000);
                     OrderToWMS();
                 }
             }, token);
@@ -132,7 +132,7 @@ namespace SCADA
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.B), 1));
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.C), 1));
                                     //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.D), 1));
-                                    list.Add(new WMSData("D1", 1));
+                                    list.Add(new WMSData("D1", 1));//约定D的半成品为D1
                                     list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.E), 0));
                                 }
                             }
@@ -144,6 +144,13 @@ namespace SCADA
                                 }
                             }
                         }
+                        var sb = new StringBuilder();
+                        sb.Append("请求出库:");
+                        foreach (var item in list)
+                        {
+                            sb.Append(item.ToString());
+                        }
+                        logger.Info(sb.ToString());
                         My.Work_WMS.Out(list);
                     }
                 }

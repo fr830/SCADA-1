@@ -47,16 +47,18 @@ namespace SCADA
         /// <returns></returns>
         public string InitRFID(Stream stream)
         {
-            logger.Info("请求初始化RFID信息");
+            logger.Info("InitRFID:请求初始化RFID信息");
             var dict = ParseQueryString(stream);
             if (!dict.ContainsKey("type"))
             {
+                logger.Warn("InitRFID:请求参数错误");
                 return SvResult.ParameterError;
             }
             var type = dict["type"] as string;
             RFID.EnumWorkpiece workpiece;
             if (!Enum.TryParse<RFID.EnumWorkpiece>(type, true, out workpiece))
             {
+                logger.Warn("InitRFID:解析参数错误");
                 return SvResult.AnalyticError;
             }
             else
@@ -70,12 +72,13 @@ namespace SCADA
                 var guid = new Guid(pc.ID);
                 if (My.RFIDs[EnumPSite.S9_Manual].Init(guid, workpiece))
                 {
-                    logger.Info("初始化RFID信息完成");
+                    logger.Info("InitRFID:初始化RFID信息完成");
                     return SvResult.OK;
                 }
                 else
                 {
                     My.BLL.TWorkpieceProcess.DeleteReal(pc);
+                    logger.Warn("InitRFID:RFID信息写入失败");
                     return SvResult.RFIDWriteFail;
                 }
             }
@@ -88,15 +91,17 @@ namespace SCADA
         /// <returns></returns>
         public string Read(Stream stream)
         {
-            logger.Info("请求读取RFID信息");
+            logger.Info("Read:请求读取RFID信息");
             var dict = ParseQueryString(stream);
             if (!dict.ContainsKey("site"))
             {
+                logger.Warn("Read:请求参数错误");
                 return SvResult.ParameterError;
             }
             int site = 0;
             if (!int.TryParse(dict["site"].ToString(), out site))
             {
+                logger.Warn("Read:解析参数错误");
                 return SvResult.AnalyticError;
             }
             else
@@ -128,10 +133,11 @@ namespace SCADA
         /// <returns></returns>
         public string RFID_In()
         {
-            logger.Info("入库处RFID读取");
+            logger.Info("RFID_In:入库处RFID读取");
             var data = My.RFIDs[EnumPSite.S7_Up].Read();
             if (data == null)
             {
+                logger.Warn("RFID_In:RFID信息读取失败");
                 return SvResult.RFIDReadFail;
             }
             try
@@ -143,6 +149,7 @@ namespace SCADA
                 var order = GetExecOrder();
                 if (order == null)
                 {
+                    logger.Warn("RFID_In:未查询到相关订单");
                     return SvResult.OrderNullError;
                 }
                 foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
@@ -186,9 +193,11 @@ namespace SCADA
                 {
                     wmsData.quantity = data.Assemble == EnumAssemble.Successed ? 1 : 0;
                 }
+                logger.Info("请求入库:" + wmsData.ToString());
                 My.Work_WMS.In(wmsData);
                 My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             });
+            logger.Info("RFID_In:入库处RFID读取完成");
             return SvResult.OK;
         }
 
@@ -198,10 +207,11 @@ namespace SCADA
         /// <returns></returns>
         public string RFID_Out()
         {
-            logger.Info("出库处RFID读取");
+            logger.Info("RFID_Out:出库处RFID读取");
             var data = My.RFIDs[EnumPSite.S8_Down].Read();
             if (data == null)
             {
+                logger.Warn("RFID_Out:RFID信息读取失败");
                 return SvResult.RFIDReadFail;
             }
             else
@@ -217,6 +227,7 @@ namespace SCADA
                 var order = GetExecOrder();
                 if (order == null)
                 {
+                    logger.Warn("RFID_Out:未查询到相关订单");
                     return SvResult.OrderNullError;
                 }
                 foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
@@ -242,6 +253,7 @@ namespace SCADA
                 #region 写入信息
                 if (!My.RFIDs[EnumPSite.S8_Down].Write(data))
                 {
+                    logger.Warn("RFID_Out:RFID信息写入失败");
                     return SvResult.RFIDWriteFail;
                 }
                 #endregion
@@ -252,8 +264,9 @@ namespace SCADA
             }
             My.PLC.Clear(11, 0);
             My.PLC.Set(11, 0);
-            logger.Info("B11.0:向PLC请求出库");
+            logger.Info("设置B11.0:向PLC请求出库");
             My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
+            logger.Info("RFID_Out:出库处RFID读取完成");
             return SvResult.OK;
         }
     }

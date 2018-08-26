@@ -1,8 +1,8 @@
-﻿using RFID;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using RFID;
 
 namespace SCADA
 {
@@ -97,12 +97,12 @@ namespace SCADA
                     Thread.Sleep(1000);
                     if (My.PLC.Trigger(1, 0))//请求相机拍照
                     {
-                        logger.Info("PLC请求相机拍照");
+                        logger.Info("触发B1.0:PLC请求相机拍照");
                         OnPhotograph(EnumPSite.S8_Down, 1);//Work_Vision
                     }
                     if (My.PLC.Trigger(1, 10))//请求扫码器扫码
                     {
-                        logger.Info("PLC请求扫码器扫码");
+                        logger.Info("触发B1.10:PLC请求扫码器扫码");
                         OnScan(EnumPSite.S8_Down, 1);//Work_QRCode
                     }
                     foreach (EnumPSite site in Enum.GetValues(typeof(EnumPSite)))
@@ -114,53 +114,53 @@ namespace SCADA
                         var i = SiteIndexDict[site];
                         if (My.PLC.Trigger(i, 0))//加工请求读
                         {
-                            logger.Info("PLC加工请求读");
+                            logger.Info("触发B{0}.0:PLC加工请求读", i);
                             OnProcessRead(site, i);//Work_RFID
                         }
                         if (My.PLC.Trigger(i, 10))//加工请求写成功
                         {
-                            logger.Info("PLC加工请求写成功");
+                            logger.Info("触发B{0}.0:PLC加工请求写成功", i);
                             OnProcessWriteSuccess(site, i);//Work_RFID
                         }
                         if (My.PLC.Trigger(i, 11))//加工请求写失败
                         {
-                            logger.Info("PLC加工请求写失败");
+                            logger.Info("触发B{0}.0:PLC加工请求写失败", i);
                             OnProcessWriteFailure(site, i);//Work_RFID
                         }
                     }
                     if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S5_Assemble], 0))//装配台请求读
                     {
-                        logger.Info("PLC装配台请求读");
+                        logger.Info("触发B{0}.0:PLC装配台请求读", SiteIndexDict[EnumPSite.S5_Assemble]);
                         OnAssembleRead(SiteIndexDict[EnumPSite.S5_Assemble]);//Work_RFID
                     }
                     if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S5_Assemble], 10))//装配台请求写成功
                     {
-                        logger.Info("PLC装配台请求写成功");
+                        logger.Info("触发B{0}.0:PLC装配台请求写成功", SiteIndexDict[EnumPSite.S5_Assemble]);
                         OnAssembleWriteSuccess(SiteIndexDict[EnumPSite.S5_Assemble]);//Work_RFID
                     }
                     if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S5_Assemble], 11))//装配台请求写失败
                     {
-                        logger.Info("PLC装配台请求写失败");
+                        logger.Info("触发B{0}.0:PLC装配台请求写失败", SiteIndexDict[EnumPSite.S5_Assemble]);
                         OnAssembleWriteFailure(SiteIndexDict[EnumPSite.S5_Assemble]);//Work_RFID
                     }
                     if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S6_Alignment], 0))//定位台请求读
                     {
-                        logger.Info("PLC定位台请求读");
+                        logger.Info("触发B{0}.0:PLC定位台请求读", SiteIndexDict[EnumPSite.S6_Alignment]);
                         OnAlignmentRead(SiteIndexDict[EnumPSite.S6_Alignment]);//Work_RFID
                     }
                     if (My.PLC.Trigger(SiteIndexDict[EnumPSite.S6_Alignment], 10))//请求打印二维码
                     {
-                        logger.Info("PLC请求打印二维码");
+                        logger.Info("触发B{0}.0:PLC请求打印二维码", SiteIndexDict[EnumPSite.S6_Alignment]);
                         OnPrintQRCode(SiteIndexDict[EnumPSite.S6_Alignment]);//Work_QRCode
                     }
                     if (My.PLC.Trigger(11, 1))//出库许可
                     {
-                        logger.Info("PLC出库许可");
+                        logger.Info("触发B11.1:PLC出库许可");
                         OnPermitOut(EnumPSite.S8_Down, 11);//Work_WMS
                     }
                     if (My.PLC.Trigger(11, 2))//请求入库
                     {
-                        logger.Info("PLC请求入库");
+                        logger.Info("触发B11.2:PLC请求入库");
                         OnRequestIn(EnumPSite.S7_Up, 11);//Work_WMS
                     }
                 }
