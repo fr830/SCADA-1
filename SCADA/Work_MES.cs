@@ -94,7 +94,7 @@ namespace SCADA
 
         private TOrder GetOrder(TOrder.EnumState state)
         {
-            return My.BLL.TOrder.GetModel(Tool.CreateDict("State", EnumHelper.GetName(state)));
+            return My.BLL.TOrder.GetModel(Tool.CreateDict("State", Enum.GetName(typeof(TOrder.EnumState), state)));
         }
 
         public void OrderToWMS()
@@ -112,7 +112,7 @@ namespace SCADA
                 }
                 else
                 {
-                    order.State = EnumHelper.GetName(TOrder.EnumState.执行);
+                    order.State = "执行";//EnumHelper.GetName(TOrder.EnumState.执行);
                     order.StartTime = DateTime.Now;
                     My.BLL.TOrder.Update(order, My.AdminID);
                     var orderDetails = My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID));
@@ -124,16 +124,20 @@ namespace SCADA
                             detail.StartTime = DateTime.Now;
                             My.BLL.TOrderDetail.Update(detail, My.AdminID);
                             var name = My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID);
-                            if (name == EnumHelper.GetName(RFID.EnumWorkpiece.E))
+                            if (name == "E")//EnumHelper.GetName(RFID.EnumWorkpiece.E))
                             {
                                 for (int i = 0; i < detail.QuantityDemanded; i++)
                                 {
-                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.A), 1));
-                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.B), 1));
-                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.C), 1));
+                                    //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.A), 1));
+                                    //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.B), 1));
+                                    //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.C), 1));
                                     //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.D), 1));
-                                    list.Add(new WMSData("D1", 1));//约定D的半成品为D1
-                                    list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.E), 0));
+                                    //list.Add(new WMSData(EnumHelper.GetName(RFID.EnumWorkpiece.E), 0));
+                                    list.Add(new WMSData("A", 1));
+                                    list.Add(new WMSData("B", 1));
+                                    list.Add(new WMSData("C", 1));
+                                    list.Add(new WMSData("D1", 1));
+                                    list.Add(new WMSData("E", 0));
                                 }
                             }
                             else

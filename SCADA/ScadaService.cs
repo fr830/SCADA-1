@@ -64,7 +64,7 @@ namespace SCADA
             else
             {
                 var pc = new TWorkpieceProcess();
-                pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
+                pc.State = "启动"; //EnumHelper.GetName(TWorkpieceProcess.EnumState.启动);
                 pc.LocationID = My.LocationID;
                 pc.ManufactureID = My.ManufactureID;
                 pc.WorkpieceID = My.WorkpieceIDs[workpiece];
@@ -159,7 +159,7 @@ namespace SCADA
 
         private TOrder GetExecOrder()
         {
-            return My.BLL.TOrder.GetModel(Tool.CreateDict("State", EnumHelper.GetName(TOrder.EnumState.执行)));
+            return My.BLL.TOrder.GetModel(Tool.CreateDict("State", "执行")); //EnumHelper.GetName(TOrder.EnumState.执行)));
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace SCADA
             {
                 #region 修改订单明细，增加完成数量
                 var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
-                pc.State = EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
+                pc.State = "完成"; //EnumHelper.GetName(TWorkpieceProcess.EnumState.完成); 
                 My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
                 var order = GetExecOrder();
                 if (order == null)
@@ -211,7 +211,7 @@ namespace SCADA
                 }
                 if (allFinish)
                 {
-                    order.State = EnumHelper.GetName(TOrder.EnumState.完成);
+                    order.State = "完成"; //EnumHelper.GetName(TOrder.EnumState.完成);
                     order.EndTime = DateTime.Now;
                     My.BLL.TOrder.Update(order, My.AdminID);
                 }
@@ -267,7 +267,7 @@ namespace SCADA
                 }
                 foreach (var detail in My.BLL.TOrderDetail.GetList(Tool.CreateDict("OrderID", order.ID)))
                 {
-                    if (My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID) == EnumHelper.GetName(EnumWorkpiece.E))
+                    if (My.BLL.GetWorkpieceNameByWorkpieceID(detail.WorkpieceID) == "E")//EnumHelper.GetName(EnumWorkpiece.E))
                     {
                         if (data.Assemble == EnumAssemble.Unwanted)
                         {

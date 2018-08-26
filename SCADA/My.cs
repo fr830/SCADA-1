@@ -181,8 +181,8 @@ namespace SCADA
             var location = new TLocation
             {
                 Name = LocationName,
-                Type = EnumHelper.GetName(TLocation.EnumType.默认),
-                State = EnumHelper.GetName(TLocation.EnumState.正常),
+                Type = "默认",//EnumHelper.GetName(TLocation.EnumType.默认),
+                State = "正常",//EnumHelper.GetName(TLocation.EnumState.正常),
                 Description = LocationName,
             };
             BLL.TLocation.Insert(location, AdminID);
@@ -196,8 +196,8 @@ namespace SCADA
                 {
                     LocationID = LocationID,
                     Name = Enum.GetName(typeof(EnumWorkpiece), wps[i]),
-                    Type = EnumHelper.GetName(TWorkpiece.EnumType.默认),
-                    State = EnumHelper.GetName(TWorkpiece.EnumState.正常),
+                    Type = "默认",//EnumHelper.GetName(TWorkpiece.EnumType.默认),
+                    State = "正常",//EnumHelper.GetName(TWorkpiece.EnumState.正常),
                     Description = wpDescriptions[i],
                 };
                 BLL.TWorkpiece.Insert(workpiece, AdminID);
@@ -207,8 +207,8 @@ namespace SCADA
             {
                 LocationID = LocationID,
                 Name = ManufactureName,
-                Type = EnumHelper.GetName(TManufacture.EnumType.默认),
-                State = EnumHelper.GetName(TManufacture.EnumState.停止),
+                Type = "默认",//EnumHelper.GetName(TManufacture.EnumType.默认),
+                State = "停止",//EnumHelper.GetName(TManufacture.EnumState.停止),
                 Description = ManufactureName,
                 WorkpieceID = WorkpieceIDs[EnumWorkpiece.E],
             };
@@ -227,8 +227,8 @@ namespace SCADA
             var jc1 = new TEquipment
             {
                 Name = "车床",
-                Type = EnumHelper.GetName(TEquipment.EnumType.机床),
-                State = EnumHelper.GetName(TEquipment.EnumState.停止),
+                Type = "机床",//EnumHelper.GetName(TEquipment.EnumType.机床),
+                State = "停止",//EnumHelper.GetName(TEquipment.EnumState.停止),
                 Description = "IP地址：192.168.1.121",
                 ManufactureID = manufacture.ID,
             };
@@ -236,8 +236,8 @@ namespace SCADA
             var jc2 = new TEquipment
             {
                 Name = "高速钻工中心",
-                Type = EnumHelper.GetName(TEquipment.EnumType.机床),
-                State = EnumHelper.GetName(TEquipment.EnumState.停止),
+                Type = "机床",//EnumHelper.GetName(TEquipment.EnumType.机床),
+                State = "停止",//EnumHelper.GetName(TEquipment.EnumState.停止),
                 Description = "IP地址：192.168.1.122",
                 ManufactureID = manufacture.ID,
             };
@@ -245,8 +245,8 @@ namespace SCADA
             var jc3 = new TEquipment
             {
                 Name = "铣床",
-                Type = EnumHelper.GetName(TEquipment.EnumType.机床),
-                State = EnumHelper.GetName(TEquipment.EnumState.停止),
+                Type = "机床",//EnumHelper.GetName(TEquipment.EnumType.机床),
+                State = "停止",//EnumHelper.GetName(TEquipment.EnumState.停止),
                 Description = "IP地址：192.168.1.123",
                 ManufactureID = manufacture.ID,
             };
@@ -254,8 +254,8 @@ namespace SCADA
             var jc4 = new TEquipment
             {
                 Name = "五轴加工中心",
-                Type = EnumHelper.GetName(TEquipment.EnumType.机床),
-                State = EnumHelper.GetName(TEquipment.EnumState.停止),
+                Type = "机床",//EnumHelper.GetName(TEquipment.EnumType.机床),
+                State = "停止",//EnumHelper.GetName(TEquipment.EnumState.停止),
                 Description = "IP地址：192.168.1.124",
                 ManufactureID = manufacture.ID,
             };

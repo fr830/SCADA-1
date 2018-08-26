@@ -90,10 +90,10 @@ namespace SCADA
         private void button6_Click(object sender, EventArgs e)
         {
             button6.Enabled = false;
-            var order = My.BLL.TOrder.GetModel(Tool.CreateDict("State", EnumHelper.GetName(TOrder.EnumState.执行)));
+            var order = My.BLL.TOrder.GetModel(Tool.CreateDict("State", "执行"));//EnumHelper.GetName(TOrder.EnumState.执行)
             if (order != null)
             {
-                order.State = EnumHelper.GetName(TOrder.EnumState.启动);
+                order.State = "启动"; //EnumHelper.GetName(TOrder.EnumState.启动);
                 My.BLL.TOrder.Update(order, My.AdminID);
             }
             button6.Enabled = true;
