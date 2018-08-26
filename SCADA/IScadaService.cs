@@ -36,5 +36,13 @@ namespace SCADA
         [OperationContract]
         [WebInvoke(UriTemplate = "Read", Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         string Read(Stream stream);
+
+        /// <summary>
+        /// 自动入库口允许入库
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        [WebInvoke(UriTemplate = "PermitIn", Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
+        string PermitIn(Stream stream);
     }
 }

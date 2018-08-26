@@ -40,26 +40,24 @@ namespace SCADA
             cb.ValueMember = "Value";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             button1.Enabled = false;
-            My.PLC.Clear(11, 2);
-            My.PLC.Set(11, 2);//请求入库
+            await My.PLC.SetForceAsync(11, 2);//请求入库
             button1.Enabled = true;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
-            My.PLC.Clear(11, 0);
-            My.PLC.Set(11, 0);//请求出库
+            await My.PLC.SetForceAsync(11, 0);//请求出库
             button2.Enabled = true;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
             button3.Enabled = false;
-            My.PLC.Set(1, 0);//请求相机拍照
+            await My.PLC.SetForceAsync(1, 0);//请求相机拍照
             button3.Enabled = true;
         }
 
@@ -78,7 +76,6 @@ namespace SCADA
                 await Task.Delay(1000);
                 labelRFID.Text = string.Empty;
             }
-            My.PLC.Set(11, 0);
             button4.Enabled = true;
         }
 

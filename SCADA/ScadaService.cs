@@ -122,6 +122,41 @@ namespace SCADA
             }
         }
 
+        /// <summary>
+        /// 自动入库口允许入库
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public string PermitIn(Stream stream)
+        {
+            logger.Info("PermitIn:允许入库");
+            var dict = ParseQueryString(stream);
+            if (!dict.ContainsKey("site"))
+            {
+                logger.Warn("PermitIn:请求参数错误");
+                return SvResult.ParameterError;
+            }
+            int site = 0;
+            if (!int.TryParse(dict["site"].ToString(), out site))
+            {
+                logger.Warn("PermitIn:解析参数错误");
+                return SvResult.AnalyticError;
+            }
+            else
+            {
+                if (site == 1)
+                {
+                    My.PLC.Set(11, 3);
+                    logger.Info("设置B11.3:允许入库");
+                    return SvResult.OK;
+                }
+                else
+                {
+                    return SvResult.Fail;
+                }
+            }
+        }
+
         private TOrder GetExecOrder()
         {
             return My.BLL.TOrder.GetModel(Tool.CreateDict("State", EnumHelper.GetName(TOrder.EnumState.执行)));
@@ -262,8 +297,7 @@ namespace SCADA
             {
                 logger.Error(ex);
             }
-            My.PLC.Clear(11, 0);
-            My.PLC.Set(11, 0);
+            My.PLC.SetForce(11, 0);
             logger.Info("设置B11.0:向PLC请求出库");
             My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
             logger.Info("RFID_Out:出库处RFID读取完成");

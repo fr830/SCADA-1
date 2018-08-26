@@ -29,6 +29,8 @@ namespace SCADA
 
         public string WMSSpinUri { get { return ConfigurationManager.AppSettings["WMSSpin"]; } }
 
+        public string WMSUpWait { get { return ConfigurationManager.AppSettings["WMSUpWait"]; } }
+
         private Work_WMS()
         {
             RunScadaService();
@@ -39,29 +41,27 @@ namespace SCADA
 
         void RequestIn(object sender, PLCEventArgs e)
         {
-            logger.Info("调用入库皮带线");
-            if (!SpinIn().IsOK)
+            logger.Info("向WMS请求入库");
+            if (UpWait().IsOK)
             {
-                logger.Warn("入库皮带线调用失败，请重新发起 请求入库B11.2");
+                logger.Info("WMS接收入库请求成功");
             }
             else
             {
-                logger.Info("调用入库皮带线成功");
-                My.PLC.Set(11, 3);
-                logger.Info("设置B11.3:允许入库");
+                logger.Warn("WMS接收入库请求失败，重新发起 请求入库B11.2");
             }
         }
 
         void PermitOut(object sender, PLCEventArgs e)
         {
             logger.Info("调用出库皮带线");
-            if (!SpinOut().IsOK)
+            if (SpinOut().IsOK)
             {
-                logger.Warn("出库皮带线调用失败，重新发起 请求出库B11.0");
+                logger.Info("调用出库皮带线成功");
             }
             else
             {
-                logger.Info("调用出库皮带线成功");
+                logger.Warn("出库皮带线调用失败，重新发起 请求出库B11.0");
             }
         }
 
@@ -154,6 +154,14 @@ namespace SCADA
             return Spin(new SpinData { site = "2" });
         }
 
+        /// <summary>
+        /// 通知WMS有料要入库
+        /// </summary>
+        /// <returns></returns>
+        public WMSResult UpWait()
+        {
+            return WMSPost(WMSUpWait, string.Empty);
+        }
 
 
         private CancellationTokenSource cts;

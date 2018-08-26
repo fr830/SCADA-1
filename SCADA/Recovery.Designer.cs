@@ -128,7 +128,7 @@
             this.labelRFID.Name = "labelRFID";
             this.labelRFID.Size = new System.Drawing.Size(160, 23);
             this.labelRFID.TabIndex = 4;
-            this.labelRFID.Text = "无";
+            this.labelRFID.Text = "RFID信息";
             this.labelRFID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button3

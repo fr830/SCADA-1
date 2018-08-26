@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace HNC
 {
@@ -222,6 +224,20 @@ namespace HNC
                 //throw;
             }
             return false;
+        }
+
+        public bool SetForce(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
+        {
+            Clear(index, bit, type);
+            Thread.Sleep(2000);
+            return Set(index, bit, type);
+        }
+
+        public async Task<bool> SetForceAsync(int index, int bit, HncRegType type = HncRegType.REG_TYPE_B)
+        {
+            Clear(index, bit, type);
+            await Task.Delay(2000);
+            return Set(index, bit, type);
         }
 
         public bool HNC_NetFileSend(string localPath, string filename)
