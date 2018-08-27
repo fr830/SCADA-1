@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using RFID;
-using System.Net;
-using System.Configuration;
-using System.Net.Sockets;
-using System.Collections.Concurrent;
-using System.Threading;
 
 namespace SCADA
 {
@@ -42,7 +42,7 @@ namespace SCADA
         private Work_Simulation()
         {
 #if !OFFLINE
-            //AutoSendAsync();
+            AutoSendAsync();
 #endif
             //Start();
         }
@@ -72,6 +72,7 @@ namespace SCADA
                     }
                     catch (Exception ex)
                     {
+                        logger.Error("连接三维仿真失败");
                         logger.Error(ex);
                     }
                 }

@@ -41,6 +41,7 @@
             this.buttonProtect = new System.Windows.Forms.Button();
             this.buttonService = new System.Windows.Forms.Button();
             this.buttonMES = new System.Windows.Forms.Button();
+            this.buttonLog = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelDateTime = new System.Windows.Forms.ToolStripStatusLabel();
@@ -48,7 +49,6 @@
             this.toolStripStatusLabelC = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.panelLog = new System.Windows.Forms.Panel();
-            this.buttonLog = new System.Windows.Forms.Button();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.panelInfo.SuspendLayout();
             this.panelStatus.SuspendLayout();
@@ -203,7 +203,7 @@
             this.buttonService.Name = "buttonService";
             this.buttonService.Size = new System.Drawing.Size(200, 80);
             this.buttonService.TabIndex = 1;
-            this.buttonService.Text = "WMS服务测试";
+            this.buttonService.Text = "测试ScadaService";
             this.buttonService.UseVisualStyleBackColor = false;
             this.buttonService.Click += new System.EventHandler(this.buttonService_Click);
             // 
@@ -221,6 +221,21 @@
             this.buttonMES.Text = "访问MES系统";
             this.buttonMES.UseVisualStyleBackColor = false;
             this.buttonMES.Click += new System.EventHandler(this.buttonMES_Click);
+            // 
+            // buttonLog
+            // 
+            this.buttonLog.BackColor = System.Drawing.Color.DodgerBlue;
+            this.buttonLog.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLog.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonLog.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonLog.Location = new System.Drawing.Point(0, 400);
+            this.buttonLog.Name = "buttonLog";
+            this.buttonLog.Size = new System.Drawing.Size(200, 80);
+            this.buttonLog.TabIndex = 13;
+            this.buttonLog.Text = "日志";
+            this.buttonLog.UseVisualStyleBackColor = false;
+            this.buttonLog.Click += new System.EventHandler(this.buttonLog_Click);
             // 
             // menuStrip
             // 
@@ -282,21 +297,6 @@
             this.panelLog.Name = "panelLog";
             this.panelLog.Size = new System.Drawing.Size(1003, 240);
             this.panelLog.TabIndex = 5;
-            // 
-            // buttonLog
-            // 
-            this.buttonLog.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonLog.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.buttonLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLog.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonLog.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonLog.Location = new System.Drawing.Point(0, 400);
-            this.buttonLog.Name = "buttonLog";
-            this.buttonLog.Size = new System.Drawing.Size(200, 80);
-            this.buttonLog.TabIndex = 13;
-            this.buttonLog.Text = "日志";
-            this.buttonLog.UseVisualStyleBackColor = false;
-            this.buttonLog.Click += new System.EventHandler(this.buttonLog_Click);
             // 
             // richTextBoxLog
             // 
