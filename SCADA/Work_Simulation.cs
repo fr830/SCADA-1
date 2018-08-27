@@ -49,7 +49,7 @@ namespace SCADA
 
         private async void AutoSendAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 while (true)
                 {
@@ -58,7 +58,7 @@ namespace SCADA
                     {
                         if (!tcpClient.Connected)
                         {
-                            tcpClient.Connect(IP, Port);
+                            await tcpClient.ConnectAsync(IP, Port);
                         }
                         else
                         {
@@ -66,7 +66,7 @@ namespace SCADA
                             if (messages.TryDequeue(out data))
                             {
                                 tcpClient.Client.Send(data);
-                                logger.Info("三维：{0}", Encoding.UTF8.GetString(data));
+                                logger.Info("三维仿真：{0}", Encoding.UTF8.GetString(data));
                             }
                         }
                     }

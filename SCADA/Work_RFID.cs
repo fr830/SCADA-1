@@ -43,8 +43,8 @@ namespace SCADA
             }
             if (data.Workpiece == EnumWorkpiece.D && data.IsFake)
             {
-                My.PLC.Set(5, 9);//D1设置为B5.9——D半成品
-                logger.Info("B5.9:设置工件类型（加工请求读）-D半成品");
+                My.PLC.Set(e.Index, 9);//D1设置为B5.9——D半成品
+                logger.Info("B{0}.{1}:设置工件类型（加工请求读），物料类型{2}", e.Index, 9, "D半成品");
             }
             else
             {
