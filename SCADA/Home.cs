@@ -252,14 +252,14 @@ namespace SCADA
                 {EnumMonitorItems.三轴,new List<Signal>{
                     new Signal(92,0,"循环运行"),
                     new Signal(92,1,"空闲"),
-                    new Signal(92,2,"故障"),
+                    new Signal(92,2,"故障",Color.Red),
                     new Signal(92,3,"允许上料"),
                     new Signal(92,4,"允许下料"),
                 }},
                 {EnumMonitorItems.五轴,new List<Signal>{
                     new Signal(93,0,"循环运行"),
                     new Signal(93,1,"空闲"),
-                    new Signal(93,2,"故障"),
+                    new Signal(93,2,"故障",Color.Red),
                     new Signal(93,3,"允许上料"),
                     new Signal(93,4,"允许下料"),
                 }},
@@ -281,14 +281,14 @@ namespace SCADA
                 {EnumMonitorItems.车床,new List<Signal>{
                     new Signal(102,0,"循环运行"),
                     new Signal(102,1,"空闲"),
-                    new Signal(102,2,"故障"),
+                    new Signal(102,2,"故障",Color.Red),
                     new Signal(102,3,"允许上料"),
                     new Signal(102,4,"允许下料"),
                 }},
                 {EnumMonitorItems.钻攻中心,new List<Signal>{
                     new Signal(103,0,"循环运行"),
                     new Signal(103,1,"空闲"),
-                    new Signal(103,2,"故障"),
+                    new Signal(103,2,"故障",Color.Red),
                     new Signal(103,3,"允许上料"),
                     new Signal(103,4,"允许下料"),
                 }},

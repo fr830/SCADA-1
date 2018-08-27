@@ -49,7 +49,7 @@ namespace SCADA
             else
             {
                 My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
-                logger.Info("B{0}.{1}:设置工件类型（加工请求读）-{2}", e.Index, Work_PLC.WpBitDict[data.Workpiece], Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
+                logger.Info("B{0}.{1}:设置工件类型（加工请求读），物料类型{2}", e.Index, Work_PLC.WpBitDict[data.Workpiece], Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
             }
             if (data.GetProcessSite() == e.Site)
             {
@@ -206,7 +206,7 @@ namespace SCADA
                 My.PLC.Clear(e.Index, i);
             }
             My.PLC.Set(e.Index, Work_PLC.WpBitDict[data.Workpiece]);//工件类型
-            logger.Info("B{0}.{1}:设置工件类型（装配台请求读）-{2}", e.Index, Work_PLC.WpBitDict[data.Workpiece], Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
+            logger.Info("B{0}.{1}:设置工件类型（装配台请求读），物料类型{2}", e.Index, Work_PLC.WpBitDict[data.Workpiece], Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
             if (data.IsRough)
             {
                 My.PLC.Set(e.Index, 3);//工件不符合当前工位
@@ -307,7 +307,7 @@ namespace SCADA
             else
             {
                 My.PLC.Set(e.Index, data.Workpiece == EnumWorkpiece.E ? 3 : 2);//入库料盘
-                logger.Info("B{0}.{1}:入库料盘（定位台请求读）-{2}", e.Index, data.Workpiece == EnumWorkpiece.E ? 3 : 2, Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
+                logger.Info("B{0}.{1}:入库料盘（定位台请求读），物料类型{2}", e.Index, data.Workpiece == EnumWorkpiece.E ? 3 : 2, Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
             }
         }
 
