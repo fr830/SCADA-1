@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Configuration;
+using RFID;
 
 namespace SCADA
 {
@@ -23,10 +24,11 @@ namespace SCADA
 
         private TcpClient tcpClient = new TcpClient();
 
-        public RFID.RFIDData RFIDData { get; set; }
+        public Queue<RFIDData> DataQueue { get; set; }
 
         private Work_Vision()
         {
+            DataQueue = new Queue<RFIDData>();
 #if !OFFLINE
             ClientConnectAsync();
 #endif
@@ -56,10 +58,13 @@ namespace SCADA
         {
             try
             {
-                if (RFIDData == null)
+                if (DataQueue.Count < 1)
                 {
-                    throw new Exception("出库口RFID信息获取失败，无法进行比对！");
+                    logger.Error("出库口无RFID信息记录，无法进行比对");
+                    logger.Error("请手动将料盘放回出库口RFID读写位，并使用故障恢复里的<获取RFID信息>与<请求出库>的功能");
+                    return;
                 }
+                var data = DataQueue.Peek();
                 byte[] buffer = new byte[16];
                 tcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
                 tcpClient.ReceiveTimeout = 5000;
@@ -68,73 +73,96 @@ namespace SCADA
                 My.PLC.Set(e.Index, 1);//拍照完成
                 logger.Info("B{0}.1:拍照完成", e.Index);
                 #region PLC
-                switch (RFIDData.Workpiece)
+                logger.Info("RFID数据:{0}{1}", data.IsRough ? "毛坯" : "半成品", Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
+                if (VisionDict.ContainsKey(text))
                 {
-                    case RFID.EnumWorkpiece.A:
-                        if (RFIDData.IsRough && text == AR)
+                    logger.Info("Vision数据:{0}-{1}", VisionDict[text], text);
+                }
+                else
+                {
+                    logger.Error("Vision数据有误:{0}", text);
+                }
+                switch (data.Workpiece)
+                {
+                    case EnumWorkpiece.A:
+                        if (data.IsRough && text == AR)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
-                        else if (!RFIDData.IsRough && text == AS)
+                        else if (!data.IsRough && text == AS)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
                         else
                         {
                             My.PLC.Set(e.Index, 3);//工件不匹配
+                            logger.Info("B{0}.3:工件不匹配", e.Index);
                         }
                         break;
-                    case RFID.EnumWorkpiece.B:
-                        if (RFIDData.IsRough && text == BR)
+                    case EnumWorkpiece.B:
+                        if (data.IsRough && text == BR)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
-                        else if (!RFIDData.IsRough && text == BS)
+                        else if (!data.IsRough && text == BS)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
                         else
                         {
                             My.PLC.Set(e.Index, 3);//工件不匹配
+                            logger.Info("B{0}.3:工件不匹配", e.Index);
                         }
                         break;
-                    case RFID.EnumWorkpiece.C:
-                        if (RFIDData.IsRough && text == CR)
+                    case EnumWorkpiece.C:
+                        if (data.IsRough && text == CR)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
-                        else if (!RFIDData.IsRough && text == CS)
+                        else if (!data.IsRough && text == CS)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
                         else
                         {
                             My.PLC.Set(e.Index, 3);//工件不匹配
+                            logger.Info("B{0}.3:工件不匹配", e.Index);
                         }
                         break;
-                    case RFID.EnumWorkpiece.D:
-                        if (RFIDData.IsRough && text == DR)
+                    case EnumWorkpiece.D:
+                        if (data.IsRough && text == DR)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
-                        else if (!RFIDData.IsRough && text == DS)
+                        else if (!data.IsRough && text == DS)
                         {
                             My.PLC.Set(e.Index, 2);//工件匹配
+                            logger.Info("B{0}.2:工件匹配", e.Index);
                         }
                         else
                         {
                             My.PLC.Set(e.Index, 3);//工件不匹配
+                            logger.Info("B{0}.3:工件不匹配", e.Index);
                         }
                         break;
-                    case RFID.EnumWorkpiece.E:
+                    case EnumWorkpiece.E:
                         My.PLC.Set(e.Index, 2);//工件匹配
+                        logger.Info("B{0}.2:工件匹配", e.Index);
                         break;
                     default:
                         My.PLC.Set(e.Index, 3);//工件不匹配
+                        logger.Info("B{0}.3:工件不匹配", e.Index);
                         break;
                 }
                 #endregion
-                RFIDData = null;
+                DataQueue.Dequeue();
             }
             catch (Exception ex)
             {
@@ -143,44 +171,53 @@ namespace SCADA
             }
         }
 
+        private static IReadOnlyDictionary<string, string> VisionDict = new Dictionary<string, string>
+        {
+            {AR,"毛坯小圆"},{AS,"半成品小圆"},
+            {BR,"毛坯中圆"},{BS,"半成品中圆"},
+            {CR,"毛坯大圆"},{CS,"半成品大圆"},
+            {DR,"毛坯底座"},{DS,"半成品底座"},
+        };
+
         /// <summary>
         /// 毛坯小圆
         /// </summary>
-        public string AR { get { return ConfigurationManager.AppSettings["VisionAR"]; } }
+        public static string AR { get { return ConfigurationManager.AppSettings["VisionAR"]; } }
+
         /// <summary>
         /// 毛坯中圆
         /// </summary>
-        public string BR { get { return ConfigurationManager.AppSettings["VisionBR"]; } }
+        public static string BR { get { return ConfigurationManager.AppSettings["VisionBR"]; } }
 
         /// <summary>
         /// 毛坯大圆
         /// </summary>
-        public string CR { get { return ConfigurationManager.AppSettings["VisionCR"]; } }
+        public static string CR { get { return ConfigurationManager.AppSettings["VisionCR"]; } }
 
         /// <summary>
         /// 毛坯底座
         /// </summary>
-        public string DR { get { return ConfigurationManager.AppSettings["VisionDR"]; } }
+        public static string DR { get { return ConfigurationManager.AppSettings["VisionDR"]; } }
 
         /// <summary>
         /// 半成品小圆
         /// </summary>
-        public string AS { get { return ConfigurationManager.AppSettings["VisionAS"]; } }
+        public static string AS { get { return ConfigurationManager.AppSettings["VisionAS"]; } }
 
         /// <summary>
         /// 半成品中圆
         /// </summary>
-        public string BS { get { return ConfigurationManager.AppSettings["VisionBS"]; } }
+        public static string BS { get { return ConfigurationManager.AppSettings["VisionBS"]; } }
 
         /// <summary>
         /// 半成品大圆
         /// </summary>
-        public string CS { get { return ConfigurationManager.AppSettings["VisionCS"]; } }
+        public static string CS { get { return ConfigurationManager.AppSettings["VisionCS"]; } }
 
         /// <summary>
         /// 半成品底座
         /// </summary>
-        public string DS { get { return ConfigurationManager.AppSettings["VisionDS"]; } }
+        public static string DS { get { return ConfigurationManager.AppSettings["VisionDS"]; } }
 
     }
 }

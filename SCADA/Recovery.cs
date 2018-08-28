@@ -71,9 +71,10 @@ namespace SCADA
             }
             else
             {
-                My.Work_Vision.RFIDData = data;
+                My.Work_Vision.DataQueue.Clear();
+                My.Work_Vision.DataQueue.Enqueue(data);
                 labelRFID.Text = data.ToString();
-                await Task.Delay(1000);
+                await Task.Delay(2000);
                 labelRFID.Text = string.Empty;
             }
             button4.Enabled = true;

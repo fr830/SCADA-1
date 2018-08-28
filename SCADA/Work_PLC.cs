@@ -90,8 +90,15 @@ namespace SCADA
         {
             return new Task(() =>
             {
+                int aliveTimes = 0;
                 while (!token.IsCancellationRequested)
                 {
+                    aliveTimes++;
+                    if (aliveTimes >= 5)
+                    {
+                        aliveTimes = 0;
+                        logger.Info("-----PLC线程正常运行-----");
+                    }
                     lastTime = DateTime.Now;
                     //logger.Info("PLC连接正常");
                     Thread.Sleep(1000);

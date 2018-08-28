@@ -251,7 +251,7 @@ namespace SCADA
             }
             else
             {
-                My.Work_Vision.RFIDData = data;
+                My.Work_Vision.DataQueue.Enqueue(data);
             }
             try
             {
