@@ -66,13 +66,12 @@ namespace SCADA
         private void InitLog()
         {
             var config = new LoggingConfiguration();
-            var logfile = new FileTarget("logfile") { FileName = "${basedir}/logs/${shortdate}.log" };
+            var logfile = new FileTarget("logfile") { FileName = "${basedir}/logs/${shortdate}.log", Encoding = Encoding.UTF8 };
             var logconsole = new ConsoleTarget("logconsole");
             var logrichtextbox = new RichTextBoxTarget();
 
             logrichtextbox.Name = "RichTextBox";
-            //target.Layout = "${longdate} ${level:uppercase=true} ${logger} ${message}";
-            logrichtextbox.Layout = "${longdate} ${uppercase:${level}} ${message}";
+            logrichtextbox.Layout = "${longdate} ${level:uppercase=true} ${message}";
             logrichtextbox.ControlName = "richTextBoxLog";
             logrichtextbox.FormName = "_Layout";
             logrichtextbox.AutoScroll = true;
@@ -89,8 +88,6 @@ namespace SCADA
             logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Error", "Red"));
             logrichtextbox.RowColoringRules.Add(getRule("level == LogLevel.Fatal", "Maroon"));
 
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
-            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
             config.AddRuleForAllLevels(logconsole);
             config.AddRuleForAllLevels(logfile);
             config.AddRuleForAllLevels(logrichtextbox);
