@@ -179,8 +179,12 @@ namespace SCADA
             {
                 #region 修改订单明细，增加完成数量
                 var pc = My.BLL.TWorkpieceProcess.GetModel(Tool.CreateDict("ID", data.Guid.ToString()));
-                pc.State = "完成"; //EnumHelper.GetName(TWorkpieceProcess.EnumState.完成); 
+                pc.State = "完成"; //EnumHelper.GetName(TWorkpieceProcess.EnumState.完成);
                 My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
+                if (data.IsRough)
+                {
+                    throw new Exception("当前入库的工件未完成所有加工工序");
+                }
                 var order = GetExecOrder();
                 if (order == null)
                 {
@@ -223,7 +227,9 @@ namespace SCADA
             }
             Task.Run(() =>
             {
-                var wmsData = new WMSData(Enum.GetName(typeof(EnumWorkpiece), data.Workpiece), data.Assemble == EnumAssemble.Unwanted ? 1 : 0, data.Guid.ToString());
+                //毛坯的name为A，半成品的name为A1
+                var name = Enum.GetName(typeof(EnumWorkpiece), data.Workpiece) + (data.IsRough ? "" : "1");
+                var wmsData = new WMSData(name, data.Assemble == EnumAssemble.Unwanted ? 1 : 0, data.Guid.ToString());
                 if (data.Workpiece == EnumWorkpiece.E)
                 {
                     wmsData.quantity = data.Assemble == EnumAssemble.Successed ? 1 : 0;
