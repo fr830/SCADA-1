@@ -227,14 +227,20 @@ namespace SCADA
             }
             Task.Run(() =>
             {
-                //毛坯的name为A，半成品的name为A1
-                var name = Enum.GetName(typeof(EnumWorkpiece), data.Workpiece) + (data.IsRough ? "" : "1");
-                var wmsData = new WMSData(name, data.Assemble == EnumAssemble.Unwanted ? 1 : 0, data.Guid.ToString());
+                var wmsData = new WMSData();
                 if (data.Workpiece == EnumWorkpiece.E)
                 {
+                    wmsData.code = "E";
                     wmsData.quantity = data.Assemble == EnumAssemble.Successed ? 1 : 0;
                 }
-                logger.Info("请求入库:" + wmsData.ToString());
+                else
+                {
+                    //毛坯的name为A，半成品的name为A1
+                    wmsData.code = Enum.GetName(typeof(EnumWorkpiece), data.Workpiece) + (data.IsRough ? "" : "1");
+                    wmsData.quantity = data.Assemble == EnumAssemble.Unwanted ? 1 : 0;
+                    wmsData.trayId = data.Guid.ToString();
+                    logger.Info("请求入库:" + wmsData.ToString());
+                }
                 My.Work_WMS.In(wmsData);
                 My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             });

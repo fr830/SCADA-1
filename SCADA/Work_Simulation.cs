@@ -58,6 +58,8 @@ namespace SCADA
                     {
                         if (!tcpClient.Connected)
                         {
+                            tcpClient.Close();
+                            tcpClient = new TcpClient();
                             await tcpClient.ConnectAsync(IP, Port);
                         }
                         else
@@ -73,7 +75,7 @@ namespace SCADA
                     catch (Exception ex)
                     {
                         logger.Error("连接三维仿真失败");
-                        logger.Error(ex);
+                        logger.Error(ex.Message);
                     }
                 }
             });

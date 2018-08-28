@@ -73,15 +73,15 @@ namespace SCADA
                 My.PLC.Set(e.Index, 1);//拍照完成
                 logger.Info("B{0}.1:拍照完成", e.Index);
                 #region PLC
-                logger.Info("RFID数据:{0}{1}", data.IsRough ? "毛坯" : "半成品", Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
-                if (VisionDict.ContainsKey(text))
+                if (data.Workpiece == EnumWorkpiece.E)
                 {
-                    logger.Info("Vision数据:{0}-{1}", VisionDict[text], text);
+                    logger.Info("RFID数据:{0}{1}", data.Assemble == EnumAssemble.Successed ? "成品" : "空盘", Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
                 }
                 else
                 {
-                    logger.Error("Vision数据有误:{0}", text);
+                    logger.Info("RFID数据:{0}{1}", data.IsRough ? "毛坯" : "半成品", Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
                 }
+                logger.Info("Vision数据:{0}|{1}", text, VisionDict.ContainsKey(text) ? VisionDict[text] : string.Empty);
                 switch (data.Workpiece)
                 {
                     case EnumWorkpiece.A:

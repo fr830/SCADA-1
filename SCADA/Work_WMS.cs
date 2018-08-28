@@ -269,6 +269,8 @@ namespace SCADA
         /// </summary>
         public int quantity { get; set; }
 
+        public WMSData() { }
+
         public WMSData(string name, int count, string guid = null)
         {
             code = name;
