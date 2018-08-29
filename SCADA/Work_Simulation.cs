@@ -37,7 +37,7 @@ namespace SCADA
             }
         }
 
-        private TcpClient tcpClient = new TcpClient();
+        public TcpClient tcpClient = new TcpClient();
 
         private Work_Simulation()
         {
@@ -114,7 +114,8 @@ namespace SCADA
         {
             get
             {
-                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
+                //return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
+                return tcpClient.Client.Connected;
             }
         }
 

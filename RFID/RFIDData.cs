@@ -182,7 +182,7 @@ namespace RFID
         /// </summary>
         Failed = 8,
         /// <summary>
-        /// 演示
+        /// 演示（半成品）
         /// </summary>
         Fake = 16,
     }
@@ -223,11 +223,6 @@ namespace RFID
         public EnumAssemble Assemble { get; set; }
         public IList<ProcessData> ProcessDataList { get; set; }
 
-        /// <summary>
-        /// 是否为毛坯
-        /// </summary>
-        public bool IsRough { get { return GetProcessSite() != EnumPSite.None; } }
-
         private RFIDData(Guid guid)
         {
             Guid = guid;
@@ -236,6 +231,27 @@ namespace RFID
             ProcessDataList = new List<ProcessData>();
         }
 
+        /// <summary>
+        /// 是否为毛坯
+        /// </summary>
+        public bool IsRough
+        {
+            get
+            {
+                for (int i = 0; i < ProcessDataList.Count; i++)
+                {
+                    if (ProcessDataList[i].Result == EnumPResult.Waiting)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 是否为演示模式
+        /// </summary>
         public bool IsFake
         {
             get
@@ -251,6 +267,10 @@ namespace RFID
             }
         }
 
+        /// <summary>
+        /// 设置为演示模式
+        /// </summary>
+        /// <param name="force">强制</param>
         public void SetFake(bool force = false)
         {
             if (!IsRough || force)

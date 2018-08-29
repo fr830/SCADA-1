@@ -88,6 +88,15 @@ namespace SCADA
             button5.Enabled = true;
         }
 
+        private async void button10_Click(object sender, EventArgs e)
+        {
+            button10.Enabled = false;
+            My.Work_Simulation.tcpClient.Close();
+            await Task.Delay(5000);
+            button5.PerformClick();
+            button10.Enabled = true;
+        }
+
         private void button6_Click(object sender, EventArgs e)
         {
             button6.Enabled = false;

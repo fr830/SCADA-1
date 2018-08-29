@@ -41,14 +41,14 @@ namespace SCADA
 
         void RequestIn(object sender, PLCEventArgs e)
         {
-            logger.Info("向WMS请求入库");
+            logger.Info("通知WMS请求入库");
             if (UpWait().IsOK)
             {
-                logger.Info("WMS接收入库请求成功");
+                logger.Info("WMS接收入库通知成功");
             }
             else
             {
-                logger.Warn("WMS接收入库请求失败，重新发起 请求入库B11.2");
+                logger.Warn("WMS接收入库通知失败，重新发起 请求入库B11.2");
             }
         }
 
@@ -166,77 +166,6 @@ namespace SCADA
         {
             return WMSPost(WMSUpWait, string.Empty);
         }
-
-
-        private CancellationTokenSource cts;
-        private Task task;
-
-        private DateTime lastTime = DateTime.Now;
-
-        /// <summary>
-        /// 服务运行状态
-        /// </summary>
-        public bool IsRunning
-        {
-            get
-            {
-                return task != null && DateTime.Now - lastTime < TimeSpan.FromSeconds(10);
-            }
-        }
-
-        /// <summary>
-        /// 启动服务
-        /// </summary>
-        public void Start()
-        {
-            Stop();
-            cts = new CancellationTokenSource();
-            task = GetServiceTask(cts.Token);
-            task.Start();
-        }
-
-        /// <summary>
-        /// 停止服务
-        /// </summary>
-        public void Stop()
-        {
-            if (task == null) return;
-            try
-            {
-                if (cts != null && !cts.IsCancellationRequested)
-                {
-                    cts.Cancel();
-                }
-                task.Wait();
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-            }
-            finally
-            {
-                cts = null;
-                task = null;
-            }
-        }
-
-        /// <summary>
-        /// 获取服务Task
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private Task GetServiceTask(CancellationToken token)
-        {
-            return new Task(() =>
-            {
-                while (!token.IsCancellationRequested)
-                {
-                    lastTime = DateTime.Now;
-                    Thread.Sleep(1000);
-                }
-            }, token);
-        }
-
 
     }
 

@@ -183,7 +183,7 @@ namespace SCADA
                 My.BLL.TWorkpieceProcess.Update(pc, My.AdminID);
                 if (data.IsRough)
                 {
-                    throw new Exception("当前入库的工件未完成所有加工工序");
+                    throw new Exception("当前入库的工件是毛坯" + Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
                 }
                 var order = GetExecOrder();
                 if (order == null)
@@ -269,10 +269,6 @@ namespace SCADA
                 logger.Warn("RFID_Out:RFID信息读取失败");
                 return SvResult.RFIDReadFail;
             }
-            else
-            {
-                My.Work_Vision.DataQueue.Enqueue(data);
-            }
             try
             {
                 #region 半成品修改为演示模式
@@ -306,7 +302,11 @@ namespace SCADA
                 }
                 #endregion
                 #region 写入信息
-                if (!My.RFIDs[EnumPSite.S8_Down].Write(data))
+                if (My.RFIDs[EnumPSite.S8_Down].Write(data))
+                {
+                    My.Work_Vision.DataQueue.Enqueue(data);
+                }
+                else
                 {
                     logger.Warn("RFID_Out:RFID信息写入失败");
                     return SvResult.RFIDWriteFail;
