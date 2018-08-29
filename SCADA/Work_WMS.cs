@@ -78,25 +78,27 @@ namespace SCADA
 #endif
         }
 
-        private WMSResult WMSPost(string uri, string json)
+        private WMSResult WMSPost(string uri, string json, int seconds = 10)
         {
             try
             {
                 var data = Encoding.UTF8.GetBytes(json);
                 var request = WebRequest.Create(uri) as HttpWebRequest;
                 request.Method = "POST";
-                request.Timeout = 10 * 60 * 1000;
+                request.Timeout = seconds * 1000;
                 request.ContentType = "application/json";
                 request.ContentLength = data.Length;
                 using (var requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(data, 0, data.Length);
                 }
+                logger.Info("Post:{0}", json);
                 var response = request.GetResponse() as HttpWebResponse;
                 var responseStream = response.GetResponseStream();
                 using (var sr = new StreamReader(responseStream, Encoding.UTF8))
                 {
                     string str = sr.ReadToEnd();
+                    logger.Info("Receivce:{0}", str);
                     return JsonConvert.DeserializeObject<WMSResult>(str);
                 }
             }
@@ -116,7 +118,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Out(IEnumerable<WMSData> list)
         {
-            return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list));
+            return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list), 20 * 60);
         }
 
         /// <summary>
@@ -126,7 +128,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult In(WMSData data)
         {
-            return WMSPost(WMSUpUri, JsonConvert.SerializeObject(data));
+            return WMSPost(WMSUpUri, JsonConvert.SerializeObject(data), 10 * 60);
         }
 
         /// <summary>

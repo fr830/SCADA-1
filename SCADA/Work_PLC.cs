@@ -94,7 +94,7 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     aliveTimes++;
-                    if (aliveTimes >= 5)
+                    if (aliveTimes >= 20)
                     {
                         aliveTimes = 0;
                         logger.Info("-----PLC线程正常运行-----");

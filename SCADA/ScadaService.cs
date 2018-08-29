@@ -236,8 +236,16 @@ namespace SCADA
                 else
                 {
                     //毛坯的name为A，半成品的name为A1
-                    wmsData.code = Enum.GetName(typeof(EnumWorkpiece), data.Workpiece) + (data.IsRough ? "" : "1");
-                    wmsData.quantity = data.Assemble == EnumAssemble.Unwanted ? 1 : 0;
+                    wmsData.code = Enum.GetName(typeof(EnumWorkpiece), data.Workpiece);
+                    if (data.Assemble == EnumAssemble.Unwanted)
+                    {
+                        wmsData.code += (data.IsRough ? "" : "1");
+                        wmsData.quantity = 1;
+                    }
+                    else
+                    {
+                        wmsData.quantity = 0;
+                    }
                     wmsData.trayId = data.Guid.ToString();
                     logger.Info("请求入库:" + wmsData.ToString());
                 }
