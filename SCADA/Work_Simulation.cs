@@ -72,10 +72,9 @@ namespace SCADA
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
                         logger.Error("连接三维仿真失败");
-                        logger.Error(ex.Message);
                     }
                 }
             });

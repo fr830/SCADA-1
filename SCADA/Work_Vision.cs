@@ -36,18 +36,19 @@ namespace SCADA
 
         private async void ClientConnectAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 while (!tcpClient.Connected)
                 {
                     try
                     {
-                        tcpClient.Connect(IP, Port);
+                        tcpClient.Close();
+                        tcpClient = new TcpClient();
+                        await tcpClient.ConnectAsync(IP, Port);
                     }
                     catch (Exception)
                     {
-                        var message = "出库视觉相机连接失败";
-                        logger.Error(message);
+                        logger.Error("出库视觉相机连接失败");
                     }
                 }
                 My.Work_PLC.Photograph += Photograph;
@@ -58,6 +59,12 @@ namespace SCADA
         {
             try
             {
+                if (!tcpClient.Connected)
+                {
+                    My.Work_PLC.Photograph -= Photograph;
+                    ClientConnectAsync();
+                    throw new Exception("出库视觉相机连接失败，正在尝试重连");
+                }
                 if (DataQueue.Count < 1)
                 {
                     logger.Error("出库口无RFID信息记录，无法进行比对");
@@ -173,10 +180,10 @@ namespace SCADA
 
         private static IReadOnlyDictionary<string, string> VisionDict = new Dictionary<string, string>
         {
-            {AR,"毛坯小圆"},{AS,"半成品小圆"},
-            {BR,"毛坯中圆"},{BS,"半成品中圆"},
-            {CR,"毛坯大圆"},{CS,"半成品大圆"},
-            {DR,"毛坯底座"},{DS,"半成品底座"},
+            {AR,"毛坯A"},{AS,"半成品A"},
+            {BR,"毛坯B"},{BS,"半成品B"},
+            {CR,"毛坯C"},{CS,"半成品C"},
+            {DR,"毛坯D"},{DS,"半成品D"},
         };
 
         /// <summary>

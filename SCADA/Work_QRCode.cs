@@ -33,18 +33,19 @@ namespace SCADA
 
         private async void ClientConnectAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 while (!tcpClient.Connected)
                 {
                     try
                     {
-                        tcpClient.Connect(IP, Port);
+                        tcpClient.Close();
+                        tcpClient = new TcpClient();
+                        await tcpClient.ConnectAsync(IP, Port);
                     }
                     catch (Exception)
                     {
-                        var message = "打印二维码设备连接失败";
-                        logger.Error(message);
+                        logger.Error("打印二维码设备连接失败");
                     }
                 }
                 My.Work_PLC.PrintQRCode += PrintQRCode;
@@ -53,6 +54,7 @@ namespace SCADA
 
         async void PrintQRCode(object sender, PLCEventArgs e)
         {
+            logger.Info("启动打印二维码");
             Print();
             await Task.Delay(60 * 1000);
             My.PLC.Set(e.Index, 12);//打印二维码完成
@@ -61,6 +63,7 @@ namespace SCADA
 
         async void Scan(object sender, PLCEventArgs e)
         {
+            logger.Info("启动扫描二维码");
             await Task.Delay(2 * 1000);
             My.PLC.Set(e.Index, 12);//扫码器扫码完成
             logger.Info("B{0}.12:扫码器扫码完成", e.Index);

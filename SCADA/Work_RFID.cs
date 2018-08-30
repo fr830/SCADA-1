@@ -106,6 +106,7 @@ namespace SCADA
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//RFID写入完成
             logger.Info("B{0}.12:RFID写入完成（加工请求写入成功）", e.Index);
+            SimulationZD(data, e.Site);
         }
 
         void ProcessWriteFailure(object sender, PLCEventArgs e)
@@ -120,6 +121,7 @@ namespace SCADA
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//RFID写入完成
             logger.Info("B{0}.12:RFID写入完成（加工请求写入失败）", e.Index);
+            SimulationZD(data, e.Site);
         }
 
         void AssembleRead(object sender, PLCEventArgs e)
@@ -197,6 +199,7 @@ namespace SCADA
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//写入完成
             logger.Info("B{0}.12:RFID写入完成（装配台请求写入装配、清洗成功）", e.Index);
+            SimulationZD(data, e.Site);
         }
 
         void AssembleWriteFailure(object sender, PLCEventArgs e)
@@ -218,6 +221,7 @@ namespace SCADA
             My.RFIDs[e.Site].Write(data);
             My.PLC.Set(e.Index, 12);//写入完成
             logger.Info("B{0}.12:RFID写入完成（装配台请求写入装配、清洗失败）", e.Index);
+            SimulationZD(data, e.Site);
         }
 
         void AlignmentRead(object sender, PLCEventArgs e)
