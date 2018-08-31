@@ -20,6 +20,7 @@ namespace RFID
     /// <summary>
     /// 工件类型(3)
     /// </summary>
+    [Flags]
     public enum EnumWorkpiece : byte
     {
         /// <summary>
@@ -47,6 +48,7 @@ namespace RFID
     /// <summary>
     /// 清洗(4)
     /// </summary>
+    [Flags]
     public enum EnumClean : byte
     {
         /// <summary>
@@ -70,6 +72,7 @@ namespace RFID
     /// <summary>
     /// 检测(5)
     /// </summary>
+    [Flags]
     public enum EnumGauge : byte
     {
         /// <summary>
@@ -93,6 +96,7 @@ namespace RFID
     /// <summary>
     /// 装配(6)
     /// </summary>
+    [Flags]
     public enum EnumAssemble : byte
     {
         /// <summary>
@@ -163,6 +167,7 @@ namespace RFID
     /// <summary>
     /// 当前工序加工结果
     /// </summary>
+    [Flags]
     public enum EnumPResult : byte
     {
         /// <summary>
@@ -417,7 +422,14 @@ namespace RFID
 
         public override string ToString()
         {
-            return string.Format("{0},{1}", Enum.GetName(typeof(EnumWorkpiece), Workpiece), IsRough ? "毛坯" : "成品");
+            if (Workpiece == EnumWorkpiece.E)
+            {
+                return string.Format("RFID数据:{0}{1}", Assemble == EnumAssemble.Wanted ? "空盘" : "成品", Enum.GetName(typeof(EnumWorkpiece), Workpiece));
+            }
+            else
+            {
+                return string.Format("RFID数据:{0}{1}", IsRough ? "毛坯" : "半成品", Enum.GetName(typeof(EnumWorkpiece), Workpiece));
+            }
         }
 
     }

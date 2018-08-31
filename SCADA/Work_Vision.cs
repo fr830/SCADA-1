@@ -71,24 +71,17 @@ namespace SCADA
                     logger.Error("请手动将料盘放回出库口RFID读写位，并使用故障恢复里的<获取RFID信息>与<请求出库>的功能");
                     return;
                 }
-                var data = DataQueue.Peek();
                 byte[] buffer = new byte[16];
                 tcpClient.Client.Send(Encoding.UTF8.GetBytes("1"));
-                tcpClient.ReceiveTimeout = 5000;
+                tcpClient.ReceiveTimeout = 10 * 1000;
                 tcpClient.Client.Receive(buffer);
                 var text = Encoding.UTF8.GetString(buffer);
                 My.PLC.Set(e.Index, 1);//拍照完成
                 logger.Info("B{0}.1:拍照完成", e.Index);
+                logger.Info("Vision数据:{0}|{1}", VisionDict.ContainsKey(text) ? VisionDict[text] : string.Empty, text);
+                var data = DataQueue.Dequeue();
+                logger.Info(data);
                 #region PLC
-                if (data.Workpiece == EnumWorkpiece.E)
-                {
-                    logger.Info("RFID数据:{0}{1}", data.Assemble == EnumAssemble.Successed ? "成品" : "空盘", Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
-                }
-                else
-                {
-                    logger.Info("RFID数据:{0}{1}", data.IsRough ? "毛坯" : "半成品", Enum.GetName(typeof(EnumWorkpiece), data.Workpiece));
-                }
-                logger.Info("Vision数据:{0}|{1}", text, VisionDict.ContainsKey(text) ? VisionDict[text] : string.Empty);
                 switch (data.Workpiece)
                 {
                     case EnumWorkpiece.A:
@@ -169,7 +162,6 @@ namespace SCADA
                         break;
                 }
                 #endregion
-                DataQueue.Dequeue();
             }
             catch (Exception ex)
             {

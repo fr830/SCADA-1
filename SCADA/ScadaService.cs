@@ -304,6 +304,7 @@ namespace SCADA
                 #region 写入信息
                 if (My.RFIDs[EnumPSite.S8_Down].Write(data))
                 {
+                    logger.Info(data.ToString());
                     My.Work_Vision.DataQueue.Enqueue(data);
                 }
                 else
