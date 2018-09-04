@@ -213,6 +213,7 @@ namespace SCADA
                 }},
                 {EnumMonitorItems.装配台,new List<Signal>{
                     new Signal(383,1,"就绪"),
+                    new Signal(384,4,"运行"),
                     new Signal(383,2,"故障",Color.Red),
                 }},
                 {EnumMonitorItems.刻标机,new List<Signal>{
