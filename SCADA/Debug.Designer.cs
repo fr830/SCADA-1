@@ -423,6 +423,7 @@
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "WMS";
+            this.groupBox3.Visible = false;
             // 
             // buttonOut
             // 
@@ -485,6 +486,7 @@
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Vision";
+            this.groupBox4.Visible = false;
             // 
             // buttonRS8
             // 
@@ -509,6 +511,7 @@
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Simulation";
+            this.groupBox5.Visible = false;
             // 
             // buttonRKX
             // 
@@ -545,6 +548,7 @@
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "GCode";
+            this.groupBox6.Visible = false;
             // 
             // buttonGSend
             // 
@@ -564,10 +568,11 @@
             this.groupBox7.Controls.Add(this.buttonPrintQRCode);
             this.groupBox7.Location = new System.Drawing.Point(308, 344);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(290, 171);
+            this.groupBox7.Size = new System.Drawing.Size(300, 171);
             this.groupBox7.TabIndex = 6;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "QRCode";
+            this.groupBox7.Visible = false;
             // 
             // buttonPrintQRCode
             // 

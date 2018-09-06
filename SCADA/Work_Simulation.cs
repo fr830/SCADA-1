@@ -51,6 +51,7 @@ namespace SCADA
         {
             await Task.Run(async () =>
             {
+                int failedTimes = 0;
                 while (true)
                 {
                     Thread.Sleep(500);
@@ -72,9 +73,14 @@ namespace SCADA
                             }
                         }
                     }
-                    catch (Exception )
+                    catch (Exception)
                     {
-                        logger.Error("连接三维仿真失败");
+                        failedTimes++;
+                        if (failedTimes >= 30)
+                        {
+                            failedTimes = 0;
+                            logger.Error("连接三维仿真失败");
+                        }
                     }
                 }
             });

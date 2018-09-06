@@ -250,8 +250,8 @@ namespace SCADA
                     logger.Info("请求入库:" + wmsData.ToString());
                 }
                 My.Work_WMS.In(wmsData);
-                My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             });
+            My.Work_Simulation.Send(new RKX(data, RKX.EnumActionType.入库检测位转移物料至入库位));
             logger.Info("RFID_In:入库处RFID读取完成");
             return SvResult.OK;
         }

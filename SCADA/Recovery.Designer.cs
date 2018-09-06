@@ -36,6 +36,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button10 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.comboBoxRFIDs = new System.Windows.Forms.ComboBox();
             this.button8 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -158,6 +158,21 @@
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "三维仿真";
+            // 
+            // button10
+            // 
+            this.button10.AutoSize = true;
+            this.button10.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button10.ForeColor = System.Drawing.Color.Transparent;
+            this.button10.Location = new System.Drawing.Point(76, 129);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(160, 27);
+            this.button10.TabIndex = 8;
+            this.button10.Text = "重新连接";
+            this.button10.UseVisualStyleBackColor = false;
+            this.button10.Visible = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button5
             // 
@@ -304,20 +319,6 @@
             this.button8.Text = "请求读";
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // button10
-            // 
-            this.button10.AutoSize = true;
-            this.button10.BackColor = System.Drawing.Color.DodgerBlue;
-            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button10.ForeColor = System.Drawing.Color.Transparent;
-            this.button10.Location = new System.Drawing.Point(76, 129);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(160, 27);
-            this.button10.TabIndex = 8;
-            this.button10.Text = "重新连接";
-            this.button10.UseVisualStyleBackColor = false;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // Recovery
             // 

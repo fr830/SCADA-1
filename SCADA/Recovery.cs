@@ -23,7 +23,7 @@ namespace SCADA
 
         private void Recovery_Load(object sender, EventArgs e)
         {
-            SetComboboxDataSource(comboBoxRFIDs, My.RFIDs);
+            SetComboboxDataSource(comboBoxRFIDs, My.RFIDs.Where(p => p.Key < EnumPSite.S7_Up));
         }
 
         private void Recovery_Shown(object sender, EventArgs e)
@@ -34,6 +34,13 @@ namespace SCADA
         }
 
         private void SetComboboxDataSource(ComboBox cb, IDictionary dict)
+        {
+            cb.DataSource = new BindingSource(dict, "");
+            cb.DisplayMember = "Key";
+            cb.ValueMember = "Value";
+        }
+
+        private void SetComboboxDataSource(ComboBox cb, IEnumerable<KeyValuePair<EnumPSite, RFIDReader>> dict)
         {
             cb.DataSource = new BindingSource(dict, "");
             cb.DisplayMember = "Key";

@@ -94,13 +94,12 @@ namespace SCADA
                 while (!token.IsCancellationRequested)
                 {
                     aliveTimes++;
-                    if (aliveTimes >= 20)
+                    if (aliveTimes >= 3600)
                     {
                         aliveTimes = 0;
                         logger.Info("-----PLC线程正常运行-----");
                     }
                     lastTime = DateTime.Now;
-                    //logger.Info("PLC连接正常");
                     Thread.Sleep(1000);
                     if (My.PLC.Trigger(1, 0))//请求相机拍照
                     {

@@ -237,7 +237,8 @@ namespace SCADA
         private void buttonPrintQRCode_Click(object sender, EventArgs e)
         {
             buttonPrintQRCode.Enabled = false;
-            My.Work_QRCode.Print();
+            //My.Work_QRCode.Print();
+            My.PLC.Set(Work_PLC.SiteIndexDict[EnumPSite.S6_Alignment], 10);
             buttonPrintQRCode.Enabled = true;
         }
     }

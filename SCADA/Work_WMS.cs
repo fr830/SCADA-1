@@ -118,7 +118,7 @@ namespace SCADA
         /// <returns></returns>
         public WMSResult Out(IEnumerable<WMSData> list)
         {
-            return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list), 20 * 60);
+            return WMSPost(WMSDownUri, JsonConvert.SerializeObject(list), 30 * 60);
         }
 
         /// <summary>
