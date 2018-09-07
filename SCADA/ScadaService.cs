@@ -256,6 +256,8 @@ namespace SCADA
             return SvResult.OK;
         }
 
+        public static RFIDData Data { get; set; }
+
         /// <summary>
         /// 自动出库
         /// </summary>
@@ -320,7 +322,7 @@ namespace SCADA
             }
             My.PLC.SetForce(11, 0);
             logger.Info("设置B11.0:向PLC请求出库");
-            My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
+            Data = data;
             logger.Info("RFID_Out:出库处RFID读取完成");
             return SvResult.OK;
         }
