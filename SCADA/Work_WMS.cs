@@ -58,8 +58,15 @@ namespace SCADA
             if (SpinOut().IsOK)
             {
                 logger.Info("调用出库皮带线成功");
-                My.Work_Simulation.Send(new CKX(ScadaService.Data, CKX.EnumActionType.出库检测位转移物料至定位台1));
-                ScadaService.Data = null;
+                try
+                {
+                    var data = My.Work_Vision.DataQueue.Peek();
+                    My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex);
+                }
             }
             else
             {
