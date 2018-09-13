@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HNC.MES.Common;
-using HNC.MES.Model;
 using RFID;
 
 namespace SCADA
@@ -78,7 +74,7 @@ namespace SCADA
             }
             else
             {
-                My.Work_Vision.DataQueue.Clear();
+                My.Work_Vision.DataQueue = new ConcurrentQueue<RFIDData>();
                 My.Work_Vision.DataQueue.Enqueue(data);
                 labelRFID.Text = data.ToString();
                 await Task.Delay(2000);

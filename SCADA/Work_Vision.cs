@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
-using System.Configuration;
+using System.Text;
+using System.Threading.Tasks;
 using RFID;
 
 namespace SCADA
@@ -24,11 +24,11 @@ namespace SCADA
 
         private TcpClient tcpClient = new TcpClient();
 
-        public Queue<RFIDData> DataQueue { get; set; }
+        public ConcurrentQueue<RFIDData> DataQueue { get; set; }
 
         private Work_Vision()
         {
-            DataQueue = new Queue<RFIDData>();
+            DataQueue = new ConcurrentQueue<RFIDData>();
 #if !OFFLINE
             ClientConnectAsync();
 #endif
@@ -79,7 +79,11 @@ namespace SCADA
                 My.PLC.Set(e.Index, 1);//拍照完成
                 logger.Info("B{0}.1:拍照完成", e.Index);
                 logger.Info("Vision数据:{0}|{1}", VisionDict.ContainsKey(text) ? VisionDict[text] : string.Empty, text);
-                var data = DataQueue.Dequeue();
+                RFIDData data;
+                if (!DataQueue.TryDequeue(out data))
+                {
+                    throw new Exception("获取RFID数据失败");
+                }
                 logger.Info(data);
                 #region PLC
                 switch (data.Workpiece)

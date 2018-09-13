@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
+using System.IO;
+using System.Net;
 using System.ServiceModel.Web;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using HNC.MES.Common;
-using HNC.MES.Model;
 using Newtonsoft.Json;
-using System.Net;
-using System.IO;
-using System.Configuration;
 
 
 namespace SCADA
@@ -34,7 +29,6 @@ namespace SCADA
         private Work_WMS()
         {
             RunScadaService();
-            //Start();
             My.Work_PLC.RequestIn += RequestIn;
             My.Work_PLC.PermitOut += PermitOut;
         }
@@ -57,16 +51,10 @@ namespace SCADA
             logger.Info("调用出库皮带线");
             if (SpinOut().IsOK)
             {
+                RFID.RFIDData data = null;
+                My.Work_Vision.DataQueue.TryPeek(out data);
+                My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
                 logger.Info("调用出库皮带线成功");
-                try
-                {
-                    var data = My.Work_Vision.DataQueue.Peek();
-                    My.Work_Simulation.Send(new CKX(data, CKX.EnumActionType.出库检测位转移物料至定位台1));
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex);
-                }
             }
             else
             {

@@ -1,16 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using HNC.MES.Common;
 using HNC.MES.Model;
+using Newtonsoft.Json;
 using RFID;
 
 namespace SCADA
