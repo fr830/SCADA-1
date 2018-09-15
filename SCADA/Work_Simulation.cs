@@ -49,37 +49,46 @@ namespace SCADA
 
         private async void AutoSendAsync()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 int failedTimes = 0;
                 while (true)
                 {
                     Thread.Sleep(500);
-                    try
+                    if (!tcpClient.Connected)
                     {
-                        if (!tcpClient.Connected)
+                        try
                         {
                             tcpClient.Close();
                             tcpClient = new TcpClient();
-                            await tcpClient.ConnectAsync(IP, Port);
+                            tcpClient.Connect(IP, Port);
                         }
-                        else
+                        catch (Exception ex)
+                        {
+                            failedTimes++;
+                            if (failedTimes >= 30)
+                            {
+                                failedTimes = 0;
+                                logger.Error("连接三维仿真失败");
+                                logger.Error(ex.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        try
                         {
                             byte[] data;
                             if (messages.TryDequeue(out data))
                             {
                                 tcpClient.Client.Send(data);
-                                logger.Info("三维仿真：{0}", Encoding.UTF8.GetString(data));
+                                logger.Info("三维仿真|发送：{0}", Encoding.UTF8.GetString(data));
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
-                        failedTimes++;
-                        if (failedTimes >= 30)
+                        catch (Exception ex)
                         {
-                            failedTimes = 0;
-                            logger.Error("连接三维仿真失败");
+                            logger.Error("三维仿真发送消息异常");
+                            logger.Error(ex.Message);
                         }
                     }
                 }
@@ -94,7 +103,9 @@ namespace SCADA
             sb.Append(",1,");
             sb.Append(equipment.ToString());
             sb.Append("#");
-            var data = Encoding.UTF8.GetBytes(sb.ToString());
+            var message = sb.ToString();
+            logger.Info("三维仿真|构建：{0}", message);
+            var data = Encoding.UTF8.GetBytes(message);
             messages.Enqueue(data);
         }
 
