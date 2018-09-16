@@ -101,7 +101,7 @@ namespace SCADA
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message);
                 logger.Error(uri);
                 logger.Error(json);
                 return WMSResult.Error;

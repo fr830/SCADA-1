@@ -62,6 +62,7 @@ namespace SCADA
                             tcpClient.Close();
                             tcpClient = new TcpClient();
                             tcpClient.Connect(IP, Port);
+                            logger.Info("连接三维仿真服务成功");
                         }
                         catch (Exception ex)
                         {
@@ -69,26 +70,36 @@ namespace SCADA
                             if (failedTimes >= 30)
                             {
                                 failedTimes = 0;
-                                logger.Error("连接三维仿真失败");
+                                logger.Error("连接三维仿真服务失败");
                                 logger.Error(ex.Message);
                             }
                         }
                     }
                     else
                     {
-                        try
+                        byte[] data;
+                        if (messages.TryDequeue(out data))
                         {
-                            byte[] data;
-                            if (messages.TryDequeue(out data))
+                            try
                             {
-                                tcpClient.Client.Send(data);
-                                logger.Info("三维仿真|发送：{0}", Encoding.UTF8.GetString(data));
+                                if (tcpClient.Client.Send(data) > 0)
+                                {
+                                    logger.Info("三维仿真|发送：{0}", Encoding.UTF8.GetString(data));
+                                }
+                                else
+                                {
+                                    throw new Exception("已发送的字节数长度错误");
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Error("三维仿真发送消息异常");
-                            logger.Error(ex.Message);
+                            catch (Exception ex)
+                            {
+                                logger.Error("三维仿真发送消息异常");
+                                logger.Error(ex.Message);
+                                if (data != null && data.Length > 0)
+                                {
+                                    messages.Enqueue(data);
+                                }
+                            }
                         }
                     }
                 }
@@ -162,7 +173,7 @@ namespace SCADA
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message);
             }
             finally
             {

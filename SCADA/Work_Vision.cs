@@ -170,7 +170,7 @@ namespace SCADA
             catch (Exception ex)
             {
                 logger.Error("出库相机拍照失败");
-                logger.Error(ex);
+                logger.Error(ex.Message);
             }
         }
 

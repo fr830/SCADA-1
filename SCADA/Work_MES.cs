@@ -65,7 +65,7 @@ namespace SCADA
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message);
             }
             finally
             {

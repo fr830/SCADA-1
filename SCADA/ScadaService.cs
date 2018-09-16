@@ -219,7 +219,7 @@ namespace SCADA
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message);
             }
             Task.Run(() =>
             {
@@ -312,7 +312,7 @@ namespace SCADA
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message);
             }
             My.PLC.SetForce(11, 0);
             logger.Info("设置B11.0:向PLC请求出库");
